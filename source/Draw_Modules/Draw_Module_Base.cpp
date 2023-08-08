@@ -3,7 +3,7 @@
 using namespace LR;
 
 
-INIT_FIELDS(LR::Draw_Module_Base_Stub, LEti::Builder_Stub)
+INIT_FIELDS(LR::Draw_Module_Base_Stub, LV::Builder_Stub)
 FIELDS_END
 
 

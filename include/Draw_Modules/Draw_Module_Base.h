@@ -3,7 +3,7 @@
 
 #include <mat4x4.hpp>
 
-#include <Object_System/Builder_Stub.h>
+#include <Builder_Stub.h>
 
 #include <Components/Texture.h>
 #include <Components/Vertices.h>
@@ -13,7 +13,7 @@
 namespace LR
 {
 
-    class Draw_Module_Base_Stub : public LEti::Builder_Stub
+    class Draw_Module_Base_Stub : public LV::Builder_Stub
     {
     public:
         DECLARE_VARIABLE;
