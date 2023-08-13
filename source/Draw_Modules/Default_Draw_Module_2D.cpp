@@ -40,6 +40,8 @@ LV::Variable_Base* Default_Draw_Module_2D_Stub::M_construct_product() const
 
 void Default_Draw_Module_2D_Stub::M_init_constructed_product(LV::Variable_Base* _product) const
 {
+    Draw_Module_Base_Stub::M_init_constructed_product(_product);
+
     Default_Draw_Module_2D* result = (Default_Draw_Module_2D*)_product;
 
     result->init_vertices(coords, coords_count);

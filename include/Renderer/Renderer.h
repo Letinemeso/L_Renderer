@@ -3,7 +3,6 @@
 
 #include <Camera/Camera_Base.h>
 #include <Shader/Shader.h>
-#include <Draw_Modules/Draw_Module_Base.h>
 
 
 namespace LR
@@ -33,7 +32,12 @@ namespace LR
         inline const Shader* shader() const { return m_shader; }
 
     public:
-        void draw(const Draw_Module_Base& _what) const;
+        void setup_matrix(const glm::mat4x4& _transform_matrix);
+        void setup_texture(const LR::Texture& _texture);
+        void bind_vertex_array(unsigned int _vertex_array);
+
+    public:
+        void draw(unsigned int _draw_mode, unsigned int _vertices_amount) const;
 
     };
 

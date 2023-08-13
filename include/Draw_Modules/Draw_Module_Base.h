@@ -5,6 +5,9 @@
 
 #include <Builder_Stub.h>
 
+#include <Module.h>
+
+#include <Renderer/Renderer.h>
 #include <Components/Texture.h>
 #include <Components/Vertices.h>
 #include <Components/Colors.h>
@@ -19,35 +22,44 @@ namespace LR
         DECLARE_VARIABLE;
 
     public:
+        LR::Renderer* renderer = nullptr;
+
+    public:
         virtual ~Draw_Module_Base_Stub() { }
+
+    protected:
+        void M_init_constructed_product(LV::Variable_Base* _product) const override;
 
     };
 
-    class Draw_Module_Base : public LV::Variable_Base
+    class Draw_Module_Base : public LEti::Module
     {
     public:
         DECLARE_VARIABLE;
 
     protected:
-        unsigned int m_vertex_array = 0;
-        glm::mat4x4 m_transform_matrix;
+        LR::Renderer* m_renderer = nullptr;
 
+    protected:
         bool m_visible = true;
 
     protected:
+        unsigned int m_vertex_array = 0;
         LR::Texture m_texture;
         LR::Vertices m_vertices;
         LR::Colors m_colors;
 
 	public:
 		Draw_Module_Base();
-        virtual ~Draw_Module_Base();
+        ~Draw_Module_Base();
 
     public:
         inline void set_visible(bool _visible) { m_visible = _visible; }
+        inline void set_renderer(LR::Renderer* _renderer) { m_renderer = _renderer; }
+        inline LR::Renderer* renderer() const { return m_renderer; }
 
     public:
-        virtual void update(const glm::mat4x4& _matrix);
+        void update() override;
 
     public:
         inline LR::Texture& texture() { return m_texture; }
@@ -58,7 +70,6 @@ namespace LR
         inline const LR::Colors& colors() const { return m_colors; }
 
     public:
-        inline const glm::mat4x4& transform_matrix() const { return m_transform_matrix; }
         inline unsigned int vertex_array() const { return m_vertex_array; }
         inline bool visible() const { return m_visible; }
 

@@ -28,20 +28,25 @@ Renderer::~Renderer()
 
 
 
-void Renderer::draw(const Draw_Module_Base &_what) const
+void Renderer::setup_matrix(const glm::mat4x4& _transform_matrix)
 {
-    if (!_what.visible())
-        return;
-
-    L_ASSERT(_what.vertex_array() != 0);
-
     m_shader->set_projection_matrix(m_camera->matrix());
-    m_shader->set_transform_matrix(_what.transform_matrix());
-    m_shader->set_texture(_what.texture());
+    m_shader->set_transform_matrix(_transform_matrix);
+}
 
-    glBindVertexArray(_what.vertex_array());
+void Renderer::setup_texture(const LR::Texture& _texture)
+{
+    m_shader->set_texture(_texture);
+}
 
-    glDrawArrays(_what.gl_draw_mode(), 0, _what.vertices().vertices_count());
+void Renderer::bind_vertex_array(unsigned int _vertex_array)
+{
+    glBindVertexArray(_vertex_array);
+}
 
-    glBindVertexArray(0);
+
+
+void Renderer::draw(unsigned int _draw_mode, unsigned int _vertices_amount) const
+{
+    glDrawArrays(_draw_mode, 0, _vertices_amount);
 }

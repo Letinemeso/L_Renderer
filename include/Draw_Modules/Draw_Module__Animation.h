@@ -32,8 +32,11 @@ namespace LR
     public:
         Draw_Module__Animation();
 
+    private:
+        void M_update_frame();
+
     public:
-        void update(const glm::mat4x4& _matrix) override;
+        void update() override;
 
     public:
         void set_animation_data(unsigned int _frames_count);

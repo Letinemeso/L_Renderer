@@ -14,10 +14,8 @@ Draw_Module__Animation::Draw_Module__Animation() : Default_Draw_Module_2D()
 
 
 
-void Draw_Module__Animation::update(const glm::mat4x4 &_matrix)
+void Draw_Module__Animation::M_update_frame()
 {
-    Default_Draw_Module_2D::update(_matrix);
-
     if(m_is_paused)
         return;
 
@@ -36,6 +34,15 @@ void Draw_Module__Animation::update(const glm::mat4x4 &_matrix)
 
     set_frame((m_current_frame + 1) % m_frames_count);
     m_frame_update_timer.start(m_time_before_next_frame);
+}
+
+
+
+void Draw_Module__Animation::update()
+{
+    M_update_frame();
+
+    Default_Draw_Module_2D::update();
 }
 
 
