@@ -24,7 +24,7 @@ FIELDS_END
 
 
 
-void Draw_Module_Base::update()
+void Draw_Module_Base::update(float /*_dt*/)
 {
     L_ASSERT(m_renderer);
 

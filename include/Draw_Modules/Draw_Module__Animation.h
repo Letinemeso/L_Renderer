@@ -33,10 +33,10 @@ namespace LR
         Draw_Module__Animation();
 
     private:
-        void M_update_frame();
+        void M_update_frame(float _dt);
 
     public:
-        void update() override;
+        void update(float _dt) override;
 
     public:
         void set_animation_data(unsigned int _frames_count);

@@ -59,7 +59,7 @@ namespace LR
         inline LR::Renderer* renderer() const { return m_renderer; }
 
     public:
-        void update() override;
+        void update(float _dt) override;
 
     public:
         inline LR::Texture& texture() { return m_texture; }

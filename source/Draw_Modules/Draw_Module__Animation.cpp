@@ -14,12 +14,12 @@ Draw_Module__Animation::Draw_Module__Animation() : Default_Draw_Module_2D()
 
 
 
-void Draw_Module__Animation::M_update_frame()
+void Draw_Module__Animation::M_update_frame(float _dt)
 {
     if(m_is_paused)
         return;
 
-    m_frame_update_timer.update(LR::Event_Controller::get_dt());
+    m_frame_update_timer.update(_dt);
     if(m_frame_update_timer.is_active())
         return;
 
@@ -38,11 +38,11 @@ void Draw_Module__Animation::M_update_frame()
 
 
 
-void Draw_Module__Animation::update()
+void Draw_Module__Animation::update(float _dt)
 {
-    M_update_frame();
+    M_update_frame(_dt);
 
-    Default_Draw_Module_2D::update();
+    Default_Draw_Module_2D::update(_dt);
 }
 
 

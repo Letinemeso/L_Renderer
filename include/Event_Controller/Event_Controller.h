@@ -31,7 +31,7 @@ namespace LR {
 		static void set_max_dt(float _max_dt);
 
 	public:
-		static void update();
+        static void update();
 		static float get_dt();
 
         static bool is_mouse_button_down(unsigned int _btn);
