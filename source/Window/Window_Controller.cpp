@@ -124,6 +124,37 @@ bool Window_Controller::mouse_button_prev_pressed(unsigned int _btn)
 	return m_mouse_buttons_pressed_before[_btn];
 }
 
+bool Window_Controller::is_mouse_button_up(unsigned int _btn)
+{
+    return !Window_Controller::is_mouse_button_down(_btn);
+}
+
+bool Window_Controller::mouse_button_was_pressed(unsigned int _btn)
+{
+    return Window_Controller::is_mouse_button_down(_btn) && !Window_Controller::mouse_button_prev_pressed(_btn);
+}
+
+bool Window_Controller::mouse_button_was_released(unsigned int _btn)
+{
+    return !Window_Controller::is_mouse_button_down(_btn) && Window_Controller::mouse_button_prev_pressed(_btn);
+}
+
+
+bool Window_Controller::is_key_up(unsigned int _key)
+{
+    return !Window_Controller::is_key_down(_key);
+}
+
+bool Window_Controller::key_was_pressed(unsigned int _key)
+{
+    return Window_Controller::is_key_down(_key) && !Window_Controller::key_prev_pressed(_key);
+}
+
+bool Window_Controller::key_was_released(unsigned int _key)
+{
+    return !Window_Controller::is_key_down(_key) && Window_Controller::key_prev_pressed(_key);
+}
+
 
 int Window_Controller::mouse_wheel_rotation()
 {

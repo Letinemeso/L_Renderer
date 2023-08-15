@@ -31,7 +31,6 @@ HEADERS += \
     include/Draw_Modules/Default_Draw_Module_2D.h \
     include/Draw_Modules/Draw_Module_Base.h \
     include/Draw_Modules/Draw_Module__Animation.h \
-    include/Event_Controller/Event_Controller.h \
     include/Picture/Picture.h \
     include/Picture/Picture_Manager.h \
     include/Renderer/Renderer.h \
@@ -48,7 +47,6 @@ SOURCES += \
     source/Draw_Modules/Default_Draw_Module_2D.cpp \
     source/Draw_Modules/Draw_Module_Base.cpp \
     source/Draw_Modules/Draw_Module__Animation.cpp \
-    source/Event_Controller/Event_Controller.cpp \
     source/Picture/Picture.cpp \
     source/Picture/Picture_Manager.cpp \
     source/Renderer/Renderer.cpp \

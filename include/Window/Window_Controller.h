@@ -47,10 +47,24 @@ namespace LR
 
         static const window_size& get_window_data();
 
-        static bool is_key_down(unsigned int _key);
-        static bool is_mouse_button_down(unsigned int _btn);
+//        static bool is_key_down(unsigned int _key);
+//        static bool is_mouse_button_down(unsigned int _btn);
         static bool key_prev_pressed(unsigned int _key);
         static bool mouse_button_prev_pressed(unsigned int _btn);
+
+
+
+
+        static bool is_mouse_button_down(unsigned int _btn);
+        static bool is_mouse_button_up(unsigned int _btn);
+        static bool mouse_button_was_pressed(unsigned int _btn);
+        static bool mouse_button_was_released(unsigned int _btn);
+
+        static bool is_key_down(unsigned int _key);
+        static bool is_key_up(unsigned int _key);
+        static bool key_was_pressed(unsigned int _key);
+        static bool key_was_released(unsigned int _key);
+
 
         static int mouse_wheel_rotation();
 

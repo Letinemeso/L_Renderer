@@ -6,7 +6,6 @@
 #include "../OpenGL/GLM/gtx/transform.hpp"
 
 #include <Shader/Shader.h>
-#include <Event_Controller/Event_Controller.h>
 
 namespace LR
 {

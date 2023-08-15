@@ -4,7 +4,6 @@
 #include <Stuff/Timer.h>
 
 #include <Draw_Modules/Default_Draw_Module_2D.h>
-#include <Event_Controller/Event_Controller.h>
 
 
 namespace LR
