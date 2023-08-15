@@ -28,6 +28,8 @@ void Draw_Module_Base::update()
 {
     L_ASSERT(m_renderer);
 
+    transformation_data()->update_matrix();
+
     m_renderer->setup_matrix(transformation_data()->matrix());
     m_renderer->setup_texture(texture());
     m_renderer->bind_vertex_array(vertex_array());
