@@ -55,35 +55,6 @@ Shader::~Shader()
 
 
 
-void Shader::M_get_shader_source(const std::string& _path, char*& _result_buffer, unsigned int* _result_size) const
-{
-    std::ifstream file(_path, std::ios::binary);
-
-	L_ASSERT(!(!file.is_open()));
-
-	file.seekg(0, std::ios::end);
-	unsigned int size = file.tellg();
-
-	if(_result_size != nullptr) *_result_size = size;
-
-	_result_buffer = new char[size + 1];
-	_result_buffer[size] = 0;
-
-	file.seekg(0, std::ios::beg);
-
-    std::string test;
-
-	for (unsigned int i = 0; i < size; ++i)
-    {
-        _result_buffer[i] = file.get();
-        test += _result_buffer[i];
-        if(_result_buffer[i] == 0)
-            test += "";
-    }
-
-	file.close();
-}
-
 void Shader::M_shader_debug(unsigned int _shader) const
 {
 	int result = 0;
@@ -118,7 +89,7 @@ void Shader::M_program_debug(unsigned int _program) const
 
 
 
-void Shader::init(const std::string& _v_path, const std::string& _f_path)
+void Shader::init(const std::string& _vertex_shader_source, const std::string& _fragment_shader_source)
 {
     glDeleteShader(m_vertex_shader);
     glDeleteShader(m_fragment_shader);
@@ -128,19 +99,16 @@ void Shader::init(const std::string& _v_path, const std::string& _f_path)
     m_fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     m_program = glCreateProgram();
 
-	char* buffer = nullptr;
-	unsigned int size = 0;
+    const char* cstr_vsource = _vertex_shader_source.c_str();
+    const char* cstr_fsource = _fragment_shader_source.c_str();
 
-    M_get_shader_source(_v_path, buffer, &size);
-    glShaderSource(m_vertex_shader, 1, &buffer, 0);
+    glShaderSource(m_vertex_shader, 1, &cstr_vsource, 0);
     glCompileShader(m_vertex_shader);
     L_DEBUG_FUNC_1ARG(M_shader_debug, m_vertex_shader);
-	delete buffer;
-    M_get_shader_source(_f_path, buffer, &size);
-    glShaderSource(m_fragment_shader, 1, &buffer, 0);
+
+    glShaderSource(m_fragment_shader, 1, &cstr_fsource, 0);
     glCompileShader(m_fragment_shader);
     L_DEBUG_FUNC_1ARG(M_shader_debug, m_fragment_shader);
-	delete buffer;
 
 
     glAttachShader(m_program, m_vertex_shader);

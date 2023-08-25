@@ -2,13 +2,13 @@
 #define __SHADER
 
 #include <iostream>
-#include <fstream>
 #include <string>
 
 #include <glew.h>
 #include <mat4x4.hpp>
 
 #include <L_Debug/L_Debug.h>
+
 #include <Components/Texture.h>
 
 
@@ -33,13 +33,12 @@ namespace LR
 
         ~Shader();
 
-	private:
-        void M_get_shader_source(const std::string& _path, char*& _buffer, unsigned int* _size) const;
+    private:
         void M_shader_debug(unsigned int _shader) const;
         void M_program_debug(unsigned int _program) const;
 
 	public:
-        void init(const std::string& _v_path, const std::string& _f_path);
+        void init(const std::string& _vertex_shader_source, const std::string& _fragment_shader_source);
         void set_projection_matrix_uniform(const std::string& _name);
         void set_transform_matrix_uniform(const std::string& _name);
         void set_texture_uniform(const std::string& _name);
@@ -49,6 +48,6 @@ namespace LR
         void set_texture(const LR::Texture& _texture) const;
 	};
 
-}	//LR
+}
 
 #endif
