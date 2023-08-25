@@ -54,14 +54,15 @@ void Default_Draw_Module_2D_Stub::M_init_constructed_product(LV::Variable_Base* 
 Default_Draw_Module_2D::Default_Draw_Module_2D() : Draw_Module_Base()
 {
 	glGenVertexArrays(1, &m_vertex_array);
-	glBindVertexArray(m_vertex_array);
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
+    glBindVertexArray(m_vertex_array);
 
-	m_vertices.vertex_array = &m_vertex_array;
-	m_texture.vertex_array = &m_vertex_array;
-    m_colors.vertex_array = &m_vertex_array;
+    m_vertices.set_vertex_array(&m_vertex_array);
+    m_texture.set_vertex_array(&m_vertex_array);
+    m_colors.set_vertex_array(&m_vertex_array);
+
+    m_vertices.set_floats_per_vertex(3);
+    m_colors.set_floats_per_vertex(4);
+    m_texture.set_floats_per_vertex(2);
 }
 
 Default_Draw_Module_2D::~Default_Draw_Module_2D()
@@ -75,21 +76,21 @@ void Default_Draw_Module_2D::init_vertices(const float *const _coords, unsigned 
 {
     glBindVertexArray(m_vertex_array);
     m_vertices.init(_coords, _coords_count);
-    m_vertices.setup_buffer(0, 3);		//TODO: this data shpuld not be hard-coded. it should be stored in LR::Shader (probably)
+//    m_vertices.setup_buffer(0);		//TODO: this data shpuld not be hard-coded. it should be stored in LR::Shader (probably)
 }
 
 void Default_Draw_Module_2D::init_colors(const float *const _colors, unsigned int _colors_count)
 {
     glBindVertexArray(m_vertex_array);
     m_colors.init(_colors, _colors_count);
-    m_colors.setup_buffer(1, 4);		//TODO: this data shpuld not be hard-coded. it should be stored in LR::Shader (probably)
+//    m_colors.setup_buffer(1);		//TODO: this data shpuld not be hard-coded. it should be stored in LR::Shader (probably)
 }
 
 void Default_Draw_Module_2D::init_texture(const Picture* _picture, const float *const tex_coords, unsigned int _tex_coords_count)
 {
 	glBindVertexArray(m_vertex_array);
 	m_texture.init(_picture, tex_coords, _tex_coords_count);
-    m_texture.setup_buffer(2, 2);		//TODO: this data shpuld not be hard-coded. it should be stored in LR::Shader (probably)
+//    m_texture.setup_buffer(2);		//TODO: this data shpuld not be hard-coded. it should be stored in LR::Shader (probably)
     m_texture.reconfigure_texture_coords();
 }
 
@@ -104,7 +105,8 @@ void Default_Draw_Module_2D::set_texture_coords(const float* _tc, unsigned int _
 {
 	glBindVertexArray(m_vertex_array);
 	m_texture.set_texture_coords(_tc, _tc_count);
-    m_texture.setup_buffer(2, 2);
+//    m_texture.setup_buffer(2);
+
 }
 
 
@@ -116,4 +118,15 @@ void Default_Draw_Module_2D::move_raw(const glm::vec3 &_stride)
         m_vertices[i + 1] += _stride.y;
         m_vertices[i + 2] += _stride.z;
     }
+}
+
+
+
+void Default_Draw_Module_2D::update(float _dt)
+{
+    m_vertices.setup_buffer(0);
+    m_colors.setup_buffer(1);
+    m_texture.setup_buffer(2);
+
+    Draw_Module_Base::update(_dt);
 }

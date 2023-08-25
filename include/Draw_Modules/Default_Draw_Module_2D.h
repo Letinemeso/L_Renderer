@@ -56,6 +56,9 @@ namespace LR
         void move_raw(const glm::vec3& _stride);
 
     public:
+        void update(float _dt) override;
+
+    public:
         inline unsigned int gl_draw_mode() const override { return GL_TRIANGLES; }
 
     };

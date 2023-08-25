@@ -23,7 +23,7 @@ void Vertices::init(const float* const _coords, unsigned int _count)
 
 unsigned int Vertices::vertices_count() const
 {
-	L_ASSERT(!(buffer_size == 0));
+	L_ASSERT(!(m_buffer_size == 0));
 
-	return buffer_size / 3;
+	return m_buffer_size / 3;
 }
