@@ -13,34 +13,30 @@
 namespace LR
 {
 
-	namespace Picture_Manager
+    class Graphic_Resources_Manager
 	{
+    private:
+        LDS::Map<std::string, Picture*> m_pictures;
 
-		struct Picture_Autoload_Stub : public LV::Variable_Base
-		{
-		public:
-			DECLARE_VARIABLE;
+    public:
+        Graphic_Resources_Manager();
+        ~Graphic_Resources_Manager();
 
-		private:
-			unsigned int amount = 0;
-			std::string* names = nullptr;
-			std::string* paths = nullptr;
+        Graphic_Resources_Manager(const Graphic_Resources_Manager&) = delete;
+        Graphic_Resources_Manager(Graphic_Resources_Manager&&) = delete;
 
-        public:
-            void on_values_assigned() override;
+    public:
+        void load_resources(const LV::MDL_Variable_Stub& _stub, bool _rewrite = false);
+        void clear();
 
-		public:
-			~Picture_Autoload_Stub();
+    public:
+        void add_picture(const std::string& _name, Picture* _picture, bool _rewrite = false);   //  Manager WILL delete added image object on clear / manager object destruction
+        void remove_picture(const std::string& _name);
 
-		};
+    public:
+        const Picture* get_picture(const std::string& _name) const;
 
-		void add_picture(const std::string& _name, Picture* _picture);
-		void remove_picture(const std::string& _name);
-		void clear_pictures();
-
-		const Picture* get_picture(const std::string& _name);
-
-	}
+    };
 
 }
 

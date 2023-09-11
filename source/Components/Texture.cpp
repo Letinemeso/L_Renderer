@@ -8,11 +8,6 @@ Texture::Texture()
 
 }
 
-Texture::Texture(const Picture* _picture, float* _tex_coords, unsigned int _tex_coords_count)
-{
-	init(_picture, _tex_coords, _tex_coords_count);
-}
-
 
 
 void Texture::init(const Picture* _picture, const float* const _tex_coords, unsigned int _tex_coords_count)

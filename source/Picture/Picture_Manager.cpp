@@ -1,72 +1,95 @@
 #include "Picture/Picture_Manager.h"
 
 
-INIT_FIELDS(LR::Picture_Manager::Picture_Autoload_Stub, LV::Variable_Base)
-
-ADD_FIELD(unsigned int, amount)
-ADD_FIELD(std::string*, names)
-ADD_FIELD(std::string*, paths)
-
-FIELDS_END
+using namespace LR;
 
 
-
-namespace LR
+Graphic_Resources_Manager::Graphic_Resources_Manager()
 {
-
-	namespace Picture_Manager
-	{
-
-        void Picture_Autoload_Stub::on_values_assigned()
-		{
-			for(unsigned int i=0; i<amount; ++i)
-			{
-                Picture* picture = LR::load_picture(paths[i].c_str());
-				add_picture(names[i], picture);
-			}
-		}
-
-		Picture_Autoload_Stub::~Picture_Autoload_Stub()
-		{
-			delete[] names;
-			delete[] paths;
-		}
-
-
-
-        static LDS::Map<std::string, Picture*> m_pictures;
-
-		void add_picture(const std::string& _name, Picture* _picture)
-		{
-			L_ASSERT(m_pictures.find(_name).is_ok() == false);
-
-			m_pictures.insert(_name, _picture);
-		}
-
-		void remove_picture(const std::string& _name)
-		{
-			LDS::Map<std::string, Picture*>::Iterator it = m_pictures.find(_name);
-			L_ASSERT(it.is_ok() == true);
-
-			delete *it;
-			m_pictures.erase(m_pictures.find(_name));
-		}
-
-		void clear_pictures()
-		{
-			for(LDS::Map<std::string, Picture*>::Iterator it = m_pictures.iterator(); !it.end_reached(); ++it)
-				delete *it;
-			m_pictures.clear();
-		}
-
-		const Picture* get_picture(const std::string& _name)
-		{
-			LDS::Map<std::string, Picture*>::Iterator it = m_pictures.find(_name);
-			if(!it.is_ok())
-				return nullptr;
-			return *it;
-		}
-	}
 
 }
 
+Graphic_Resources_Manager::~Graphic_Resources_Manager()
+{
+    clear();
+}
+
+
+
+void Graphic_Resources_Manager::load_resources(const LV::MDL_Variable_Stub& _stub, bool _rewrite)
+{
+    for(LDS::Map<std::string, LV::MDL_Variable_Stub>::Const_Iterator it = _stub.childs.iterator(); !it.end_reached(); ++it)
+    {
+        const LV::MDL_Variable_Stub& stub = *it;
+
+        LDS::Map<std::string, LDS::Vector<std::string>>::Const_Iterator path_field = stub.fields.find("path");
+        L_ASSERT(!path_field.end_reached());
+        L_ASSERT(path_field->size() == 1);
+
+        std::string name = it.key();
+        std::string path = (*path_field)[0];
+
+        Picture* picture = load_picture(path);
+        L_ASSERT(picture);
+
+        LDS::Map<std::string, Picture*>::Iterator maybe_loaded_picture = m_pictures.find(name);
+        if(maybe_loaded_picture.end_reached())
+        {
+            m_pictures.insert((std::string&&)name, picture);
+            continue;
+        }
+
+        L_ASSERT(_rewrite);     //  if rewrite is not allowed, program should crash if image with same name already loaded
+
+        delete *maybe_loaded_picture;
+        *maybe_loaded_picture = picture;
+    }
+}
+
+void Graphic_Resources_Manager::clear()
+{
+    for(LDS::Map<std::string, Picture*>::Iterator it = m_pictures.iterator(); !it.end_reached(); ++it)
+        delete *it;
+
+    m_pictures.clear();
+}
+
+
+
+void Graphic_Resources_Manager::add_picture(const std::string& _name, Picture* _picture, bool _rewrite)
+{
+    L_ASSERT(_picture);
+
+    LDS::Map<std::string, Picture*>::Iterator maybe_loaded_picture = m_pictures.find(_name);
+    if(maybe_loaded_picture.end_reached())
+    {
+        m_pictures.insert(_name, _picture);
+        return;
+    }
+
+    L_ASSERT(_rewrite);     //  if rewrite is not allowed, program should crash if image with same name already loaded
+
+    delete *maybe_loaded_picture;
+    *maybe_loaded_picture = _picture;
+}
+
+void Graphic_Resources_Manager::remove_picture(const std::string& _name)
+{
+    LDS::Map<std::string, Picture*>::Iterator maybe_loaded_picture = m_pictures.find(_name);
+    L_ASSERT(!maybe_loaded_picture.end_reached());
+
+    delete *maybe_loaded_picture;
+    m_pictures.erase(maybe_loaded_picture);
+}
+
+
+
+const Picture* Graphic_Resources_Manager::get_picture(const std::string& _name) const
+{
+    LDS::Map<std::string, Picture*>::Const_Iterator maybe_loaded_picture = m_pictures.find(_name);
+
+    if(maybe_loaded_picture.end_reached())
+        return nullptr;
+
+    return *maybe_loaded_picture;
+}

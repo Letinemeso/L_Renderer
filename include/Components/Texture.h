@@ -19,7 +19,6 @@ namespace LR
 
     public:
         Texture();
-        Texture(const Picture* _picture, float* _tex_coords, unsigned int _tex_coords_count);
         Texture(const LR::Texture&) = delete;
         Texture(LR::Texture&&) = delete;
         void operator=(const LR::Texture&) = delete;

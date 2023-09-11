@@ -17,6 +17,8 @@ namespace LR
         DECLARE_VARIABLE;
 
     public:
+        LR::Graphic_Resources_Manager* graphics_resources_manager = nullptr;
+
         std::string texture_name;
 
         unsigned int tcoords_count = 0;

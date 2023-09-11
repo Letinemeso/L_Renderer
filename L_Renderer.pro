@@ -31,6 +31,7 @@ HEADERS += \
     include/Draw_Modules/Default_Draw_Module_2D.h \
     include/Draw_Modules/Draw_Module_Base.h \
     include/Draw_Modules/Draw_Module__Animation.h \
+    include/Draw_Modules/Draw_Module__Text_Field.h \
     include/Picture/Picture.h \
     include/Picture/Picture_Manager.h \
     include/Renderer/Renderer.h \
