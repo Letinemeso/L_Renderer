@@ -133,9 +133,13 @@ void Buffer::copy_array(const float* _data, unsigned int _count, unsigned int _o
         m_buffer_data[i + _offset] = _data[i];
 
     glBindVertexArray(*m_vertex_array);
-
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
     glBufferSubData(GL_ARRAY_BUFFER, sizeof(float) * _offset, sizeof(float) * _count, _data);
+
+    if(m_shader_layout_index == 0xFFFFFFFF || m_floats_per_vertex == 0)
+        return;
+
+    glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
 
 

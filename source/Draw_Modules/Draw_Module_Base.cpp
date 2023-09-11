@@ -28,6 +28,8 @@ void Draw_Module_Base::update(float /*_dt*/)
 {
     L_ASSERT(m_renderer);
 
+    glBindVertexArray(m_vertex_array);
+
     transformation_data()->update_matrix();
 
     m_renderer->setup_matrix(transformation_data()->matrix());

@@ -76,21 +76,19 @@ void Default_Draw_Module_2D::init_vertices(const float *const _coords, unsigned 
 {
     glBindVertexArray(m_vertex_array);
     m_vertices.init(_coords, _coords_count);
-//    m_vertices.setup_buffer(0);		//TODO: this data shpuld not be hard-coded. it should be stored in LR::Shader (probably)
 }
 
 void Default_Draw_Module_2D::init_colors(const float *const _colors, unsigned int _colors_count)
 {
     glBindVertexArray(m_vertex_array);
     m_colors.init(_colors, _colors_count);
-//    m_colors.setup_buffer(1);		//TODO: this data shpuld not be hard-coded. it should be stored in LR::Shader (probably)
 }
 
 void Default_Draw_Module_2D::init_texture(const Picture* _picture, const float *const tex_coords, unsigned int _tex_coords_count)
 {
 	glBindVertexArray(m_vertex_array);
-	m_texture.init(_picture, tex_coords, _tex_coords_count);
-//    m_texture.setup_buffer(2);		//TODO: this data shpuld not be hard-coded. it should be stored in LR::Shader (probably)
+    m_texture.set_picture(_picture);
+    m_texture.set_texture_coords(tex_coords, _tex_coords_count);
     m_texture.reconfigure_texture_coords();
 }
 
@@ -104,9 +102,7 @@ void Default_Draw_Module_2D::set_texture(const Picture* _picture)
 void Default_Draw_Module_2D::set_texture_coords(const float* _tc, unsigned int _tc_count)
 {
 	glBindVertexArray(m_vertex_array);
-	m_texture.set_texture_coords(_tc, _tc_count);
-//    m_texture.setup_buffer(2);
-
+    m_texture.set_texture_coords(_tc, _tc_count);
 }
 
 

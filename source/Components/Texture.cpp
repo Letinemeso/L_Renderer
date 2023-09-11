@@ -10,12 +10,6 @@ Texture::Texture()
 
 
 
-void Texture::init(const Picture* _picture, const float* const _tex_coords, unsigned int _tex_coords_count)
-{
-	set_picture(_picture);
-	set_texture_coords(_tex_coords, _tex_coords_count);
-}
-
 void Texture::set_picture(const Picture* _picture)
 {
 	glDeleteTextures(1, &m_texture_object);
