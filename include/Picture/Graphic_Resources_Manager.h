@@ -45,6 +45,7 @@ namespace LR
 
     public:
         const Picture* get_picture(const std::string& _name) const;
+        const Font* get_font(const std::string& _name) const;
 
     };
 

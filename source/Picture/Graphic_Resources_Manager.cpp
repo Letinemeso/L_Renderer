@@ -141,3 +141,13 @@ const Picture* Graphic_Resources_Manager::get_picture(const std::string& _name) 
 
     return *maybe_loaded_picture;
 }
+
+const Font* Graphic_Resources_Manager::get_font(const std::string& _name) const
+{
+    LDS::Map<std::string, Font*>::Const_Iterator maybe_loaded_font = m_fonts.find(_name);
+
+    if(maybe_loaded_font.end_reached())
+        return nullptr;
+
+    return *maybe_loaded_font;
+}

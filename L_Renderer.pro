@@ -49,6 +49,7 @@ SOURCES += \
     source/Draw_Modules/Default_Draw_Module_2D.cpp \
     source/Draw_Modules/Draw_Module_Base.cpp \
     source/Draw_Modules/Draw_Module__Animation.cpp \
+    source/Draw_Modules/Draw_Module__Text_Field.cpp \
     source/Picture/Font.cpp \
     source/Picture/Graphic_Resources_Manager.cpp \
     source/Picture/Picture.cpp \

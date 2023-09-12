@@ -50,6 +50,9 @@ namespace LR
         inline void set_vertex_array(const unsigned int* _ptr) { m_vertex_array = _ptr; }
         inline void set_floats_per_vertex(unsigned int _value) { m_floats_per_vertex = _value; }
 
+        inline unsigned int vertex_array() const { return *m_vertex_array; }
+        inline unsigned int floats_per_vertex() const { return m_floats_per_vertex; }
+
     public:
         Buffer();
         virtual ~Buffer();
