@@ -3,7 +3,7 @@
 
 #include <glew.h>
 
-#include <Picture/Picture_Manager.h>
+#include <Picture/Graphic_Resources_Manager.h>
 
 #include "Draw_Modules/Draw_Module_Base.h"
 

@@ -22,17 +22,8 @@ Picture* LR::load_picture(const std::string& _path)
 
 
 
-Picture::Picture(Picture&& _from)
-{
-    m_picture_data = _from.m_picture_data;
-    _from.m_picture_data = nullptr;
-    m_width = _from.m_width;
-    m_height = _from.m_height;
-}
-
 Picture::~Picture()
 {
-//    delete[] m_picture_data;
     stbi_image_free(m_picture_data);
 }
 

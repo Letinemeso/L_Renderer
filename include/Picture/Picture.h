@@ -20,7 +20,10 @@ namespace LR
         friend Picture* load_picture(const std::string& _path);
 
     public:
-        Picture(Picture&& _from);
+        Picture(const Picture&) = delete;
+        Picture(Picture&&) = delete;
+
+    public:
         ~Picture();
 
     public:
