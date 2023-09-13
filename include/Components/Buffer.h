@@ -48,10 +48,10 @@ namespace LR
 
     public:
         inline void set_vertex_array(const unsigned int* _ptr) { m_vertex_array = _ptr; }
-        inline void set_floats_per_vertex(unsigned int _value) { m_floats_per_vertex = _value; }
 
         inline unsigned int vertex_array() const { return *m_vertex_array; }
         inline unsigned int floats_per_vertex() const { return m_floats_per_vertex; }
+        inline unsigned int attrib_index() const { return m_shader_layout_index; }
 
     public:
         Buffer();
@@ -62,8 +62,9 @@ namespace LR
         virtual void resize(unsigned int _new_size);
 
         virtual void copy_array(const float* _data, unsigned int _count, unsigned int _offset = 0);
+        virtual void use_array(float* _data, unsigned int _count);
 
-        virtual void setup_buffer(unsigned int _attrib_index);
+        virtual void setup_buffer(unsigned int _attrib_index, unsigned int _floats_per_vertex);
 
     public:
         float_container& operator[](unsigned int _index);

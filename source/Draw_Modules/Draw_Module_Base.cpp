@@ -30,6 +30,10 @@ void Draw_Module_Base::update(float /*_dt*/)
 
     glBindVertexArray(m_vertex_array);
 
+    m_vertices.setup_buffer(0, 3);  //  theese magic numbers need to come from shader
+    m_colors.setup_buffer(1, 4);
+    m_texture.setup_buffer(2, 2);
+
     transformation_data()->update_matrix();
 
     m_renderer->setup_matrix(transformation_data()->matrix());
@@ -43,7 +47,12 @@ void Draw_Module_Base::update(float /*_dt*/)
 
 Draw_Module_Base::Draw_Module_Base()
 {
+    glGenVertexArrays(1, &m_vertex_array);
+    glBindVertexArray(m_vertex_array);
 
+    m_vertices.set_vertex_array(&m_vertex_array);
+    m_texture.set_vertex_array(&m_vertex_array);
+    m_colors.set_vertex_array(&m_vertex_array);
 }
 
 Draw_Module_Base::~Draw_Module_Base()

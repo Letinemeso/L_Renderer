@@ -53,16 +53,7 @@ void Default_Draw_Module_2D_Stub::M_init_constructed_product(LV::Variable_Base* 
 
 Default_Draw_Module_2D::Default_Draw_Module_2D() : Draw_Module_Base()
 {
-	glGenVertexArrays(1, &m_vertex_array);
-    glBindVertexArray(m_vertex_array);
 
-    m_vertices.set_vertex_array(&m_vertex_array);
-    m_texture.set_vertex_array(&m_vertex_array);
-    m_colors.set_vertex_array(&m_vertex_array);
-
-    m_vertices.set_floats_per_vertex(3);
-    m_colors.set_floats_per_vertex(4);
-    m_texture.set_floats_per_vertex(2);
 }
 
 Default_Draw_Module_2D::~Default_Draw_Module_2D()
@@ -120,9 +111,5 @@ void Default_Draw_Module_2D::move_raw(const glm::vec3 &_stride)
 
 void Default_Draw_Module_2D::update(float _dt)
 {
-    m_vertices.setup_buffer(0);
-    m_colors.setup_buffer(1);
-    m_texture.setup_buffer(2);
-
     Draw_Module_Base::update(_dt);
 }

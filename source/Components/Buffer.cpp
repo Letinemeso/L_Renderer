@@ -142,22 +142,44 @@ void Buffer::copy_array(const float* _data, unsigned int _count, unsigned int _o
     glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
 
+void Buffer::use_array(float* _data, unsigned int _count)
+{
+    L_ASSERT(!(_data == nullptr || _count == 0 || m_vertex_array == nullptr));
 
-void Buffer::setup_buffer(unsigned int _attrib_index)
+    delete[] m_buffer_data;
+    m_buffer_data = _data;
+    m_buffer_size = _count;
+    fc.buffer_data = _data;
+
+    glDeleteBuffers(1, &m_buffer);
+    glGenBuffers(1, &m_buffer);
+    glBindVertexArray(*m_vertex_array);
+    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (m_buffer_size + 1), m_buffer_data, GL_DYNAMIC_DRAW);
+
+    if(m_shader_layout_index == 0xFFFFFFFF || m_floats_per_vertex == 0)
+        return;
+
+    glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
+}
+
+
+void Buffer::setup_buffer(unsigned int _attrib_index, unsigned int _floats_per_vertex)
 {
     L_ASSERT(m_buffer != 0 && m_buffer_size != 0 && m_buffer_data != nullptr && m_vertex_array != nullptr);
 
-    if(_attrib_index == m_shader_layout_index)
+    if(_attrib_index == m_shader_layout_index && m_floats_per_vertex == _floats_per_vertex)
         return;
 
     glBindVertexArray(*m_vertex_array);
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glVertexAttribPointer(_attrib_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
+    glVertexAttribPointer(_attrib_index, _floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * _floats_per_vertex, nullptr);
 
     glDisableVertexAttribArray(m_shader_layout_index);
     glEnableVertexAttribArray(_attrib_index);
 
     m_shader_layout_index = _attrib_index;
+    m_floats_per_vertex = _floats_per_vertex;
 }
 
 

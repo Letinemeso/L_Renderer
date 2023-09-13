@@ -11,13 +11,12 @@
 namespace LR
 {
 
-    class Draw_Module__Text_Field__Stub : public LV::Builder_Stub
+    class Draw_Module__Text_Field__Stub : public Draw_Module_Base_Stub
     {
     public:
         DECLARE_VARIABLE;
 
     public:
-        const LR::Renderer* renderer = nullptr;
         const LR::Graphic_Resources_Manager* graphic_resources_manager = nullptr;
 
     public:
@@ -65,6 +64,7 @@ namespace LR
 
     public:
         bool operator==(const Text_Field_Settings& _other) const;
+        bool operator!=(const Text_Field_Settings& _other) const;
 
     };
 
@@ -86,10 +86,11 @@ namespace LR
 
     private:
         glm::vec2 M_calculate_raw_size() const;
+        float M_calculate_raw_scale() const;
 
         void M_construct_coords(float* _coords, unsigned int _amount, unsigned int _amount_per_character);
         void M_construct_colors(float* _colors, unsigned int _amount);
-        void M_construct_texture_coords(float* _texture_coords, unsigned int _amount);
+        void M_construct_texture_coords(float* _texture_coords, unsigned int _amount, unsigned int _amount_per_character);
 
         void M_reconfigure();
 
