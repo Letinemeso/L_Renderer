@@ -86,7 +86,7 @@ namespace LR
 
     private:
         glm::vec2 M_calculate_raw_size() const;
-        float M_calculate_raw_scale() const;
+        float M_calculate_raw_scale(const glm::vec2& _raw_size) const;
 
         void M_construct_coords(float* _coords, unsigned int _amount, unsigned int _amount_per_character);
         void M_construct_colors(float* _colors, unsigned int _amount);

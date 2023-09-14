@@ -87,18 +87,17 @@ glm::vec2 Draw_Module__Text_Field::M_calculate_raw_size() const
     return result;
 }
 
-float Draw_Module__Text_Field::M_calculate_raw_scale() const
+float Draw_Module__Text_Field::M_calculate_raw_scale(const glm::vec2& _raw_size) const
 {
     if(m_current_settings.max_size < 0.0f)
         return 1.0f;
 
-    glm::vec2 tf_raw_size = M_calculate_raw_size();
     float result = 1.0f;
 
-    if(tf_raw_size.x > tf_raw_size.y)
-        result = m_current_settings.max_size / tf_raw_size.x;
+    if(_raw_size.x > _raw_size.y)
+        result = m_current_settings.max_size / _raw_size.x;
     else
-        result = m_current_settings.max_size / tf_raw_size.y;
+        result = m_current_settings.max_size / _raw_size.y;
 
     return result;
 }
@@ -114,7 +113,8 @@ void Draw_Module__Text_Field::M_construct_coords(float *_coords, unsigned int _a
 //    unsigned int fpv = vertices().floats_per_vertex();
     unsigned int fpv = 3;   //  this magic number should be taken from shader (or vertices) later
 
-    float raw_scale = M_calculate_raw_scale();
+    glm::vec2 raw_size = M_calculate_raw_size();
+    float raw_scale = M_calculate_raw_scale(raw_size);
 
     float current_width = 0.0f;
 
@@ -139,6 +139,26 @@ void Draw_Module__Text_Field::M_construct_coords(float *_coords, unsigned int _a
 
     for(unsigned int i=0; i<m_current_settings.text.size(); ++i)
         construct_character(i);
+
+    glm::vec3 raw_offset = m_current_settings.raw_offset;
+
+    if(m_current_settings.horizontal_alignment == Text_Field_Settings::Horizontal_Alignment::Center)
+        raw_offset.x -= raw_size.x / 2.0f;
+    else if(m_current_settings.horizontal_alignment == Text_Field_Settings::Horizontal_Alignment::Right)
+        raw_offset.x -= raw_size.x;
+
+    if(m_current_settings.vertical_alignment == Text_Field_Settings::Vertical_Alignment::Center)
+        raw_offset.y -= raw_size.y / 2.0f;
+    else if(m_current_settings.vertical_alignment == Text_Field_Settings::Vertical_Alignment::Top)
+        raw_offset.y -= raw_size.y;
+
+    raw_offset *= raw_scale;
+
+    for(unsigned int vertex_i = 0; vertex_i < _amount; vertex_i += fpv)
+    {
+        for(unsigned int i = 0; i < fpv && i < 3; ++i)
+            _coords[vertex_i + i] += raw_offset[i];
+    }
 }
 
 void Draw_Module__Text_Field::M_construct_colors(float* _colors, unsigned int _amount)
