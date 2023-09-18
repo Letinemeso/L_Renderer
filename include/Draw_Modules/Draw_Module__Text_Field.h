@@ -5,7 +5,6 @@
 
 #include <Draw_Modules/Draw_Module_Base.h>
 #include <Picture/Font.h>
-#include <Picture/Graphic_Resources_Manager.h>
 
 
 namespace LR
@@ -15,9 +14,6 @@ namespace LR
     {
     public:
         DECLARE_VARIABLE;
-
-    public:
-        const LR::Graphic_Resources_Manager* graphic_resources_manager = nullptr;
 
     public:
         std::string font_name;

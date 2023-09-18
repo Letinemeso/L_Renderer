@@ -7,6 +7,7 @@
 
 #include <Module.h>
 
+#include <Picture/Graphic_Resources_Manager.h>
 #include <Renderer/Renderer.h>
 #include <Components/Texture.h>
 #include <Components/Vertices.h>
@@ -23,6 +24,7 @@ namespace LR
 
     public:
         LR::Renderer* renderer = nullptr;
+        const LR::Graphic_Resources_Manager* graphic_resources_manager = nullptr;
 
     public:
         virtual ~Draw_Module_Base_Stub() { }

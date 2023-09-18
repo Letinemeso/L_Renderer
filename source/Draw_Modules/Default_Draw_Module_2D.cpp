@@ -46,7 +46,7 @@ void Default_Draw_Module_2D_Stub::M_init_constructed_product(LV::Variable_Base* 
 
     result->init_vertices(coords, coords_count);
     result->init_colors(colors, colors_count);
-    result->init_texture(graphics_resources_manager->get_picture(texture_name), tcoords, tcoords_count);
+    result->init_texture(graphic_resources_manager->get_picture(texture_name), tcoords, tcoords_count);
 }
 
 
