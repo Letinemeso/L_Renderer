@@ -5,8 +5,6 @@
 #include "mat4x4.hpp"
 #include "../OpenGL/GLM/gtx/transform.hpp"
 
-#include <Shader/Shader.h>
-
 namespace LR
 {
 

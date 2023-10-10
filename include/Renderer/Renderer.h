@@ -2,7 +2,7 @@
 #define RENDERER_H
 
 #include <Camera/Camera_Base.h>
-#include <Shader/Shader.h>
+#include <Shader/Shader_Program.h>
 
 
 namespace LR
@@ -12,7 +12,7 @@ namespace LR
     {
     private:
         const Camera_Base* m_camera = nullptr;
-        const Shader* m_shader = nullptr;
+        const Shader_Program* m_shader_program = nullptr;
 
     public:
         Renderer();
@@ -25,11 +25,11 @@ namespace LR
 
     public:
         inline void set_camera(const Camera_Base* _camera) { m_camera = _camera; }
-        inline void set_shader(const Shader* _shader) { m_shader = _shader; }
+        inline void set_shader_program(const Shader_Program* _shader_program) { m_shader_program = _shader_program; }
 
     public:
         inline const Camera_Base* camera() const { return m_camera; }
-        inline const Shader* shader() const { return m_shader; }
+        inline const Shader_Program* shader_program() const { return m_shader_program; }
 
     public:
         void setup_matrix(const glm::mat4x4& _transform_matrix);

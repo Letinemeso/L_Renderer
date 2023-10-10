@@ -36,7 +36,11 @@ HEADERS += \
     include/Picture/Graphic_Resources_Manager.h \
     include/Picture/Picture.h \
     include/Renderer/Renderer.h \
+    include/Shader/Fragment_Shader.h \
     include/Shader/Shader.h \
+    include/Shader/Shader_Component.h \
+    include/Shader/Shader_Program.h \
+    include/Shader/Vertex_Shader.h \
     include/Window/Window_Controller.h
 
 SOURCES += \
@@ -55,4 +59,5 @@ SOURCES += \
     source/Picture/Picture.cpp \
     source/Renderer/Renderer.cpp \
     source/Shader/Shader.cpp \
+    source/Shader/Shader_Program.cpp \
     source/Window/Window_Controller.cpp

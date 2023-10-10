@@ -30,9 +30,9 @@ void Draw_Module_Base::update(float /*_dt*/)
 
     glBindVertexArray(m_vertex_array);
 
-    m_vertices.setup_buffer(m_renderer->shader()->vertex_attribs().coordinates.index, m_renderer->shader()->vertex_attribs().coordinates.floats_per_vertex);  //  theese magic numbers need to come from shader
-    m_colors.setup_buffer(m_renderer->shader()->vertex_attribs().colors.index, m_renderer->shader()->vertex_attribs().colors.floats_per_vertex);
-    m_texture.setup_buffer(m_renderer->shader()->vertex_attribs().texture_coordinates.index, m_renderer->shader()->vertex_attribs().texture_coordinates.floats_per_vertex);
+    m_vertices.setup_buffer(m_renderer->shader_program()->vertex_attribs().coordinates.index, m_renderer->shader_program()->vertex_attribs().coordinates.floats_per_vertex);  //  theese magic numbers need to come from shader
+    m_colors.setup_buffer(m_renderer->shader_program()->vertex_attribs().colors.index, m_renderer->shader_program()->vertex_attribs().colors.floats_per_vertex);
+    m_texture.setup_buffer(m_renderer->shader_program()->vertex_attribs().texture_coordinates.index, m_renderer->shader_program()->vertex_attribs().texture_coordinates.floats_per_vertex);
 
     transformation_data()->update_matrix();
 
