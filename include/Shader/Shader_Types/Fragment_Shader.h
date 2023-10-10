@@ -1,7 +1,7 @@
 #ifndef FRAGMENT_SHADER_H
 #define FRAGMENT_SHADER_H
 
-#include <Shader/Shader.h>
+#include <Shader/Shader_Types/Shader.h>
 
 
 namespace LR
@@ -9,7 +9,7 @@ namespace LR
 
     class Fragment_Shader : public Shader
     {
-    public:
+    private:
         inline unsigned int shader_type() const override { return GL_FRAGMENT_SHADER; }
 
     };

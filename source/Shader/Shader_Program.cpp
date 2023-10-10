@@ -184,6 +184,13 @@ void Shader_Program::init()
     L_DEBUG_FUNC_NOARG(M_debug);
     glUseProgram(m_program_handle);
 
+    for(LDS::List<Shader*>::Iterator it = m_shader_objects.begin(); !it.end_reached(); ++it)
+    {
+        Shader* shader = *it;
+
+        shader->init(m_program_handle);
+    }
+
     M_verify_vertex_attribs();
     M_extract_uniforms_data();
 }

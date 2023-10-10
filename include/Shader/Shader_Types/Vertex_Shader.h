@@ -1,7 +1,7 @@
 #ifndef VERTEX_SHADER_H
 #define VERTEX_SHADER_H
 
-#include <Shader/Shader.h>
+#include <Shader/Shader_Types/Shader.h>
 
 
 namespace LR
@@ -9,7 +9,7 @@ namespace LR
 
     class Vertex_Shader : public Shader
     {
-    public:
+    private:
         inline unsigned int shader_type() const override { return GL_VERTEX_SHADER; }
 
     };

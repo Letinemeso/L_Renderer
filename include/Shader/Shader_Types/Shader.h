@@ -5,12 +5,11 @@
 #include <string>
 
 #include <glew.h>
-#include <mat4x4.hpp>
 
-#include <Data_Structures/Map.h>
 #include <L_Debug/L_Debug.h>
+#include <Data_Structures/List.h>
 
-#include <Components/Texture.h>
+#include <Shader/Shader_Components/Shader_Component.h>
 
 
 namespace LR
@@ -18,11 +17,15 @@ namespace LR
 
 	class Shader
     {
+    private:
+        unsigned int m_assigned_opengl_program_handle = 0;
+
 	private:
         unsigned int m_opengl_shader_handle = 0;
 
     private:
-        std::string m_source;
+        std::string m_glsl_version;
+        LDS::List<Shader_Component*> m_components;
 
     public:
         Shader(const Shader&) = delete;
@@ -37,12 +40,19 @@ namespace LR
 
     private:
         void M_debug() const;
+        bool M_component_already_added(Shader_Component* _component) const;
 
     private:
         virtual inline unsigned int shader_type() const = 0;
 
 	public:
-        void init(const std::string& _source);
+        inline void set_glsl_version(const std::string& _glsl_version) { m_glsl_version = _glsl_version; }
+
+    public:
+        void reset();
+        void add_component(Shader_Component* _component);
+        void compile();
+        void init(unsigned int _opengl_program_handle);
 
     public:
         inline unsigned int handle() const { return m_opengl_shader_handle; }

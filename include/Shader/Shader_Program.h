@@ -11,7 +11,7 @@
 #include <Data_Structures/List.h>
 #include <L_Debug/L_Debug.h>
 
-#include <Shader/Shader.h>
+#include <Shader/Shader_Types/Shader.h>
 #include <Components/Texture.h>
 
 

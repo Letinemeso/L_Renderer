@@ -36,11 +36,12 @@ HEADERS += \
     include/Picture/Graphic_Resources_Manager.h \
     include/Picture/Picture.h \
     include/Renderer/Renderer.h \
-    include/Shader/Fragment_Shader.h \
-    include/Shader/Shader.h \
-    include/Shader/Shader_Component.h \
+    include/Shader/Shader_Components/Shader_Transform_Component.h \
+    include/Shader/Shader_Types/Shader.h \
+    include/Shader/Shader_Types/Vertex_Shader.h \
+    include/Shader/Shader_Types/Fragment_Shader.h \
+    include/Shader/Shader_Components/Shader_Component.h \
     include/Shader/Shader_Program.h \
-    include/Shader/Vertex_Shader.h \
     include/Window/Window_Controller.h
 
 SOURCES += \
@@ -58,6 +59,8 @@ SOURCES += \
     source/Picture/Graphic_Resources_Manager.cpp \
     source/Picture/Picture.cpp \
     source/Renderer/Renderer.cpp \
-    source/Shader/Shader.cpp \
+    source/Shader/Shader_Components/Shader_Component.cpp \
+    source/Shader/Shader_Components/Shader_Transform_Component.cpp \
+    source/Shader/Shader_Types/Shader.cpp \
     source/Shader/Shader_Program.cpp \
     source/Window/Window_Controller.cpp
