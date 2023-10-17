@@ -1,6 +1,8 @@
 #ifndef SHADER_COMPONENT_H
 #define SHADER_COMPONENT_H
 
+#include <glew.h>
+
 #include <Variable_Base.h>
 
 
@@ -9,6 +11,16 @@ namespace LR
 
     class Shader_Component
     {
+    public:
+        struct Vertex_Data
+        {
+            Vertex_Data() { }
+            Vertex_Data(unsigned int _index, unsigned int _floats_per_vertex) : index(_index), floats_per_vertex(_floats_per_vertex) { }
+
+            unsigned int index = 0;
+            unsigned int floats_per_vertex = 0;
+        };
+
     private:
         unsigned int m_assigned_opengl_program_handle = 0;
 
@@ -27,6 +39,10 @@ namespace LR
     protected:
         inline unsigned int assigned_opengl_program_handle() const { return m_assigned_opengl_program_handle; }
 
+    protected:
+        int M_extract_uniform_location(const std::string& _name) const;
+        Vertex_Data M_extract_input_buffer_location(const std::string& _name) const;
+
     public:
         inline void set_source(const std::string& _source) { m_source = _source; }
         inline void set_source(std::string&& _source) { m_source = (std::string&&)_source; }
@@ -40,9 +56,6 @@ namespace LR
 
     public:
         virtual void init(unsigned int _opengl_program_handle);
-
-    public:
-        virtual void update() const = 0;
 
     };
 }

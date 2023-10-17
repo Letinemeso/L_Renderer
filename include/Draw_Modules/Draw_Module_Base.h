@@ -9,6 +9,7 @@
 
 #include <Picture/Graphic_Resources_Manager.h>
 #include <Renderer/Renderer.h>
+#include <Shader/Shader_Components/Shader_Transform_Component.h>
 #include <Components/Texture.h>
 #include <Components/Vertices.h>
 #include <Components/Colors.h>
@@ -25,6 +26,7 @@ namespace LR
     public:
         LR::Renderer* renderer = nullptr;
         const LR::Graphic_Resources_Manager* graphic_resources_manager = nullptr;
+        const LR::Shader_Transform_Component* shader_transform_component = nullptr;
 
     public:
         virtual ~Draw_Module_Base_Stub() { }
@@ -41,6 +43,7 @@ namespace LR
 
     protected:
         LR::Renderer* m_renderer = nullptr;
+        const LR::Shader_Transform_Component* m_shader_transform_component = nullptr;
 
     protected:
         bool m_visible = true;
@@ -58,6 +61,7 @@ namespace LR
     public:
         inline void set_visible(bool _visible) { m_visible = _visible; }
         inline void set_renderer(LR::Renderer* _renderer) { m_renderer = _renderer; }
+        inline void set_shader_transform_component(const LR::Shader_Transform_Component* _ptr) { m_shader_transform_component = _ptr; }
         inline LR::Renderer* renderer() const { return m_renderer; }
 
     public:

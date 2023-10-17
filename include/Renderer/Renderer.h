@@ -32,8 +32,6 @@ namespace LR
         inline const Shader_Program* shader_program() const { return m_shader_program; }
 
     public:
-        void setup_matrix(const glm::mat4x4& _transform_matrix);
-        void setup_texture(const LR::Texture& _texture);
         void bind_vertex_array(unsigned int _vertex_array);
 
     public:
