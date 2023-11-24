@@ -138,11 +138,6 @@ void Shader::compile()
     glCompileShader(m_opengl_shader_handle);
     L_DEBUG_FUNC_NOARG(M_debug);
 
-    for(unsigned int i=0; i<sources_index; ++i)
-        std::cout << sources[i];
-
-    std::cout << "\n\n\n";
-
     delete[] sources;
 }
 
