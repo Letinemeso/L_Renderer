@@ -1,9 +1,9 @@
-#include <Draw_Modules/Default_Draw_Module_2D.h>
+#include <Draw_Modules/Default_Draw_Module.h>
 
 using namespace LR;
 
 
-INIT_FIELDS(LR::Default_Draw_Module_2D_Stub, LR::Draw_Module_Base_Stub)
+INIT_FIELDS(LR::Default_Draw_Module_Stub, LR::Draw_Module_Base_Stub)
 
 ADD_FIELD(std::string, texture_name)
 
@@ -19,12 +19,12 @@ ADD_FIELD(float*, colors)
 FIELDS_END
 
 
-INIT_FIELDS(LR::Default_Draw_Module_2D, LR::Draw_Module_Base)
+INIT_FIELDS(LR::Default_Draw_Module, LR::Draw_Module_Base)
 FIELDS_END
 
 
 
-Default_Draw_Module_2D_Stub::~Default_Draw_Module_2D_Stub()
+Default_Draw_Module_Stub::~Default_Draw_Module_Stub()
 {
     delete[] coords;
     delete[] tcoords;
@@ -33,16 +33,16 @@ Default_Draw_Module_2D_Stub::~Default_Draw_Module_2D_Stub()
 
 
 
-LV::Variable_Base* Default_Draw_Module_2D_Stub::M_construct_product() const
+LV::Variable_Base* Default_Draw_Module_Stub::M_construct_product() const
 {
-    return new Default_Draw_Module_2D;
+    return new Default_Draw_Module;
 }
 
-void Default_Draw_Module_2D_Stub::M_init_constructed_product(LV::Variable_Base* _product) const
+void Default_Draw_Module_Stub::M_init_constructed_product(LV::Variable_Base* _product) const
 {
     Draw_Module_Base_Stub::M_init_constructed_product(_product);
 
-    Default_Draw_Module_2D* result = (Default_Draw_Module_2D*)_product;
+    Default_Draw_Module* result = (Default_Draw_Module*)_product;
 
     result->init_vertices(coords, coords_count);
     result->init_colors(colors, colors_count);
@@ -51,31 +51,31 @@ void Default_Draw_Module_2D_Stub::M_init_constructed_product(LV::Variable_Base* 
 
 
 
-Default_Draw_Module_2D::Default_Draw_Module_2D() : Draw_Module_Base()
+Default_Draw_Module::Default_Draw_Module() : Draw_Module_Base()
 {
 
 }
 
-Default_Draw_Module_2D::~Default_Draw_Module_2D()
+Default_Draw_Module::~Default_Draw_Module()
 {
 	glDeleteVertexArrays(1, &m_vertex_array);
 }
 
 
 
-void Default_Draw_Module_2D::init_vertices(const float *const _coords, unsigned int _coords_count)
+void Default_Draw_Module::init_vertices(const float *const _coords, unsigned int _coords_count)
 {
     glBindVertexArray(m_vertex_array);
     m_vertices.init(_coords, _coords_count);
 }
 
-void Default_Draw_Module_2D::init_colors(const float *const _colors, unsigned int _colors_count)
+void Default_Draw_Module::init_colors(const float *const _colors, unsigned int _colors_count)
 {
     glBindVertexArray(m_vertex_array);
     m_colors.init(_colors, _colors_count);
 }
 
-void Default_Draw_Module_2D::init_texture(const Picture* _picture, const float *const tex_coords, unsigned int _tex_coords_count)
+void Default_Draw_Module::init_texture(const Picture* _picture, const float *const tex_coords, unsigned int _tex_coords_count)
 {
 	glBindVertexArray(m_vertex_array);
     m_texture.set_picture(_picture);
@@ -84,20 +84,20 @@ void Default_Draw_Module_2D::init_texture(const Picture* _picture, const float *
 }
 
 
-void Default_Draw_Module_2D::set_texture(const Picture* _picture)
+void Default_Draw_Module::set_texture(const Picture* _picture)
 {
 	glBindVertexArray(m_vertex_array);
 	m_texture.set_picture(_picture);
 }
 
-void Default_Draw_Module_2D::set_texture_coords(const float* _tc, unsigned int _tc_count)
+void Default_Draw_Module::set_texture_coords(const float* _tc, unsigned int _tc_count)
 {
 	glBindVertexArray(m_vertex_array);
     m_texture.set_texture_coords(_tc, _tc_count);
 }
 
 
-void Default_Draw_Module_2D::move_raw(const glm::vec3 &_stride)
+void Default_Draw_Module::move_raw(const glm::vec3 &_stride)
 {
     for(unsigned int i=0; i<m_vertices.size(); i += 3)
     {
@@ -109,7 +109,7 @@ void Default_Draw_Module_2D::move_raw(const glm::vec3 &_stride)
 
 
 
-void Default_Draw_Module_2D::update(float _dt)
+void Default_Draw_Module::update(float _dt)
 {
     Draw_Module_Base::update(_dt);
 }

@@ -3,11 +3,11 @@
 using namespace LR;
 
 
-INIT_FIELDS(LR::Draw_Module__Animation, LR::Default_Draw_Module_2D)
+INIT_FIELDS(LR::Draw_Module__Animation, LR::Default_Draw_Module)
 FIELDS_END
 
 
-Draw_Module__Animation::Draw_Module__Animation() : Default_Draw_Module_2D()
+Draw_Module__Animation::Draw_Module__Animation() : Default_Draw_Module()
 {
 
 }
@@ -42,7 +42,7 @@ void Draw_Module__Animation::update(float _dt)
 {
     M_update_frame(_dt);
 
-    Default_Draw_Module_2D::update(_dt);
+    Default_Draw_Module::update(_dt);
 }
 
 
@@ -97,7 +97,7 @@ void Draw_Module__Animation::unpause()
 
 
 
-INIT_FIELDS(LR::Draw_Module__Animation__Stub, LR::Default_Draw_Module_2D_Stub)
+INIT_FIELDS(LR::Draw_Module__Animation__Stub, LR::Default_Draw_Module_Stub)
 
 ADD_FIELD(unsigned int, frames_per_second)
 ADD_FIELD(unsigned int, frames_count)
@@ -114,7 +114,7 @@ LV::Variable_Base* Draw_Module__Animation__Stub::M_construct_product() const
 
 void Draw_Module__Animation__Stub::M_init_constructed_product(LV::Variable_Base *_product) const
 {
-    Default_Draw_Module_2D_Stub::M_init_constructed_product(_product);
+    Default_Draw_Module_Stub::M_init_constructed_product(_product);
 
     Draw_Module__Animation* product = (Draw_Module__Animation*)_product;
 

@@ -28,7 +28,7 @@ HEADERS += \
     include/Components/Colors.h \
     include/Components/Texture.h \
     include/Components/Vertices.h \
-    include/Draw_Modules/Default_Draw_Module_2D.h \
+    include/Draw_Modules/Default_Draw_Module.h \
     include/Draw_Modules/Draw_Module_Base.h \
     include/Draw_Modules/Draw_Module__Animation.h \
     include/Draw_Modules/Draw_Module__Text_Field.h \
@@ -51,7 +51,7 @@ SOURCES += \
     source/Components/Colors.cpp \
     source/Components/Texture.cpp \
     source/Components/Vertices.cpp \
-    source/Draw_Modules/Default_Draw_Module_2D.cpp \
+    source/Draw_Modules/Default_Draw_Module.cpp \
     source/Draw_Modules/Draw_Module_Base.cpp \
     source/Draw_Modules/Draw_Module__Animation.cpp \
     source/Draw_Modules/Draw_Module__Text_Field.cpp \

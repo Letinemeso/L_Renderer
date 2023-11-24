@@ -3,13 +3,13 @@
 
 #include <Stuff/Timer.h>
 
-#include <Draw_Modules/Default_Draw_Module_2D.h>
+#include <Draw_Modules/Default_Draw_Module.h>
 
 
 namespace LR
 {
 
-    class Draw_Module__Animation : public Default_Draw_Module_2D
+    class Draw_Module__Animation : public Default_Draw_Module
     {
     public:
         DECLARE_VARIABLE;
@@ -55,7 +55,7 @@ namespace LR
 
     };
 
-    class Draw_Module__Animation__Stub : public Default_Draw_Module_2D_Stub
+    class Draw_Module__Animation__Stub : public Default_Draw_Module_Stub
     {
     public:
         DECLARE_VARIABLE;

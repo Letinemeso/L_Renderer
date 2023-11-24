@@ -1,5 +1,4 @@
-#ifndef __DEFAULT_DRAW_MODULE_2D
-#define __DEFAULT_DRAW_MODULE_2D
+#pragma once
 
 #include <glew.h>
 
@@ -9,7 +8,7 @@
 namespace LR
 {
 
-    class Default_Draw_Module_2D_Stub : public Draw_Module_Base_Stub
+    class Default_Draw_Module_Stub : public Draw_Module_Base_Stub
     {
     public:
         DECLARE_VARIABLE;
@@ -31,18 +30,18 @@ namespace LR
         void M_init_constructed_product(LV::Variable_Base* /*_product*/) const override;
 
     public:
-        virtual ~Default_Draw_Module_2D_Stub();
+        virtual ~Default_Draw_Module_Stub();
 
     };
 
-    class Default_Draw_Module_2D : public Draw_Module_Base
+    class Default_Draw_Module : public Draw_Module_Base
     {
     public:
         DECLARE_VARIABLE;
 
     public:
-        Default_Draw_Module_2D();
-        ~Default_Draw_Module_2D();
+        Default_Draw_Module();
+        ~Default_Draw_Module();
 
         void init_vertices(const float* const _coords, unsigned int _coords_count);
         void init_colors(const float* const _colors, unsigned int _colors_count);
@@ -62,6 +61,3 @@ namespace LR
     };
 
 }
-
-
-#endif // __DEFAULT_DRAW_MODULE_2D
