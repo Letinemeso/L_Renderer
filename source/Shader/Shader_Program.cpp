@@ -25,7 +25,7 @@ void Shader_Program::operator=(Shader_Program&& _other)
 
 Shader_Program::~Shader_Program()
 {
-    glDeleteProgram(m_program_handle);
+    reset();
 }
 
 
