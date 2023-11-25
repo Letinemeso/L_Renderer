@@ -2,3 +2,13 @@
 
 using namespace LR;
 
+
+Camera_Base::Camera_Base()
+{
+
+}
+
+Camera_Base::~Camera_Base()
+{
+
+}

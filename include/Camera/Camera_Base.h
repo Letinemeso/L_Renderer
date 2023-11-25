@@ -1,9 +1,9 @@
 #ifndef CAMERA_BASE_H
 #define CAMERA_BASE_H
 
-#include "../OpenGL/GLM/vec3.hpp"
-#include "mat4x4.hpp"
-#include "../OpenGL/GLM/gtx/transform.hpp"
+#include <vec3.hpp>
+#include <mat4x4.hpp>
+#include <gtx/transform.hpp>
 
 namespace LR
 {
@@ -12,6 +12,10 @@ namespace LR
     {
     protected:
         glm::mat4x4 m_matrix;
+
+    public:
+        Camera_Base();
+        virtual ~Camera_Base();
 
     public:
         inline const glm::mat4x4& matrix() const { return m_matrix; }

@@ -23,6 +23,7 @@ INCLUDEPATH += "include/"
 
 HEADERS += \
     include/Camera/Camera_2D.h \
+    include/Camera/Camera_3D.h \
     include/Camera/Camera_Base.h \
     include/Components/Buffer.h \
     include/Components/Colors.h \
@@ -46,6 +47,7 @@ HEADERS += \
 
 SOURCES += \
     source/Camera/Camera_2D.cpp \
+    source/Camera/Camera_3D.cpp \
     source/Camera/Camera_Base.cpp \
     source/Components/Buffer.cpp \
     source/Components/Colors.cpp \
