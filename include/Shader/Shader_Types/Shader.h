@@ -1,5 +1,4 @@
-#ifndef __SHADER
-#define __SHADER
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -60,5 +59,3 @@ namespace LR
 	};
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef FRAGMENT_SHADER_H
-#define FRAGMENT_SHADER_H
+#pragma once
 
 #include <Shader/Shader_Types/Shader.h>
 
@@ -15,5 +14,3 @@ namespace LR
     };
 
 }
-
-#endif // FRAGMENT_SHADER_H

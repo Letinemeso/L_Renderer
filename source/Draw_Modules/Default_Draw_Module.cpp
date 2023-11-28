@@ -3,62 +3,20 @@
 using namespace LR;
 
 
-INIT_FIELDS(LR::Default_Draw_Module_Stub, LR::Draw_Module_Base_Stub)
-
-ADD_FIELD(std::string, texture_name)
-
-ADD_FIELD(unsigned int, tcoords_count)
-ADD_FIELD(float*, tcoords)
-
-ADD_FIELD(unsigned int, coords_count)
-ADD_FIELD(float*, coords)
-
-ADD_FIELD(unsigned int, colors_count)
-ADD_FIELD(float*, colors)
-
-FIELDS_END
-
-
 INIT_FIELDS(LR::Default_Draw_Module, LR::Draw_Module_Base)
 FIELDS_END
 
 
-
-Default_Draw_Module_Stub::~Default_Draw_Module_Stub()
-{
-    delete[] coords;
-    delete[] tcoords;
-    delete[] colors;
-}
-
-
-
-LV::Variable_Base* Default_Draw_Module_Stub::M_construct_product() const
-{
-    return new Default_Draw_Module;
-}
-
-void Default_Draw_Module_Stub::M_init_constructed_product(LV::Variable_Base* _product) const
-{
-    Draw_Module_Base_Stub::M_init_constructed_product(_product);
-
-    Default_Draw_Module* result = (Default_Draw_Module*)_product;
-
-    result->init_vertices(coords, coords_count);
-    result->init_colors(colors, colors_count);
-    result->init_texture(graphic_resources_manager->get_picture(texture_name), tcoords, tcoords_count);
-}
-
-
-
 Default_Draw_Module::Default_Draw_Module() : Draw_Module_Base()
 {
-
+    m_vertices.set_vertex_array(&m_vertex_array);
+    m_texture.set_vertex_array(&m_vertex_array);
+    m_colors.set_vertex_array(&m_vertex_array);
 }
 
 Default_Draw_Module::~Default_Draw_Module()
 {
-	glDeleteVertexArrays(1, &m_vertex_array);
+
 }
 
 
@@ -109,7 +67,75 @@ void Default_Draw_Module::move_raw(const glm::vec3 &_stride)
 
 
 
+void Default_Draw_Module::M_draw()
+{
+    L_ASSERT(m_renderer);
+
+    m_renderer->draw(GL_TRIANGLES, vertices().vertices_count());
+}
+
+
+
 void Default_Draw_Module::update(float _dt)
 {
+    L_ASSERT(m_shader_transform_component);
+
+    m_vertices.setup_buffer(m_shader_transform_component->vertex_attribs().coordinates.index, m_shader_transform_component->vertex_attribs().coordinates.floats_per_vertex);  //  theese magic numbers need to come from shader
+    m_colors.setup_buffer(m_shader_transform_component->vertex_attribs().colors.index, m_shader_transform_component->vertex_attribs().colors.floats_per_vertex);
+    m_texture.setup_buffer(m_shader_transform_component->vertex_attribs().texture_coordinates.index, m_shader_transform_component->vertex_attribs().texture_coordinates.floats_per_vertex);
+
+    transformation_data()->update_matrix();
+
+    m_shader_transform_component->set_projection_matrix(m_renderer->camera()->matrix());
+    m_shader_transform_component->set_transform_matrix(transformation_data()->matrix());
+    m_shader_transform_component->set_texture(texture());
+
     Draw_Module_Base::update(_dt);
+}
+
+
+
+
+
+INIT_FIELDS(LR::Default_Draw_Module_Stub, LR::Draw_Module_Base_Stub)
+
+ADD_FIELD(std::string, texture_name)
+
+ADD_FIELD(unsigned int, tcoords_count)
+ADD_FIELD(float*, tcoords)
+
+ADD_FIELD(unsigned int, coords_count)
+ADD_FIELD(float*, coords)
+
+ADD_FIELD(unsigned int, colors_count)
+ADD_FIELD(float*, colors)
+
+FIELDS_END
+
+
+Default_Draw_Module_Stub::~Default_Draw_Module_Stub()
+{
+    delete[] coords;
+    delete[] tcoords;
+    delete[] colors;
+}
+
+
+
+LV::Variable_Base* Default_Draw_Module_Stub::M_construct_product() const
+{
+    return new Default_Draw_Module;
+}
+
+void Default_Draw_Module_Stub::M_init_constructed_product(LV::Variable_Base* _product) const
+{
+    Draw_Module_Base_Stub::M_init_constructed_product(_product);
+
+    Default_Draw_Module* product = (Default_Draw_Module*)_product;
+
+    product->set_shader_transform_component(shader_transform_component);
+
+    product->init_vertices(coords, coords_count);
+    product->init_colors(colors, colors_count);
+    product->init_texture(graphic_resources_manager->get_picture(texture_name), tcoords, tcoords_count);
 }

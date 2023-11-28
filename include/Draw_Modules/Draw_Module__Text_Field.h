@@ -3,14 +3,14 @@
 
 #include <Math_Stuff.h>
 
-#include <Draw_Modules/Draw_Module_Base.h>
+#include <Draw_Modules/Default_Draw_Module.h>
 #include <Picture/Font.h>
 
 
 namespace LR
 {
 
-    class Draw_Module__Text_Field__Stub : public Draw_Module_Base_Stub
+    class Draw_Module__Text_Field__Stub : public Default_Draw_Module_Stub
     {
     public:
         DECLARE_VARIABLE;
@@ -64,7 +64,7 @@ namespace LR
 
     };
 
-    class Draw_Module__Text_Field : public Draw_Module_Base
+    class Draw_Module__Text_Field : public Default_Draw_Module
     {
     public:
         DECLARE_VARIABLE;
@@ -72,9 +72,6 @@ namespace LR
     private:
         Text_Field_Settings m_configurable_settings;    //  settings, configurable from outside of object
         Text_Field_Settings m_current_settings;         //  settings for current configuration
-
-    public:
-        inline unsigned int gl_draw_mode() const override { return GL_TRIANGLES; }
 
     public:
         inline Text_Field_Settings& settings() { return m_configurable_settings; }

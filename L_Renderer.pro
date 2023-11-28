@@ -38,6 +38,7 @@ HEADERS += \
     include/Picture/Picture.h \
     include/Renderer/Renderer.h \
     include/Shader/Shader_Components/Shader_Transform_Component.h \
+    include/Shader/Shader_Types/Geometry_Shader.h \
     include/Shader/Shader_Types/Shader.h \
     include/Shader/Shader_Types/Vertex_Shader.h \
     include/Shader/Shader_Types/Fragment_Shader.h \

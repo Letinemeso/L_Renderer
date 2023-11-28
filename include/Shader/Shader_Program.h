@@ -1,5 +1,4 @@
-#ifndef SHADER_PROGRAM_H
-#define SHADER_PROGRAM_H
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -49,5 +48,3 @@ namespace LR
     };
 
 }
-
-#endif // SHADER_PROGRAM_H

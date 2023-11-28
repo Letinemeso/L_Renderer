@@ -1,5 +1,4 @@
-#ifndef VERTEX_SHADER_H
-#define VERTEX_SHADER_H
+#pragma once
 
 #include <Shader/Shader_Types/Shader.h>
 
@@ -15,5 +14,3 @@ namespace LR
     };
 
 }
-
-#endif // VERTEX_SHADER_H
