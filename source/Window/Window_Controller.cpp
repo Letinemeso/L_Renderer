@@ -3,7 +3,7 @@
 using namespace LR;
 
 GLFWwindow* Window_Controller::m_window = nullptr;
-Window_Controller::cursor_position Window_Controller::m_prev_cursor_pos, Window_Controller::m_current_cursor_pos, Window_Controller::m_cursor_stride;
+Window_Controller::cursor_position Window_Controller::m_prev_cursor_pos;
 Window_Controller::window_size Window_Controller::m_window_data;
 bool Window_Controller::m_keys_pressed_before[GLFW_KEY_LAST + 1] = { false };
 bool Window_Controller::m_mouse_buttons_pressed_before[GLFW_MOUSE_BUTTON_LAST + 1] = { false };
@@ -45,9 +45,7 @@ void Window_Controller::update()
 
 	glfwPollEvents();
 
-	glfwGetCursorPos(m_window, &m_current_cursor_pos.x, &m_current_cursor_pos.y);
-	update_cursor_stride();
-	m_current_cursor_pos.y = m_window_data.height - m_current_cursor_pos.y;
+    m_prev_cursor_pos = get_cursor_position();
 }
 
 
@@ -67,31 +65,29 @@ void Window_Controller::set_cursor_pos(double _x, double _y)
 {
 	glfwSetCursorPos(m_window, _x, _y);
 
-	m_cursor_stride.x = 0.0;
-	m_cursor_stride.y = 0.0;
 	m_prev_cursor_pos.x = _x;
-	m_prev_cursor_pos.y = _y;
+    m_prev_cursor_pos.y = _y;
 }
 
 
-void Window_Controller::update_cursor_stride()
+Window_Controller::cursor_position Window_Controller::get_cursor_position()
 {
-	m_cursor_stride.x = m_prev_cursor_pos.x - m_current_cursor_pos.x;
-	m_cursor_stride.y = -(m_prev_cursor_pos.y - m_current_cursor_pos.y);
-	m_prev_cursor_pos.x = m_current_cursor_pos.x;
-	m_prev_cursor_pos.y = m_current_cursor_pos.y;
+    cursor_position result;
+
+    glfwGetCursorPos(m_window, &result.x, &result.y);
+    result.y = m_window_data.height - result.y;
+
+    return result;
 }
 
-
-
-const Window_Controller::cursor_position& Window_Controller::get_cursor_position()
+Window_Controller::cursor_position Window_Controller::get_cursor_stride()
 {
-	return m_current_cursor_pos;
-}
+    cursor_position result = get_cursor_position();
 
-const Window_Controller::cursor_position& Window_Controller::get_cursor_stride()
-{
-	return m_cursor_stride;
+    result.x -= m_prev_cursor_pos.x;
+    result.y -= m_prev_cursor_pos.y;
+
+    return result;
 }
 
 

@@ -11,13 +11,15 @@ namespace LR
 
     class Window_Controller final
     {
+    public:
+        struct cursor_position { double x = 0; double y = 0; };
+        struct window_size { unsigned int width = 0.0f, height = 0.0f; };
+
     private:
         static GLFWwindow* m_window;
 
-        struct cursor_position { double x = 0; double y = 0; };
-        static cursor_position m_prev_cursor_pos, m_current_cursor_pos, m_cursor_stride;
+        static cursor_position m_prev_cursor_pos;
 
-        struct window_size { unsigned int width = 0.0f, height = 0.0f; };
         static window_size m_window_data;
 
         static bool m_keys_pressed_before[GLFW_KEY_LAST + 1];
@@ -39,11 +41,9 @@ namespace LR
 
         static void set_cursor_pos(double _x, double _y);
 
-        static void update_cursor_stride();
-
     public:
-        static const cursor_position& get_cursor_position();
-        static const cursor_position& get_cursor_stride();
+        static cursor_position get_cursor_position();
+        static cursor_position get_cursor_stride();
 
         static const window_size& get_window_data();
 
