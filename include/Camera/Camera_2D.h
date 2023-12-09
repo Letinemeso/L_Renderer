@@ -1,9 +1,9 @@
 #ifndef CAMERA_2D_H
 #define CAMERA_2D_H
 
-#include "../OpenGL/GLM/vec3.hpp"
+#include "vec3.hpp"
 #include "mat4x4.hpp"
-#include "../OpenGL/GLM/gtx/transform.hpp"
+#include "gtx/transform.hpp"
 
 #include <Camera/Camera_Base.h>
 

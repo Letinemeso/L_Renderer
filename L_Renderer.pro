@@ -12,12 +12,12 @@ win32 {
     INCLUDEPATH += "OpenGL/Windows_x64_mingw/include/"
 }
 
-INCLUDEPATH += "OpenGL/GLM"
 INCLUDEPATH += "OpenGL/"
 
 INCLUDEPATH += "../L_Variable/include/"
 INCLUDEPATH += "../L_Utility/include/"
 INCLUDEPATH += "../LEti_Engine/include/"
+INCLUDEPATH += "../LEti_Engine/OpenGL/GLM/"
 
 INCLUDEPATH += "include/"
 
