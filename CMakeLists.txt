@@ -35,20 +35,9 @@ target_include_directories(L_Renderer PUBLIC
                             "${PROJECT_SOURCE_DIR}"
                             "${PROJECT_SOURCE_DIR}/include"
                             "${PROJECT_SOURCE_DIR}/OpenGL"
+                            "${PROJECT_SOURCE_DIR}/OpenGL/include"
                             "${PROJECT_SOURCE_DIR}/../L_Utility/include"
                             "${PROJECT_SOURCE_DIR}/../L_Variable/include"
                             "${PROJECT_SOURCE_DIR}/../LEti_Engine/include"
                             "${PROJECT_SOURCE_DIR}/../LEti_Engine/OpenGL/GLM"
 )
-
-if (WIN32)
-    target_include_directories(L_Renderer PUBLIC
-                                "${PROJECT_SOURCE_DIR}/OpenGL/Windows_x64_mingw/include"
-    )
-endif (WIN32)
-
-if (UNIX)
-    target_include_directories(L_Renderer PUBLIC
-                                "${PROJECT_SOURCE_DIR}/OpenGL/Linux/include"
-    )
-endif (UNIX)
