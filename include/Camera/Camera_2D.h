@@ -15,8 +15,8 @@ namespace LR
     class Camera_2D : public Camera_Base
 	{
 	private:
-        glm::vec3 m_position;
-        float m_view_scale;
+        glm::vec3 m_position{0.0f, 0.0f, 0.0f};
+        float m_view_scale = 1.0f;
 
     public:
         Camera_2D();
