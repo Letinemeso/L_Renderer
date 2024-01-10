@@ -35,6 +35,11 @@ void Renderer::bind_vertex_array(unsigned int _vertex_array)
 
 
 
+void Renderer::prepare() const
+{
+    m_shader_program->use();
+}
+
 void Renderer::draw(unsigned int _draw_mode, unsigned int _vertices_amount) const
 {
     glDrawArrays(_draw_mode, 0, _vertices_amount);

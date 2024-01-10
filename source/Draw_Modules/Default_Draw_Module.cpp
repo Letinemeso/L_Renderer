@@ -69,8 +69,6 @@ void Default_Draw_Module::move_raw(const glm::vec3 &_stride)
 
 void Default_Draw_Module::M_draw()
 {
-    L_ASSERT(m_renderer);
-
     m_renderer->draw(GL_TRIANGLES, vertices().vertices_count());
 }
 
@@ -78,7 +76,10 @@ void Default_Draw_Module::M_draw()
 
 void Default_Draw_Module::update(float _dt)
 {
+    L_ASSERT(m_renderer);
     L_ASSERT(m_shader_transform_component);
+
+    m_renderer->prepare();
 
     m_vertices.setup_buffer(m_shader_transform_component->vertex_attribs().coordinates.index, m_shader_transform_component->vertex_attribs().coordinates.floats_per_vertex);  //  theese magic numbers need to come from shader
     m_colors.setup_buffer(m_shader_transform_component->vertex_attribs().colors.index, m_shader_transform_component->vertex_attribs().colors.floats_per_vertex);

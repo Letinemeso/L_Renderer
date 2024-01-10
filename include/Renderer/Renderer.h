@@ -35,6 +35,7 @@ namespace LR
         void bind_vertex_array(unsigned int _vertex_array);
 
     public:
+        void prepare() const;
         void draw(unsigned int _draw_mode, unsigned int _vertices_amount) const;
 
     };

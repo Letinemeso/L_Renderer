@@ -23,6 +23,9 @@ namespace LR
         unsigned int m_program_handle = 0;
         LDS::List<Shader*> m_shader_objects;
 
+    private:
+        static unsigned int s_current_shader_program;
+
     public:
         Shader_Program(const Shader_Program&) = delete;
         void operator=(const Shader_Program&) = delete;
@@ -34,9 +37,6 @@ namespace LR
 
         ~Shader_Program();
 
-//    private:
-//        bool M_uniform_is_block(const std::string& _uniform_name) const;
-
     private:
         void M_debug() const;
 
@@ -44,6 +44,9 @@ namespace LR
         void reset();
         void add_shader(Shader* _shader);
         void init();
+
+    public:
+        void use() const;
 
     };
 

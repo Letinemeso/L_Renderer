@@ -3,6 +3,10 @@
 using namespace LR;
 
 
+unsigned int Shader_Program::s_current_shader_program = 0;
+
+
+
 Shader_Program::Shader_Program()
 {
 
@@ -48,16 +52,6 @@ void Shader_Program::M_debug() const
 
 
 
-//bool Shader_Program::M_uniform_is_block(const std::string &_uniform_name) const
-//{
-//    for(unsigned int i=0; i<_uniform_name.size(); ++i)
-//        if(_uniform_name[i] == '.')
-//            return true;
-//    return false;
-//}
-
-
-
 void Shader_Program::reset()
 {
     for(LDS::List<Shader*>::Iterator it = m_shader_objects.begin(); !it.end_reached(); ++it)
@@ -95,6 +89,7 @@ void Shader_Program::init()
     glLinkProgram(m_program_handle);
     L_DEBUG_FUNC_NOARG(M_debug);
     glUseProgram(m_program_handle);
+    s_current_shader_program = m_program_handle;
 
     for(LDS::List<Shader*>::Iterator it = m_shader_objects.begin(); !it.end_reached(); ++it)
     {
@@ -103,3 +98,81 @@ void Shader_Program::init()
         shader->init(m_program_handle);
     }
 }
+
+
+
+void Shader_Program::use() const
+{
+    if(s_current_shader_program == m_program_handle)
+        return;
+
+    glUseProgram(m_program_handle);
+
+    s_current_shader_program = m_program_handle;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
