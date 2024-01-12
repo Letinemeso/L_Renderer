@@ -64,7 +64,6 @@ Font* LR::load_font(const std::string& _path)
         Letter_Data& letter_data = result->m_letters[letter];
         letter_data.letter = letter;
         letter_data.assign_values(*it);
-        letter_data.init_childs(*it);
     }
 
     LDS::Map<std::string, LDS::Vector<std::string>>::Const_Iterator texture_path_it = stub.fields.find("picture_path");
