@@ -37,7 +37,7 @@ Draw_Module_Base::~Draw_Module_Base()
 
 
 
-INIT_FIELDS(LR::Draw_Module_Base_Stub, LV::Builder_Stub)
+INIT_FIELDS(LR::Draw_Module_Base_Stub, LEti::Module_Stub)
 FIELDS_END
 
 

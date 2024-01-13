@@ -53,16 +53,13 @@ namespace LR
 
 	};
 
-    class Draw_Module_Base_Stub : public LV::Builder_Stub
+    class Draw_Module_Base_Stub : public LEti::Module_Stub
     {
     public:
         DECLARE_VARIABLE;
 
     public:
         LR::Renderer* renderer = nullptr;
-
-    public:
-        virtual ~Draw_Module_Base_Stub() { }
 
     protected:
         void M_init_constructed_product(LV::Variable_Base* _product) const override;
