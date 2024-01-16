@@ -1,5 +1,7 @@
 #include <Shader/Shader_Components/Shader_Transform_Component.h>
 
+#include <Renderer/Renderer.h>
+
 using namespace LR;
 
 
@@ -28,11 +30,20 @@ void Shader_Transform_Component::set_transform_matrix(const glm::mat4x4 &_matrix
     glUniformMatrix4fv(m_transform_matrix_uniform, 1, false, &_matrix[0][0]);
 }
 
-void Shader_Transform_Component::set_texture(const LR::Texture& _texture) const
+
+void Shader_Transform_Component::prepare_texture_uniform() const
 {
     L_ASSERT(m_texture_uniform != -1);
 
     glUniform1i(m_texture_uniform, 0);
+}
 
-    _texture.bind();
+
+
+void Shader_Transform_Component::update(const Draw_Module* _draw_module)
+{
+    L_ASSERT(_draw_module);
+
+    set_projection_matrix(_draw_module->renderer()->camera()->matrix());
+    set_transform_matrix(_draw_module->transformation_data()->matrix());
 }

@@ -101,6 +101,16 @@ void Shader_Program::init()
 
 
 
+void Shader_Program::update(const Draw_Module* _draw_module)
+{
+    L_ASSERT(_draw_module);
+
+    for(LDS::List<Shader*>::Iterator it = m_shader_objects.begin(); !it.end_reached(); ++it)
+        (*it)->update(_draw_module);
+}
+
+
+
 void Shader_Program::use() const
 {
     if(s_current_shader_program == m_program_handle)

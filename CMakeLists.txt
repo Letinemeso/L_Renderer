@@ -8,28 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 FILE(GLOB_RECURSE LibFiles "include/*.h")
 add_custom_target(headers SOURCES ${LibFiles})
 
-add_library(L_Renderer STATIC
-    source/Camera/Camera_2D.cpp 
-    source/Camera/Camera_3D.cpp 
-    source/Camera/Camera_Base.cpp 
-    source/Components/Buffer.cpp 
-    source/Components/Colors.cpp 
-    source/Components/Texture.cpp 
-    source/Components/Vertices.cpp 
-    source/Draw_Modules/Default_Draw_Module.cpp 
-    source/Draw_Modules/Draw_Module_Base.cpp 
-    source/Draw_Modules/Draw_Module__Animation.cpp 
-    source/Draw_Modules/Draw_Module__Text_Field.cpp 
-    source/Picture/Font.cpp 
-    source/Picture/Graphic_Resources_Manager.cpp 
-    source/Picture/Picture.cpp 
-    source/Renderer/Renderer.cpp 
-    source/Shader/Shader_Components/Shader_Component.cpp 
-    source/Shader/Shader_Components/Shader_Transform_Component.cpp 
-    source/Shader/Shader_Types/Shader.cpp 
-    source/Shader/Shader_Program.cpp 
-    source/Window/Window_Controller.cpp
-)
+file(GLOB_RECURSE Sources "source/*.cpp")
+add_library(L_Renderer STATIC ${Sources})
 
 target_include_directories(L_Renderer PUBLIC 
                             "${PROJECT_SOURCE_DIR}"

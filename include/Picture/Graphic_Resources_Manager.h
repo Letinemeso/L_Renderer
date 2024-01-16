@@ -1,5 +1,4 @@
-#ifndef GRAPHIC_RESOURCES_MANAGER_H
-#define GRAPHIC_RESOURCES_MANAGER_H
+#pragma once
 
 #include <L_Debug/L_Debug.h>
 #include <Data_Structures/Map.h>
@@ -50,5 +49,3 @@ namespace LR
     };
 
 }
-
-#endif // GRAPHIC_RESOURCES_MANAGER_H

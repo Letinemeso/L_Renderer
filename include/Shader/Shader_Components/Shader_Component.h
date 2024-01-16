@@ -1,9 +1,8 @@
-#ifndef SHADER_COMPONENT_H
-#define SHADER_COMPONENT_H
+#pragma once
 
 #include <glew.h>
 
-#include <Variable_Base.h>
+#include <Draw_Modules/Draw_Module_Base.h>
 
 
 namespace LR
@@ -57,7 +56,8 @@ namespace LR
     public:
         virtual void init(unsigned int _opengl_program_handle);
 
+    public:
+        virtual void update(const Draw_Module* /*_draw_module*/) {  }
+
     };
 }
-
-#endif // SHADER_COMPONENT_H

@@ -1,5 +1,4 @@
-#ifndef __BUFFER
-#define __BUFFER
+#pragma once
 
 #include <glew.h>
 
@@ -9,7 +8,7 @@
 namespace LR
 {
 
-    class Buffer
+    class Buffer final
     {
     protected:
         class float_container final
@@ -37,7 +36,7 @@ namespace LR
         float_container fc;
 
     private:
-        const unsigned int* m_vertex_array = nullptr;
+//        unsigned int m_vertex_array = 0;
         unsigned int m_shader_layout_index = 0xFFFFFFFF;
         unsigned int m_floats_per_vertex = 0;
 
@@ -47,24 +46,24 @@ namespace LR
         unsigned int m_buffer_size = 0;
 
     public:
-        inline void set_vertex_array(const unsigned int* _ptr) { m_vertex_array = _ptr; }
+//        inline void set_vertex_array(unsigned int _value) { m_vertex_array = _value; }
 
-        inline unsigned int vertex_array() const { return *m_vertex_array; }
+//        inline unsigned int vertex_array() const { return m_vertex_array; }
         inline unsigned int floats_per_vertex() const { return m_floats_per_vertex; }
         inline unsigned int attrib_index() const { return m_shader_layout_index; }
 
     public:
         Buffer();
-        virtual ~Buffer();
+        ~Buffer();
 
-        virtual void allocate_memory(unsigned int _size);
-        virtual void free_memory();
-        virtual void resize(unsigned int _new_size);
+        void allocate_memory(unsigned int _size);
+        void free_memory();
+        void resize(unsigned int _new_size);
 
-        virtual void copy_array(const float* _data, unsigned int _count, unsigned int _offset = 0);
-        virtual void use_array(float* _data, unsigned int _count);
+        void copy_array(const float* _data, unsigned int _count, unsigned int _offset = 0);
+        void use_array(float* _data, unsigned int _count);
 
-        virtual void setup_buffer(unsigned int _attrib_index, unsigned int _floats_per_vertex);
+        void setup_buffer(unsigned int _attrib_index, unsigned int _floats_per_vertex);
 
     public:
         float_container& operator[](unsigned int _index);
@@ -76,7 +75,4 @@ namespace LR
 
     };
 
-
-}   /*LR*/
-
-#endif
+}

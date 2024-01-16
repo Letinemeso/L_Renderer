@@ -28,19 +28,14 @@ Renderer::~Renderer()
 
 
 
-void Renderer::bind_vertex_array(unsigned int _vertex_array)
+void Renderer::draw(const Draw_Module* _draw_module) const
 {
-    glBindVertexArray(_vertex_array);
-}
+    L_ASSERT(_draw_module);
 
+    glBindVertexArray(_draw_module->vertex_array());
 
-
-void Renderer::prepare() const
-{
     m_shader_program->use();
-}
+    m_shader_program->update(_draw_module);
 
-void Renderer::draw(unsigned int _draw_mode, unsigned int _vertices_amount) const
-{
-    glDrawArrays(_draw_mode, 0, _vertices_amount);
+    glDrawArrays(GL_TRIANGLES /* TEMP */, 0, _draw_module->vertices_amount());
 }

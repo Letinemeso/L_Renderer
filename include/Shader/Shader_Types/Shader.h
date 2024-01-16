@@ -9,6 +9,7 @@
 #include <Data_Structures/List.h>
 
 #include <Shader/Shader_Components/Shader_Component.h>
+#include <Draw_Modules/Draw_Module_Base.h>
 
 
 namespace LR
@@ -52,6 +53,9 @@ namespace LR
         void add_component(Shader_Component* _component);
         void compile();
         void init(unsigned int _opengl_program_handle);
+
+    public:
+        void update(const Draw_Module* _draw_module);
 
     public:
         inline unsigned int handle() const { return m_opengl_shader_handle; }

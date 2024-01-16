@@ -151,3 +151,13 @@ void Shader::init(unsigned int _opengl_program_handle)
         component->init(m_assigned_opengl_program_handle);
     }
 }
+
+
+
+void Shader::update(const Draw_Module *_draw_module)
+{
+    L_ASSERT(_draw_module);
+
+    for(LDS::List<Shader_Component*>::Iterator it = m_components.begin(); !it.end_reached(); ++it)
+        (*it)->update(_draw_module);
+}

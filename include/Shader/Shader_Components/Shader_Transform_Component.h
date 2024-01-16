@@ -1,9 +1,8 @@
-#ifndef SHADER_TRANSFORM_COMPONENT_H
-#define SHADER_TRANSFORM_COMPONENT_H
+#pragma once
 
 #include <mat4x4.hpp>
 
-#include <Components/Texture.h>
+#include <Components/Graphics_Component__Texture.h>
 #include <Shader/Shader_Components/Shader_Component.h>
 
 
@@ -37,13 +36,15 @@ namespace LR
     public:
         void set_projection_matrix(const glm::mat4x4& _matrix) const;
         void set_transform_matrix(const glm::mat4x4& _matrix) const;
-        void set_texture(const LR::Texture& _texture) const;
+
+        void prepare_texture_uniform() const;
 
     public:
         inline const Vertex_Attribs& vertex_attribs() const { return m_vertex_attribs; }
 
+    public:
+        void update(const Draw_Module* _draw_module) override;
+
     };
 
 }
-
-#endif // SHADER_TRANSFORM_COMPONENT_H

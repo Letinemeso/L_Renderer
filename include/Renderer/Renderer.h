@@ -1,8 +1,9 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#pragma once
 
 #include <Camera/Camera_Base.h>
 #include <Shader/Shader_Program.h>
+
+#include <Draw_Modules/Draw_Module_Base.h>
 
 
 namespace LR
@@ -12,7 +13,7 @@ namespace LR
     {
     private:
         const Camera_Base* m_camera = nullptr;
-        const Shader_Program* m_shader_program = nullptr;
+        Shader_Program* m_shader_program = nullptr;
 
     public:
         Renderer();
@@ -25,22 +26,15 @@ namespace LR
 
     public:
         inline void set_camera(const Camera_Base* _camera) { m_camera = _camera; }
-        inline void set_shader_program(const Shader_Program* _shader_program) { m_shader_program = _shader_program; }
+        inline void set_shader_program(Shader_Program* _shader_program) { m_shader_program = _shader_program; }
 
     public:
         inline const Camera_Base* camera() const { return m_camera; }
         inline const Shader_Program* shader_program() const { return m_shader_program; }
 
     public:
-        void bind_vertex_array(unsigned int _vertex_array);
-
-    public:
-        void prepare() const;
-        void draw(unsigned int _draw_mode, unsigned int _vertices_amount) const;
+        void draw(const Draw_Module* _draw_module) const;
 
     };
 
 }
-
-
-#endif // RENDERER_H

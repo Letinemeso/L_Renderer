@@ -11,7 +11,7 @@
 #include <L_Debug/L_Debug.h>
 
 #include <Shader/Shader_Types/Shader.h>
-#include <Components/Texture.h>
+#include <Draw_Modules/Draw_Module_Base.h>
 
 
 namespace LR
@@ -44,6 +44,9 @@ namespace LR
         void reset();
         void add_shader(Shader* _shader);
         void init();
+
+    public:
+        void update(const Draw_Module* _draw_module);
 
     public:
         void use() const;
