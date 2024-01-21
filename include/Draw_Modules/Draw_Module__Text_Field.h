@@ -83,7 +83,7 @@ namespace LR
 
 
 
-    class Draw_Module__Text_Field__Stub : public Draw_Module_Stub
+    class Draw_Module_Stub__Text_Field : public Draw_Module_Stub
     {
     public:
         DECLARE_VARIABLE;
@@ -102,7 +102,7 @@ namespace LR
         Graphics_Component_Stub__Texture* texture_stub = new Graphics_Component_Stub__Texture;
 
     public:
-        ~Draw_Module__Text_Field__Stub();
+        ~Draw_Module_Stub__Text_Field();
 
     protected:
         LV::Variable_Base* M_construct_product() const override;

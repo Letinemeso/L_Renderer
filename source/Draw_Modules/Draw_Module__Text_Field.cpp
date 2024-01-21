@@ -182,10 +182,14 @@ void Draw_Module__Text_Field::M_reconfigure()
     M_construct_colors(colors_buffer, colors_amount);
     M_construct_texture_coords(texture_coords_buffer, texture_coords_amount, texture_coords_per_character);
 
+    glBindVertexArray(vertex_array());
+
     m_coords->buffer().use_array(coords_buffer, coords_amount);
     m_colors->buffer().use_array(colors_buffer, colors_amount);
     m_texture->buffer().use_array(texture_coords_buffer, texture_coords_amount);
     m_texture->reconfigure_texture_coords();
+
+    m_vertices_amount = coords_amount / m_coords->buffer().floats_per_vertex();
 }
 
 
@@ -205,7 +209,7 @@ void Draw_Module__Text_Field::update(float _dt)
 
 
 
-INIT_FIELDS(LR::Draw_Module__Text_Field__Stub, LR::Draw_Module_Stub)
+INIT_FIELDS(LR::Draw_Module_Stub__Text_Field, LR::Draw_Module_Stub)
 
 ADD_FIELD(std::string, font_name)
 ADD_FIELD(unsigned int, horizontal_alignment)
@@ -214,14 +218,14 @@ ADD_FIELD(glm::vec3, raw_offset)
 ADD_FIELD(float, max_size)
 ADD_FIELD(std::string, text)
 
-ADD_CHILD("coords_stub", coords_stub)
-ADD_CHILD("colors_stub", colors_stub)
-ADD_CHILD("texture_stub", texture_stub)
+ADD_CHILD("TF_Required__Graphics_Component_Stub__coords", coords_stub)
+ADD_CHILD("TF_Required__Graphics_Component_Stub__colors", colors_stub)
+ADD_CHILD("TF_Required__Graphics_Component_Stub__texture", texture_stub)
 
 FIELDS_END
 
 
-Draw_Module__Text_Field__Stub::~Draw_Module__Text_Field__Stub()
+Draw_Module_Stub__Text_Field::~Draw_Module_Stub__Text_Field()
 {
     delete coords_stub;
     delete colors_stub;
@@ -230,12 +234,12 @@ Draw_Module__Text_Field__Stub::~Draw_Module__Text_Field__Stub()
 
 
 
-LV::Variable_Base* Draw_Module__Text_Field__Stub::M_construct_product() const
+LV::Variable_Base* Draw_Module_Stub__Text_Field::M_construct_product() const
 {
     return new Draw_Module__Text_Field();
 }
 
-void Draw_Module__Text_Field__Stub::M_init_constructed_product(LV::Variable_Base *_product) const
+void Draw_Module_Stub__Text_Field::M_init_constructed_product(LV::Variable_Base *_product) const
 {
     Draw_Module_Stub::M_init_constructed_product(_product);
 
