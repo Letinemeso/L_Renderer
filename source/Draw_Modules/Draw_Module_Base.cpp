@@ -46,16 +46,11 @@ void Draw_Module::add_graphics_component(Graphics_Component *_ptr)
 
 
 
-void Draw_Module::M_draw()
-{
-    m_renderer->draw(this);
-}
-
-
-
 void Draw_Module::update(float /*_dt*/)
 {
     L_ASSERT(m_renderer);
+
+    m_renderer->prepare();
 
     transformation_data()->update_matrix();
 
@@ -64,9 +59,7 @@ void Draw_Module::update(float /*_dt*/)
     for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         (*it)->prepare();
 
-//    m_renderer->bind_vertex_array(vertex_array());
-
-    M_draw();
+    m_renderer->draw(this);
 }
 
 

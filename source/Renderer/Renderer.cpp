@@ -28,13 +28,17 @@ Renderer::~Renderer()
 
 
 
+void Renderer::prepare() const
+{
+    m_shader_program->use();
+}
+
 void Renderer::draw(const Draw_Module* _draw_module) const
 {
     L_ASSERT(_draw_module);
 
     glBindVertexArray(_draw_module->vertex_array());
 
-    m_shader_program->use();
     m_shader_program->update(_draw_module);
 
     glDrawArrays(GL_TRIANGLES /* TEMP */, 0, _draw_module->vertices_amount());

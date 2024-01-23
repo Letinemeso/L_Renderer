@@ -60,9 +60,6 @@ namespace LR
         inline const Graphics_Component_List& graphic_components() const { return m_graphics_components; }
         inline unsigned int vertices_amount() const { return m_vertices_amount; }
 
-    protected:
-        void M_draw();
-
     public:
         void update(float _dt) override;
 
