@@ -72,7 +72,7 @@ namespace LR
         unsigned int times_to_repeat = 0;
 
     public:
-        Graphics_Component_Stub__Texture* texture_stub = new Graphics_Component_Stub__Texture;
+        Graphics_Component_Stub__Texture* texture_stub = nullptr;
 
     public:
         ~Draw_Module__Animation__Stub();

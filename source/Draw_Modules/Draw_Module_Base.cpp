@@ -50,6 +50,9 @@ void Draw_Module::update(float /*_dt*/)
 {
     L_ASSERT(m_renderer);
 
+    if(!m_draw_on_update)
+        return;
+
     m_renderer->prepare();
 
     transformation_data()->update_matrix();

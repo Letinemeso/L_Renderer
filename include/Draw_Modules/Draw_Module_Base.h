@@ -37,6 +37,7 @@ namespace LR
         unsigned int m_vertices_amount = 0;
 
         bool m_visible = true;
+        bool m_draw_on_update = true;
 
 	public:
         Draw_Module();
@@ -49,9 +50,11 @@ namespace LR
     public:
         inline unsigned int vertex_array() const { return m_vertex_array; }
         inline bool visible() const { return m_visible; }
+        inline bool draw_on_update() const { return m_draw_on_update; }
 
     public:
-        inline void set_visible(bool _visible) { m_visible = _visible; }
+        inline void set_visible(bool _value) { m_visible = _value; }
+        inline void set_draw_on_update(bool _value) { m_draw_on_update = _value; }
 
     public:
         void add_graphics_component(Graphics_Component* _ptr);

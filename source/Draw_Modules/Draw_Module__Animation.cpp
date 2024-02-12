@@ -103,6 +103,8 @@ ADD_FIELD(unsigned int, frames_per_second)
 ADD_FIELD(unsigned int, frames_count)
 ADD_FIELD(unsigned int, times_to_repeat)
 
+ADD_CHILD("Animation_Required__Graphics_Component_Stub__texture", texture_stub)
+
 FIELDS_END
 
 
