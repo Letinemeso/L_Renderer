@@ -88,14 +88,18 @@ void Draw_Module_Stub::M_init_constructed_product(LV::Variable_Base* _product) c
 
     product->set_renderer(renderer);
 
-    for(Graphics_Component_Stubs_Map::Const_Iterator it = graphics_component_stubs.iterator(); !it.end_reached(); ++it)
-        product->add_graphics_component((Graphics_Component*)((*it)->construct()));
+    for(LV::Variable_Base::Childs_List::Const_Iterator it = graphics_component_stubs.begin(); !it.end_reached(); ++it)
+    {
+        Graphics_Component_Stub* stub = LV::cast_variable<Graphics_Component_Stub>(it->child_ptr);
+        L_ASSERT(stub);
+        product->add_graphics_component((Graphics_Component*)stub->construct());
+    }
 }
 
 
 
 Draw_Module_Stub::~Draw_Module_Stub()
 {
-    for(Graphics_Component_Stubs_Map::Iterator it = graphics_component_stubs.iterator(); !it.end_reached(); ++it)
-        delete *it;
+    for(LV::Variable_Base::Childs_List::Iterator it = graphics_component_stubs.begin(); !it.end_reached(); ++it)
+        delete it->child_ptr;
 }

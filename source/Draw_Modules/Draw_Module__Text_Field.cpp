@@ -9,7 +9,7 @@ bool Text_Field_Settings::operator==(const Text_Field_Settings &_other) const
             horizontal_alignment == _other.horizontal_alignment &&
             vertical_alignment == _other.vertical_alignment &&
             LEti::Math::vecs_are_equal(raw_offset, _other.raw_offset) &&
-            LEti::Math::floats_are_equal(max_size, _other.max_size) &&
+            LEti::Math::floats_are_equal(raw_size, _other.raw_size) &&
             text == _other.text;
 }
 
@@ -50,29 +50,27 @@ glm::vec2 Draw_Module__Text_Field::M_calculate_raw_size() const
 
 float Draw_Module__Text_Field::M_calculate_raw_scale(const glm::vec2& _raw_size) const
 {
-    if(m_current_settings.max_size < 0.0f)
-        return 1.0f;
+    if(m_current_settings.raw_size < 0.0f)
+        return m_current_settings.raw_size_multiplier;
 
     float result = 1.0f;
 
     if(_raw_size.x > _raw_size.y)
-        result = m_current_settings.max_size / _raw_size.x;
+        result = m_current_settings.raw_size / _raw_size.x;
     else
-        result = m_current_settings.max_size / _raw_size.y;
+        result = m_current_settings.raw_size / _raw_size.y;
 
-    return result;
+    return result * m_current_settings.raw_size_multiplier;
 }
 
 
 void Draw_Module__Text_Field::M_construct_coords(float *_coords, unsigned int _amount, unsigned int _amount_per_character)
 {
-//    L_ASSERT(vertices().floats_per_vertex() > 1);    //  single-dimentional font is not supported :D
+    unsigned int fpv = m_coords->buffer().floats_per_vertex();
+    L_ASSERT(fpv > 1);    //  single-dimentional font is not supported :D
 
     for(unsigned int i=0; i<_amount; ++i)
         _coords[i] = 0.0f;
-
-//    unsigned int fpv = vertices().floats_per_vertex();
-    unsigned int fpv = 3;   //  this magic number should be taken from shader (or vertices) later
 
     glm::vec2 raw_size = M_calculate_raw_size();
     float raw_scale = M_calculate_raw_scale(raw_size);
@@ -130,13 +128,11 @@ void Draw_Module__Text_Field::M_construct_colors(float* _colors, unsigned int _a
 
 void Draw_Module__Text_Field::M_construct_texture_coords(float* _texture_coords, unsigned int _amount, unsigned int _amount_per_character)
 {
-//    L_ASSERT(texture().floats_per_vertex() > 1);    //  single-dimentional font is not supported :D
+    unsigned int fpv = m_texture->buffer().floats_per_vertex();
+    L_ASSERT(fpv > 1);    //  single-dimentional font is not supported :D
 
     for(unsigned int i=0; i<_amount; ++i)
         _texture_coords[i] = 0.0f;
-
-//    unsigned int fpv = texture().floats_per_vertex();
-    unsigned int fpv = 2;
 
     auto construct_character = [this, _texture_coords, _amount_per_character, fpv](unsigned int _character_index)
     {
@@ -166,9 +162,9 @@ void Draw_Module__Text_Field::M_reconfigure()
 
     m_texture->set_picture(m_current_settings.font->picture());
 
-    const unsigned int coords_per_character = 3 * 6;            //  theese magic numbers should be taken from shader
-    const unsigned int colors_per_character = 4 * 6;
-    const unsigned int texture_coords_per_character = 2 * 6;
+    const unsigned int coords_per_character = m_coords->buffer().floats_per_vertex() * 6;            //  theese magic numbers should be taken from shader
+    const unsigned int colors_per_character = m_colors->buffer().floats_per_vertex() * 6;
+    const unsigned int texture_coords_per_character = m_texture->buffer().floats_per_vertex() * 6;
 
     unsigned int coords_amount = coords_per_character * m_current_settings.text.size();
     unsigned int colors_amount = colors_per_character * m_current_settings.text.size();
@@ -215,7 +211,8 @@ ADD_FIELD(std::string, font_name)
 ADD_FIELD(unsigned int, horizontal_alignment)
 ADD_FIELD(unsigned int, vertical_alignment)
 ADD_FIELD(glm::vec3, raw_offset)
-ADD_FIELD(float, max_size)
+ADD_FIELD(float, raw_size_multiplier)
+ADD_FIELD(float, raw_size)
 ADD_FIELD(std::string, text)
 
 ADD_CHILD("TF_Required__Graphics_Component_Stub__coords", coords_stub)
@@ -248,7 +245,8 @@ void Draw_Module_Stub__Text_Field::M_init_constructed_product(LV::Variable_Base 
     Text_Field_Settings& tfs = product->settings();
     tfs.font = texture_stub->resources_manager->get_font(font_name);
     tfs.text = text;
-    tfs.max_size = max_size;
+    tfs.raw_size_multiplier = raw_size_multiplier;
+    tfs.raw_size = raw_size;
     tfs.raw_offset = raw_offset;
 
     L_ASSERT(horizontal_alignment <= 2);

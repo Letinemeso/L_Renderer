@@ -32,8 +32,9 @@ namespace LR
         Vertical_Alignment vertical_alignment = Vertical_Alignment::Bottom;
 
         glm::vec3 raw_offset{0.0f, 0.0f, 0.0f};
-        //  1.0f means whole string will fit inside 1 x 1 square ( hope it makes sence ). in other words, proportionally shrinks/stretches result string so width or height are not larger then max_size...
-        float max_size = 1.0f;
+        float raw_size_multiplier = 1.0f;
+        //  1.0f means whole string will fit inside 1 x 1 square ( hope it makes sence ). in other words, proportionally shrinks/stretches result string so width or height are not larger then raw_size...
+        float raw_size = 1.0f;
 
         std::string text;
 
@@ -93,7 +94,8 @@ namespace LR
         unsigned int horizontal_alignment = 0;
         unsigned int vertical_alignment = 0;
         glm::vec3 raw_offset{0.0f, 0.0f, 0.0f};
-        float max_size = -1.0f;     //  negative value means no limit
+        float raw_size_multiplier = 1.0f;
+        float raw_size = -1.0f;     //  negative value means no limit
         std::string text;
 
     public:

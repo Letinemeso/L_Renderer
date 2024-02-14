@@ -79,14 +79,11 @@ namespace LR
         LR::Renderer* renderer = nullptr;
 
     public:
-        using Graphics_Component_Stubs_Map = LDS::Map<std::string, Graphics_Component_Stub*>;
-
-    public:
-        Graphics_Component_Stubs_Map graphics_component_stubs;
+        LV::Variable_Base::Childs_List graphics_component_stubs;
 
     protected:
         LV::Variable_Base* M_construct_product() const override;
-        void M_init_constructed_product(LV::Variable_Base* /*_product*/) const override;
+        void M_init_constructed_product(LV::Variable_Base* _product) const override;
 
     public:
         ~Draw_Module_Stub();
