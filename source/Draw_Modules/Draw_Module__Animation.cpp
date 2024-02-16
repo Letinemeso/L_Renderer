@@ -53,10 +53,10 @@ void Draw_Module__Animation::set_animation_data(unsigned int _frames_count)
     m_frame_offset_ratio = 1.0f / (float)m_frames_count;
 }
 
-void Draw_Module__Animation::set_fps(unsigned int _fps)
+void Draw_Module__Animation::set_fps(float _fps)
 {
     m_fps = _fps;
-    m_time_before_next_frame = 1.0f / (float)m_fps;
+    m_time_before_next_frame = 1.0f / m_fps;
 }
 
 void Draw_Module__Animation::set_frame(unsigned int _frame)
@@ -99,7 +99,7 @@ void Draw_Module__Animation::unpause()
 
 INIT_FIELDS(LR::Draw_Module__Animation__Stub, LR::Draw_Module_Stub)
 
-ADD_FIELD(unsigned int, frames_per_second)
+ADD_FIELD(float, frames_per_second)
 ADD_FIELD(unsigned int, frames_count)
 ADD_FIELD(unsigned int, times_to_repeat)
 

@@ -16,7 +16,7 @@ namespace LR
 
     private:
         unsigned int m_frames_count = 0;
-        unsigned int m_fps = 0;
+        float m_fps = 0;
         float m_time_before_next_frame = 0.0f;
         float m_frame_offset_ratio = 0.0f;
 
@@ -45,7 +45,7 @@ namespace LR
 
     public:
         void set_animation_data(unsigned int _frames_count);
-        void set_fps(unsigned int _fps);
+        void set_fps(float _fps);
         void set_frame(unsigned int _frame);
 
         void start(unsigned int _cycles = 0);
@@ -54,7 +54,7 @@ namespace LR
 
     public:
         inline unsigned int frames_count() const { return m_frames_count; }
-        inline unsigned int fps() const { return m_fps; }
+        inline float fps() const { return m_fps; }
         inline unsigned int current_frame() const { return m_current_frame; }
         inline unsigned int repetitions() const { return m_repetitions; }
         inline bool paused() const { return m_is_paused; }
@@ -67,7 +67,7 @@ namespace LR
         DECLARE_VARIABLE;
 
     public:
-        unsigned int frames_per_second = 0;
+        float frames_per_second = 0;
         unsigned int frames_count = 0;
         unsigned int times_to_repeat = 0;
 
