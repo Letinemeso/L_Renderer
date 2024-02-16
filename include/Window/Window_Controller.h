@@ -32,6 +32,7 @@ namespace LR
 
     public:
         static void create_window(unsigned int _width, unsigned int _height, const char* _name);
+        static void terminate_window();
 
         static void update();
 

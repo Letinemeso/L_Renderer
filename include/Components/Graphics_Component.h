@@ -53,6 +53,9 @@ namespace LR
         unsigned int data_size = 0;
 
     public:
+        ~Graphics_Component_Stub();
+
+    public:
         LST::Function<void(const Graphics_Component*)> on_prepare_func;
 
     protected:

@@ -42,6 +42,13 @@ ADD_FIELD(unsigned int, data_size)
 FIELDS_END
 
 
+Graphics_Component_Stub::~Graphics_Component_Stub()
+{
+    delete[] data;
+}
+
+
+
 LV::Variable_Base* Graphics_Component_Stub::M_construct_product() const
 {
     return new Graphics_Component;

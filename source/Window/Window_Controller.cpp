@@ -33,6 +33,11 @@ void Window_Controller::create_window(unsigned int _width, unsigned int _height,
 	});
 }
 
+void Window_Controller::terminate_window()
+{
+    glfwTerminate();
+}
+
 
 void Window_Controller::update()
 {

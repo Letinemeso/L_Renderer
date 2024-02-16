@@ -72,8 +72,11 @@ void Graphic_Resources_Manager::clear()
 {
     for(LDS::Map<std::string, Picture*>::Iterator it = m_pictures.iterator(); !it.end_reached(); ++it)
         delete *it;
+    for(LDS::Map<std::string, Font*>::Iterator it = m_fonts.iterator(); !it.end_reached(); ++it)
+        delete *it;
 
     m_pictures.clear();
+    m_fonts.clear();
 }
 
 

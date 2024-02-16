@@ -17,6 +17,9 @@ Draw_Module::Draw_Module()
 
 Draw_Module::~Draw_Module()
 {
+    for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+        delete *it;
+
     glDeleteVertexArrays(1, &m_vertex_array);
 }
 
