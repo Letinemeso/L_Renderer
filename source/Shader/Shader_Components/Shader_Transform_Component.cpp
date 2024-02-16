@@ -46,4 +46,6 @@ void Shader_Transform_Component::update(const Draw_Module* _draw_module)
 
     set_projection_matrix(_draw_module->renderer()->camera()->matrix());
     set_transform_matrix(_draw_module->transformation_data()->matrix());
+
+    prepare_texture_uniform();
 }
