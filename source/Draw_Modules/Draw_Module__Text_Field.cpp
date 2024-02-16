@@ -216,6 +216,10 @@ LV::Variable_Base* Draw_Module_Stub__Text_Field::M_construct_product() const
 
 void Draw_Module_Stub__Text_Field::M_init_constructed_product(LV::Variable_Base *_product) const
 {
+    L_ASSERT(coords_stub);
+    L_ASSERT(colors_stub);
+    L_ASSERT(texture_stub);
+
     Draw_Module_Stub::M_init_constructed_product(_product);
 
     Draw_Module__Text_Field* product = (Draw_Module__Text_Field*)_product;

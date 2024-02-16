@@ -116,9 +116,9 @@ namespace LR
         std::string text;
 
     public:
-        Graphics_Component_Stub* coords_stub = new Graphics_Component_Stub;
-        Graphics_Component_Stub* colors_stub = new Graphics_Component_Stub;
-        Graphics_Component_Stub__Texture* texture_stub = new Graphics_Component_Stub__Texture;
+        Graphics_Component_Stub* coords_stub = nullptr;
+        Graphics_Component_Stub* colors_stub = nullptr;
+        Graphics_Component_Stub__Texture* texture_stub = nullptr;
 
     public:
         ~Draw_Module_Stub__Text_Field();

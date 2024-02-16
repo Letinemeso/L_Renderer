@@ -75,6 +75,10 @@ namespace LR
     public:
         INIT_VARIABLE(LR::Draw_Module_Stub, LEti::Module_Stub)
 
+        INIT_CHILDS_LISTS
+        ADD_CHILDS_LIST("Graphics_Component_Stub__*", &graphics_component_stubs)
+        CHILDS_LISTS_END
+
     public:
         LR::Renderer* renderer = nullptr;
 
