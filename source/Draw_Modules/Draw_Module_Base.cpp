@@ -5,10 +5,6 @@
 using namespace LR;
 
 
-INIT_FIELDS(LR::Draw_Module, LEti::Module)
-FIELDS_END
-
-
 Draw_Module::Draw_Module()
 {
     glGenVertexArrays(1, &m_vertex_array);
@@ -70,10 +66,6 @@ void Draw_Module::update(float /*_dt*/)
 
 
 
-
-
-INIT_FIELDS(LR::Draw_Module_Stub, LEti::Module_Stub)
-FIELDS_END
 
 
 LV::Variable_Base* Draw_Module_Stub::M_construct_product() const

@@ -12,7 +12,7 @@ namespace LR
     class Draw_Module__Animation : public Draw_Module
     {
     public:
-        DECLARE_VARIABLE;
+        INIT_VARIABLE(LR::Draw_Module__Animation, LR::Draw_Module)
 
     private:
         unsigned int m_frames_count = 0;
@@ -64,7 +64,18 @@ namespace LR
     class Draw_Module__Animation__Stub : public Draw_Module_Stub
     {
     public:
-        DECLARE_VARIABLE;
+        INIT_VARIABLE(LR::Draw_Module__Animation__Stub, LR::Draw_Module_Stub)
+
+        INIT_FIELDS
+        ADD_FIELD(float, frames_per_second)
+        ADD_FIELD(unsigned int, frames_count)
+        ADD_FIELD(unsigned int, times_to_repeat)
+        FIELDS_END
+
+        INIT_CHILDS
+        ADD_CHILD("Animation_Required__Graphics_Component_Stub__texture", texture_stub)
+        CHILDS_END
+
 
     public:
         float frames_per_second = 0;

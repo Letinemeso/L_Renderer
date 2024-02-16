@@ -3,10 +3,6 @@
 using namespace LR;
 
 
-INIT_FIELDS(LR::Graphics_Component, LV::Variable_Base)
-FIELDS_END
-
-
 Graphics_Component::Graphics_Component()
 {
 
@@ -29,17 +25,6 @@ void Graphics_Component::prepare() const
 
 
 
-
-
-INIT_FIELDS(LR::Graphics_Component_Stub, LV::Builder_Stub)
-
-ADD_FIELD(unsigned int, attribute_index)
-ADD_FIELD(unsigned int, floats_per_vertex)
-
-ADD_FIELD(float*, data)
-ADD_FIELD(unsigned int, data_size)
-
-FIELDS_END
 
 
 Graphics_Component_Stub::~Graphics_Component_Stub()

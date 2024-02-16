@@ -14,7 +14,7 @@ namespace LR
     class Graphics_Component : public LV::Variable_Base
     {
     public:
-        DECLARE_VARIABLE;
+        INIT_VARIABLE(LR::Graphics_Component, LV::Variable_Base)
 
     protected:
         Buffer m_buffer;
@@ -43,7 +43,14 @@ namespace LR
     class Graphics_Component_Stub : public LV::Builder_Stub
     {
     public:
-        DECLARE_VARIABLE;
+        INIT_VARIABLE(LR::Graphics_Component_Stub, LV::Builder_Stub)
+
+        INIT_FIELDS
+        ADD_FIELD(unsigned int, attribute_index)
+        ADD_FIELD(unsigned int, floats_per_vertex)
+        ADD_FIELD(float*, data)
+        ADD_FIELD(unsigned int, data_size)
+        FIELDS_END
 
     public:
         unsigned int attribute_index = 0;

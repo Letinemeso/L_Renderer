@@ -47,7 +47,7 @@ namespace LR
     class Draw_Module__Text_Field : public Draw_Module
     {
     public:
-        DECLARE_VARIABLE;
+        INIT_VARIABLE(LR::Draw_Module__Text_Field, LR::Draw_Module)
 
     private:
         Graphics_Component* m_coords = nullptr;
@@ -87,7 +87,24 @@ namespace LR
     class Draw_Module_Stub__Text_Field : public Draw_Module_Stub
     {
     public:
-        DECLARE_VARIABLE;
+        INIT_VARIABLE(LR::Draw_Module_Stub__Text_Field, LR::Draw_Module_Stub)
+
+        INIT_FIELDS
+        ADD_FIELD(std::string, font_name)
+        ADD_FIELD(unsigned int, horizontal_alignment)
+        ADD_FIELD(unsigned int, vertical_alignment)
+        ADD_FIELD(glm::vec3, raw_offset)
+        ADD_FIELD(float, raw_size_multiplier)
+        ADD_FIELD(float, raw_size)
+        ADD_FIELD(std::string, text)
+        FIELDS_END
+
+        INIT_CHILDS
+        ADD_CHILD("TF_Required__Graphics_Component_Stub__coords", coords_stub)
+        ADD_CHILD("TF_Required__Graphics_Component_Stub__colors", colors_stub)
+        ADD_CHILD("TF_Required__Graphics_Component_Stub__texture", texture_stub)
+        CHILDS_END
+
 
     public:
         std::string font_name;

@@ -22,11 +22,6 @@ bool Text_Field_Settings::operator!=(const Text_Field_Settings &_other) const
 
 
 
-INIT_FIELDS(LR::Draw_Module__Text_Field, LR::Draw_Module)
-FIELDS_END
-
-
-
 glm::vec2 Draw_Module__Text_Field::M_calculate_raw_size() const
 {
     glm::vec2 result;
@@ -203,23 +198,6 @@ void Draw_Module__Text_Field::update(float _dt)
 
 
 
-
-
-INIT_FIELDS(LR::Draw_Module_Stub__Text_Field, LR::Draw_Module_Stub)
-
-ADD_FIELD(std::string, font_name)
-ADD_FIELD(unsigned int, horizontal_alignment)
-ADD_FIELD(unsigned int, vertical_alignment)
-ADD_FIELD(glm::vec3, raw_offset)
-ADD_FIELD(float, raw_size_multiplier)
-ADD_FIELD(float, raw_size)
-ADD_FIELD(std::string, text)
-
-ADD_CHILD("TF_Required__Graphics_Component_Stub__coords", coords_stub)
-ADD_CHILD("TF_Required__Graphics_Component_Stub__colors", colors_stub)
-ADD_CHILD("TF_Required__Graphics_Component_Stub__texture", texture_stub)
-
-FIELDS_END
 
 
 Draw_Module_Stub__Text_Field::~Draw_Module_Stub__Text_Field()

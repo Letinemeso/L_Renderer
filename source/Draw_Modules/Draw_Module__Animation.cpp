@@ -3,10 +3,6 @@
 using namespace LR;
 
 
-INIT_FIELDS(LR::Draw_Module__Animation, LR::Draw_Module)
-FIELDS_END
-
-
 Draw_Module__Animation::Draw_Module__Animation() : Draw_Module()
 {
 
@@ -97,15 +93,7 @@ void Draw_Module__Animation::unpause()
 
 
 
-INIT_FIELDS(LR::Draw_Module__Animation__Stub, LR::Draw_Module_Stub)
 
-ADD_FIELD(float, frames_per_second)
-ADD_FIELD(unsigned int, frames_count)
-ADD_FIELD(unsigned int, times_to_repeat)
-
-ADD_CHILD("Animation_Required__Graphics_Component_Stub__texture", texture_stub)
-
-FIELDS_END
 
 
 Draw_Module__Animation__Stub::~Draw_Module__Animation__Stub()

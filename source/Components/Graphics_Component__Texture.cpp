@@ -3,10 +3,6 @@
 using namespace LR;
 
 
-INIT_FIELDS(LR::Graphics_Component__Texture, LR::Graphics_Component)
-FIELDS_END
-
-
 Graphics_Component__Texture::Graphics_Component__Texture()
 {
 
@@ -64,14 +60,6 @@ void Graphics_Component__Texture::prepare() const
 
 
 
-
-
-INIT_FIELDS(LR::Graphics_Component_Stub__Texture, LR::Graphics_Component_Stub)
-
-ADD_FIELD(std::string, picture_name)
-ADD_FIELD(bool, texture_coords_in_pixels)
-
-FIELDS_END
 
 
 LV::Variable_Base* Graphics_Component_Stub__Texture::M_construct_product() const

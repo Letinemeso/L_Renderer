@@ -12,7 +12,7 @@ namespace LR
     class Graphics_Component__Texture final : public Graphics_Component
     {
     public:
-        DECLARE_VARIABLE;
+        INIT_VARIABLE(LR::Graphics_Component__Texture, LR::Graphics_Component)
 
     private:
         unsigned int m_texture_object = 0;
@@ -44,7 +44,12 @@ namespace LR
     class Graphics_Component_Stub__Texture : public Graphics_Component_Stub
     {
     public:
-        DECLARE_VARIABLE;
+        INIT_VARIABLE(LR::Graphics_Component_Stub__Texture, LR::Graphics_Component_Stub)
+
+        INIT_FIELDS
+        ADD_FIELD(std::string, picture_name)
+        ADD_FIELD(bool, texture_coords_in_pixels)
+        FIELDS_END
 
     public:
         const Graphic_Resources_Manager* resources_manager = nullptr;

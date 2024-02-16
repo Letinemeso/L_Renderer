@@ -22,7 +22,7 @@ namespace LR
     class Draw_Module : public LEti::Module
     {
     public:
-        DECLARE_VARIABLE;
+        INIT_VARIABLE(LR::Draw_Module, LEti::Module)
 
     protected:
         LR::Renderer* m_renderer = nullptr;
@@ -73,7 +73,7 @@ namespace LR
     class Draw_Module_Stub : public LEti::Module_Stub
     {
     public:
-        DECLARE_VARIABLE;
+        INIT_VARIABLE(LR::Draw_Module_Stub, LEti::Module_Stub)
 
     public:
         LR::Renderer* renderer = nullptr;

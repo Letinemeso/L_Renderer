@@ -1,5 +1,4 @@
-#ifndef FONT_H
-#define FONT_H
+#pragma once
 
 #include <Variable_Base.h>
 
@@ -12,7 +11,14 @@ namespace LR
     class Letter_Data : public LV::Variable_Base
     {
     public:
-        DECLARE_VARIABLE;
+        INIT_VARIABLE(LR::Letter_Data, LV::Variable_Base)
+
+        INIT_FIELDS
+        ADD_FIELD(float, pos_x)
+        ADD_FIELD(float, pos_y)
+        ADD_FIELD(float, size_x)
+        ADD_FIELD(float, size_y)
+        FIELDS_END
 
     public:
         unsigned char letter = 0;
@@ -52,5 +58,3 @@ namespace LR
     Font* load_font(const std::string& _path);
 
 }
-
-#endif // FONT_H

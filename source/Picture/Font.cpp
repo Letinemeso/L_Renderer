@@ -3,15 +3,6 @@
 using namespace LR;
 
 
-INIT_FIELDS(LR::Letter_Data, LV::Variable_Base)
-ADD_FIELD(float, pos_x)
-ADD_FIELD(float, pos_y)
-ADD_FIELD(float, size_x)
-ADD_FIELD(float, size_y)
-FIELDS_END
-
-
-
 Font::Font()
 {
 
