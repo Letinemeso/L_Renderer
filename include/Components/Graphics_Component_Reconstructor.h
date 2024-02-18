@@ -25,7 +25,7 @@ namespace LR
         inline void inject_graphics_component(Graphics_Component* _ptr) { m_graphics_component = _ptr; }
 
     public:
-        virtual void reconstruct_graphics_component() = 0;
+        virtual void update(float _dt) = 0;
 
     };
 

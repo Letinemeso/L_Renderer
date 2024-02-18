@@ -26,10 +26,10 @@ void Graphics_Component::set_reconstructor(Graphics_Component_Reconstructor* _pt
 
 
 
-void Graphics_Component::prepare() const
+void Graphics_Component::update(float _dt) const
 {
     if(m_reconstructor)
-        m_reconstructor->reconstruct_graphics_component();
+        m_reconstructor->update(_dt);
 
     m_buffer.bind();
 

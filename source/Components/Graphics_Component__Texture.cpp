@@ -49,9 +49,9 @@ void Graphics_Component__Texture::reconfigure_texture_coords()
 
 
 
-void Graphics_Component__Texture::prepare() const
+void Graphics_Component__Texture::update(float _dt) const
 {
-    Graphics_Component::prepare();
+    Graphics_Component::update(_dt);
 
     L_ASSERT(m_texture_object);
 

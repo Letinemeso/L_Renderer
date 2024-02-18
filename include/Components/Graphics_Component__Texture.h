@@ -42,7 +42,7 @@ namespace LR
         inline const Picture* get_picture() const { return m_picture; }
 
     public:
-        void prepare() const override;
+        void update(float _dt) const override;
 
     };
 

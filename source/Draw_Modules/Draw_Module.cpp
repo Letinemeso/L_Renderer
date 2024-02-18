@@ -60,7 +60,7 @@ void Draw_Module::recalculate_vertices_amount()
 
 
 
-void Draw_Module::update(float /*_dt*/)
+void Draw_Module::update(float _dt)
 {
     if(!m_draw_on_update)
         return;
@@ -75,7 +75,7 @@ void Draw_Module::update(float /*_dt*/)
     glBindVertexArray(vertex_array());
 
     for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
-        (*it)->prepare();
+        (*it)->update(_dt);
 
     if(m_should_recalculate_vertices_before_draw)
         recalculate_vertices_amount();

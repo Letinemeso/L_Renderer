@@ -44,7 +44,7 @@ namespace LR
         inline void set_on_prepare_func(const LST::Function<void(const Graphics_Component*)>& _func) { m_on_prepare_func = _func; }
 
     public:
-        virtual void prepare() const;
+        virtual void update(float _dt) const;
 
     };
 
