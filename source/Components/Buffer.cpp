@@ -77,8 +77,6 @@ void Buffer::allocate_memory(unsigned int _size)
         m_buffer_data[i] = 0.0f;
     m_buffer_size = _size;
 
-//    glBindVertexArray(m_vertex_array);
-
     glGenBuffers(1, &m_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (m_buffer_size + 1), nullptr, GL_DYNAMIC_DRAW);
@@ -97,7 +95,6 @@ void Buffer::free_memory()
 void Buffer::resize(unsigned int _new_size)
 {
     L_ASSERT(_new_size > 0);
-//    glBindVertexArray(m_vertex_array);
 
     float* tempf = new float[_new_size];
     if (m_buffer_size < _new_size)
@@ -132,7 +129,6 @@ void Buffer::copy_array(const float* _data, unsigned int _count, unsigned int _o
     for(unsigned int i=0; i<_count; ++i)
         m_buffer_data[i + _offset] = _data[i];
 
-//    glBindVertexArray(m_vertex_array);
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
     glBufferSubData(GL_ARRAY_BUFFER, sizeof(float) * _offset, sizeof(float) * _count, _data);
 
@@ -153,7 +149,6 @@ void Buffer::use_array(float* _data, unsigned int _count)
 
     glDeleteBuffers(1, &m_buffer);
     glGenBuffers(1, &m_buffer);
-//    glBindVertexArray(m_vertex_array);
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (m_buffer_size + 1), m_buffer_data, GL_DYNAMIC_DRAW);
 
@@ -166,14 +161,16 @@ void Buffer::use_array(float* _data, unsigned int _count)
 
 void Buffer::setup_buffer(unsigned int _attrib_index, unsigned int _floats_per_vertex)
 {
-    L_ASSERT(m_buffer != 0 && m_buffer_size != 0 && m_buffer_data != nullptr);
+//    L_ASSERT(m_buffer != 0 && m_buffer_size != 0 && m_buffer_data != nullptr);
 
     if(_attrib_index == m_shader_layout_index && m_floats_per_vertex == _floats_per_vertex)
         return;
 
-//    glBindVertexArray(m_vertex_array);
-    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glVertexAttribPointer(_attrib_index, _floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * _floats_per_vertex, nullptr);
+    if(m_buffer != 0 && m_buffer_size != 0 && m_buffer_data != nullptr)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
+        glVertexAttribPointer(_attrib_index, _floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * _floats_per_vertex, nullptr);
+    }
 
     glDisableVertexAttribArray(m_shader_layout_index);
     glEnableVertexAttribArray(_attrib_index);

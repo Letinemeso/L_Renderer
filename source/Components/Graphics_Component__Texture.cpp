@@ -73,18 +73,12 @@ void Graphics_Component_Stub__Texture::M_init_constructed_product(LV::Variable_B
 
     Graphics_Component__Texture* product = (Graphics_Component__Texture*)_product;
 
-    L_ASSERT(data);
-    L_ASSERT(data_size > 0);
-    L_ASSERT(floats_per_vertex > 0);
-
-    product->buffer().free_memory();
-    product->buffer().allocate_memory(data_size);
-    product->buffer().copy_array(data, data_size);
-    product->buffer().setup_buffer(attribute_index, floats_per_vertex);
-
     L_ASSERT(resources_manager);
 
     product->inject_resources_manager(resources_manager);
+
+    if(picture_name.size() == 0)
+        return;
 
     const Picture* picture = resources_manager->get_picture(picture_name);
 

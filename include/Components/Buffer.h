@@ -36,7 +36,6 @@ namespace LR
         float_container fc;
 
     private:
-//        unsigned int m_vertex_array = 0;
         unsigned int m_shader_layout_index = 0xFFFFFFFF;
         unsigned int m_floats_per_vertex = 0;
 
@@ -46,9 +45,6 @@ namespace LR
         unsigned int m_buffer_size = 0;
 
     public:
-//        inline void set_vertex_array(unsigned int _value) { m_vertex_array = _value; }
-
-//        inline unsigned int vertex_array() const { return m_vertex_array; }
         inline unsigned int floats_per_vertex() const { return m_floats_per_vertex; }
         inline unsigned int attrib_index() const { return m_shader_layout_index; }
 
