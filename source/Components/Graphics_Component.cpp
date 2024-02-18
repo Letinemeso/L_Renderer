@@ -10,7 +10,18 @@ Graphics_Component::Graphics_Component()
 
 Graphics_Component::~Graphics_Component()
 {
+    delete m_reconstructor;
+}
 
+
+
+void Graphics_Component::set_reconstructor(Graphics_Component_Reconstructor* _ptr)
+{
+    delete m_reconstructor;
+    m_reconstructor = _ptr;
+
+    if(m_reconstructor)
+        m_reconstructor->inject_graphics_component(this);
 }
 
 
@@ -21,6 +32,9 @@ void Graphics_Component::prepare() const
 
     if(m_on_prepare_func)
         m_on_prepare_func(this);
+
+    if(m_reconstructor)
+        m_reconstructor->reconstruct_graphics_component();
 }
 
 
@@ -30,6 +44,7 @@ void Graphics_Component::prepare() const
 Graphics_Component_Stub::~Graphics_Component_Stub()
 {
     delete[] data;
+    delete reconstructor_stub;
 }
 
 
@@ -56,4 +71,7 @@ void Graphics_Component_Stub::M_init_constructed_product(LV::Variable_Base* _pro
 
     if(on_prepare_func)
         product->set_on_prepare_func(on_prepare_func);
+
+    if(reconstructor_stub)
+        product->set_reconstructor((Graphics_Component_Reconstructor*)reconstructor_stub->construct());
 }

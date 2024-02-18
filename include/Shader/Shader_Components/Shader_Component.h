@@ -2,7 +2,7 @@
 
 #include <glew.h>
 
-#include <Draw_Modules/Draw_Module_Base.h>
+#include <Draw_Modules/Draw_Module.h>
 
 
 namespace LR

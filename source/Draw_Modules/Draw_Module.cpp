@@ -1,4 +1,4 @@
-#include <Draw_Modules/Draw_Module_Base.h>
+#include <Draw_Modules/Draw_Module.h>
 
 #include <Renderer/Renderer.h>
 
@@ -40,7 +40,8 @@ void Draw_Module::add_graphics_component(Graphics_Component *_ptr)
 
     m_graphics_components.push_back(_ptr);
 
-//    _ptr->buffer().set_vertex_array(vertex_array());
+    if(_ptr->reconstructor())
+        _ptr->reconstructor()->inject_draw_module(this);
 }
 
 
