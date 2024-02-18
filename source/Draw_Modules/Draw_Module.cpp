@@ -27,10 +27,8 @@ void Draw_Module::add_graphics_component(Graphics_Component *_ptr)
     {
         for(auto it = m_graphics_components.begin(); !it.end_reached(); ++it)
         {
-            if(*it == _ptr)
-                return false;
+            L_ASSERT(*it != _ptr);
         }
-        return true;
     }, _ptr);
 
     if(m_graphics_components.size() == 0)
@@ -44,14 +42,31 @@ void Draw_Module::add_graphics_component(Graphics_Component *_ptr)
         _ptr->reconstructor()->inject_draw_module(this);
 }
 
+void Draw_Module::recalculate_vertices_amount()
+{
+    L_ASSERT(m_graphics_components.size() > 0);
+
+    Graphics_Component_List::Iterator it = m_graphics_components.begin();
+    m_vertices_amount = (*it)->buffer().size() / (*it)->buffer().floats_per_vertex();
+
+    L_DEBUG_FUNC_NOARG([this]()
+    {
+        for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+        {
+            L_ASSERT((*it)->buffer().size() / (*it)->buffer().floats_per_vertex() == m_vertices_amount);
+        }
+    });
+}
+
 
 
 void Draw_Module::update(float /*_dt*/)
 {
-    L_ASSERT(m_renderer);
-
     if(!m_draw_on_update)
         return;
+
+    L_ASSERT(m_renderer);
+    L_ASSERT(m_graphics_components.size() > 0);
 
     m_renderer->prepare();
 
@@ -61,6 +76,9 @@ void Draw_Module::update(float /*_dt*/)
 
     for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         (*it)->prepare();
+
+    if(m_should_recalculate_vertices_before_draw)
+        recalculate_vertices_amount();
 
     m_renderer->draw(this);
 }

@@ -15,6 +15,9 @@ namespace LR
         INIT_VARIABLE(LR::Graphics_Component__Texture, LR::Graphics_Component)
 
     private:
+        const Graphic_Resources_Manager* m_resources_manager = nullptr;
+
+    private:
         unsigned int m_texture_object = 0;
         const Picture* m_picture = nullptr;
 
@@ -26,6 +29,10 @@ namespace LR
         void operator=(Graphics_Component__Texture&&) = delete;
 
         ~Graphics_Component__Texture();
+
+    public:
+        inline void inject_resources_manager(const Graphic_Resources_Manager* _ptr) { m_resources_manager = _ptr; }
+        inline const Graphic_Resources_Manager* resources_manager() const { return m_resources_manager; }
 
     public:
         void set_picture(const Picture* _picture);

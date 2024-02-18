@@ -36,6 +36,7 @@ namespace LR
         Graphics_Component_List m_graphics_components;
         unsigned int m_vertices_amount = 0;
 
+        bool m_should_recalculate_vertices_before_draw = false;
         bool m_visible = true;
         bool m_draw_on_update = true;
 
@@ -58,6 +59,7 @@ namespace LR
 
     public:
         void add_graphics_component(Graphics_Component* _ptr);
+        void recalculate_vertices_amount();
 
     public:
         inline const Graphics_Component_List& graphic_components() const { return m_graphics_components; }

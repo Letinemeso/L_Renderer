@@ -28,13 +28,13 @@ void Graphics_Component::set_reconstructor(Graphics_Component_Reconstructor* _pt
 
 void Graphics_Component::prepare() const
 {
+    if(m_reconstructor)
+        m_reconstructor->reconstruct_graphics_component();
+
     m_buffer.bind();
 
     if(m_on_prepare_func)
         m_on_prepare_func(this);
-
-    if(m_reconstructor)
-        m_reconstructor->reconstruct_graphics_component();
 }
 
 

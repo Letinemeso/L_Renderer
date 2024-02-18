@@ -84,6 +84,8 @@ void Graphics_Component_Stub__Texture::M_init_constructed_product(LV::Variable_B
 
     L_ASSERT(resources_manager);
 
+    product->inject_resources_manager(resources_manager);
+
     const Picture* picture = resources_manager->get_picture(picture_name);
 
     L_ASSERT(picture);
