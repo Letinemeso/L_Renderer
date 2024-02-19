@@ -80,7 +80,7 @@ void Graphics_Component_Stub__Texture::M_init_constructed_product(LV::Variable_B
     if(picture_name.size() == 0)
         return;
 
-    const Picture* picture = resources_manager->get_picture(picture_name);
+    const Picture* picture = resources_manager->get_resource<Picture>(picture_name);
 
     L_ASSERT(picture);
 

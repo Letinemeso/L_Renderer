@@ -3,8 +3,8 @@
 #include <L_Debug/L_Debug.h>
 
 #include <Components/Graphics_Component.h>
-#include <Picture/Picture.h>
-#include <Picture/Graphic_Resources_Manager.h>
+#include <Resources/Picture.h>
+#include <Resources/Graphic_Resources_Manager.h>
 
 namespace LR
 {
