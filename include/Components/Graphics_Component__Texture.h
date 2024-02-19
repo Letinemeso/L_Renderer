@@ -2,9 +2,10 @@
 
 #include <L_Debug/L_Debug.h>
 
+#include <Resources_Manager.h>
+
 #include <Components/Graphics_Component.h>
 #include <Resources/Picture.h>
-#include <Resources/Graphic_Resources_Manager.h>
 
 namespace LR
 {
@@ -15,7 +16,7 @@ namespace LR
         INIT_VARIABLE(LR::Graphics_Component__Texture, LR::Graphics_Component)
 
     private:
-        const Graphic_Resources_Manager* m_resources_manager = nullptr;
+        const LEti::Resources_Manager* m_resources_manager = nullptr;
 
     private:
         unsigned int m_texture_object = 0;
@@ -31,8 +32,8 @@ namespace LR
         ~Graphics_Component__Texture();
 
     public:
-        inline void inject_resources_manager(const Graphic_Resources_Manager* _ptr) { m_resources_manager = _ptr; }
-        inline const Graphic_Resources_Manager* resources_manager() const { return m_resources_manager; }
+        inline void inject_resources_manager(const LEti::Resources_Manager* _ptr) { m_resources_manager = _ptr; }
+        inline const LEti::Resources_Manager* resources_manager() const { return m_resources_manager; }
 
     public:
         void set_picture(const Picture* _picture);
@@ -59,7 +60,7 @@ namespace LR
         FIELDS_END
 
     public:
-        const Graphic_Resources_Manager* resources_manager = nullptr;
+        const LEti::Resources_Manager* resources_manager = nullptr;
 
     public:
         std::string picture_name;
