@@ -62,8 +62,11 @@ namespace LR
         void recalculate_vertices_amount();
 
     public:
-        inline const Graphics_Component_List& graphic_components() const { return m_graphics_components; }
+        inline const Graphics_Component_List& graphics_components() const { return m_graphics_components; }
         inline unsigned int vertices_amount() const { return m_vertices_amount; }
+
+        Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index);
+        const Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index) const;
 
     public:
         void update(float _dt) override;
