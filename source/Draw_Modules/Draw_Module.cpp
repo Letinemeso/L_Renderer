@@ -84,6 +84,9 @@ const Graphics_Component* Draw_Module::get_graphics_component_with_buffer_index(
 
 void Draw_Module::update(float _dt)
 {
+    if(!m_visible)
+        return;
+
     if(!m_draw_on_update)
         return;
 
