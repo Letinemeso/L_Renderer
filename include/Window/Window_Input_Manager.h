@@ -1,3 +1,5 @@
+#pragma once
+
 #include <Window/Window_Controller.h>
 
 
@@ -8,6 +10,9 @@ namespace LR
     {
     private:
         bool m_active = true;
+
+    public:
+        Window_Input_Manager(bool _default_active = true) : m_active(_default_active) { }
 
     public:
         inline void set_active(bool _value) { m_active = _value; }
