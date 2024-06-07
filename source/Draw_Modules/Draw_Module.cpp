@@ -123,6 +123,8 @@ void Draw_Module_Stub::M_init_constructed_product(LV::Variable_Base* _product) c
 
     Draw_Module* product = (Draw_Module*)_product;
 
+    M_apply_draw_mode(product);
+
     L_ASSERT(renderer);
 
     product->set_renderer(renderer);
@@ -132,6 +134,25 @@ void Draw_Module_Stub::M_init_constructed_product(LV::Variable_Base* _product) c
         Graphics_Component_Stub* stub = LV::cast_variable<Graphics_Component_Stub>(it->child_ptr);
         L_ASSERT(stub);
         product->add_graphics_component((Graphics_Component*)stub->construct());
+    }
+}
+
+
+
+void Draw_Module_Stub::M_apply_draw_mode(Draw_Module* _product) const
+{
+    if(draw_mode.size() == 0)
+        return;
+
+    if(draw_mode == "GL_TRIANGLES")
+        _product->set_draw_mode(GL_TRIANGLES);
+    else if(draw_mode == "GL_LINES")
+        _product->set_draw_mode(GL_LINES);
+    else if(draw_mode == "GL_POINTS")
+        _product->set_draw_mode(GL_POINTS);
+    else
+    {
+        L_ASSERT(false);
     }
 }
 
