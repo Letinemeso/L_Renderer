@@ -49,6 +49,10 @@ namespace LR
         Font(Font&&) = delete;
 
     public:
+        inline const Letter_Data* letters() const { return m_letters; }
+        inline unsigned int letters_amount() const { return 256; }
+
+    public:
         const Letter_Data& get_letter_data(unsigned char _letter) const;
         bool has_letter(unsigned char _letter) const;
 
