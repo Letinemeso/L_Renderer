@@ -16,7 +16,7 @@ namespace LR
 {
 
     class Renderer;
-
+    class Draw_Order_Controller;
 
 
     class Draw_Module : public LEti::Module
@@ -26,11 +26,14 @@ namespace LR
 
     protected:
         LR::Renderer* m_renderer = nullptr;
+        Draw_Order_Controller* m_draw_order_controller = nullptr;
 
     public:
         using Graphics_Component_List = LDS::List<Graphics_Component*>;
 
     protected:
+        std::string m_draw_layer;
+
         unsigned int m_vertex_array = 0;
 
         Graphics_Component_List m_graphics_components;
@@ -49,6 +52,13 @@ namespace LR
     public:
         inline void set_renderer(LR::Renderer* _renderer) { m_renderer = _renderer; }
         inline LR::Renderer* renderer() const { return m_renderer; }
+
+    public:
+        void set_draw_layer(Draw_Order_Controller* _draw_order_controller, const std::string& _layer_name);
+        void reset_draw_layer();
+
+        inline Draw_Order_Controller* draw_order_controller() const { return m_draw_order_controller; }
+        inline const std::string& draw_layer() const { return m_draw_layer; }
 
     public:
         inline unsigned int vertex_array() const { return m_vertex_array; }
@@ -89,7 +99,9 @@ namespace LR
         INIT_VARIABLE(LR::Draw_Module_Stub, LEti::Module_Stub)
 
         INIT_FIELDS
+        ADD_FIELD(bool, visible)
         ADD_FIELD(std::string, draw_mode)
+        ADD_FIELD(std::string, draw_layer)
         FIELDS_END
 
         INIT_CHILDS_LISTS
@@ -97,10 +109,13 @@ namespace LR
         CHILDS_LISTS_END
 
     public:
+        bool visible = true;
         std::string draw_mode = "GL_TRIANGLES";
+        std::string draw_layer;
 
     public:
         LR::Renderer* renderer = nullptr;
+        Draw_Order_Controller* draw_order_controller = nullptr;
 
     public:
         LV::Variable_Base::Childs_List graphics_component_stubs;

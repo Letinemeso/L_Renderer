@@ -1,6 +1,7 @@
 #include <Draw_Modules/Draw_Module.h>
 
 #include <Renderer/Renderer.h>
+#include <Draw_Order_Controller/Draw_Order_Controller.h>
 
 using namespace LR;
 
@@ -17,6 +18,42 @@ Draw_Module::~Draw_Module()
         delete *it;
 
     glDeleteVertexArrays(1, &m_vertex_array);
+
+    if(m_draw_order_controller)
+        m_draw_order_controller->unregister_module(this);
+}
+
+
+
+void Draw_Module::set_draw_layer(Draw_Order_Controller* _draw_order_controller, const std::string& _layer_name)
+{
+    if(_draw_order_controller == m_draw_order_controller && _layer_name == m_draw_layer)
+        return;
+
+    reset_draw_layer();
+
+    m_draw_order_controller = _draw_order_controller;
+    m_draw_order_controller->register_module(_layer_name, this,
+                                             [this]()
+                                             {
+                                                 draw();
+                                             });
+
+    set_draw_on_update(false);
+
+    m_draw_layer = _layer_name;
+}
+
+void Draw_Module::reset_draw_layer()
+{
+    if(!m_draw_order_controller)
+        return;
+
+    m_draw_order_controller->unregister_module(this);
+    m_draw_order_controller = nullptr;
+    m_draw_layer.clear();
+
+    set_draw_on_update(true);
 }
 
 
@@ -105,6 +142,9 @@ void Draw_Module::update(float _dt)
 
 void Draw_Module::draw() const
 {
+    if(!transformation_data() || !transformation_data_prev_state())
+        return;
+
     L_ASSERT(m_renderer);
     L_ASSERT(m_graphics_components.size() > 0);
 
@@ -127,16 +167,14 @@ void Draw_Module::draw() const
 
 
 
-LV::Variable_Base* Draw_Module_Stub::M_construct_product() const
-{
-    return new Draw_Module;
-}
+BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Draw_Module_Stub)
 
-void Draw_Module_Stub::M_init_constructed_product(LV::Variable_Base* _product) const
+BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
 {
-    LEti::Module_Stub::M_init_constructed_product(_product);
+    BUILDER_STUB_PARENT_INITIALIZATION;
+    BUILDER_STUB_CAST_PRODUCT;
 
-    Draw_Module* product = (Draw_Module*)_product;
+    product->set_visible(visible);
 
     M_apply_draw_mode(product);
 
@@ -150,6 +188,9 @@ void Draw_Module_Stub::M_init_constructed_product(LV::Variable_Base* _product) c
         L_ASSERT(stub);
         product->add_graphics_component((Graphics_Component*)stub->construct());
     }
+
+    if(draw_order_controller && draw_layer.size() > 0)
+        product->set_draw_layer(draw_order_controller, draw_layer);
 }
 
 
