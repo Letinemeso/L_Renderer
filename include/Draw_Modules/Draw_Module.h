@@ -77,7 +77,7 @@ namespace LR
 
     public:
         void update(float _dt) override;
-        virtual void draw();
+        virtual void draw() const;
 
 	};
 

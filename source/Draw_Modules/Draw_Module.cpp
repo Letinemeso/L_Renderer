@@ -103,7 +103,7 @@ void Draw_Module::update(float _dt)
         draw();
 }
 
-void Draw_Module::draw()
+void Draw_Module::draw() const
 {
     L_ASSERT(m_renderer);
     L_ASSERT(m_graphics_components.size() > 0);
@@ -117,7 +117,7 @@ void Draw_Module::draw()
 
     glBindVertexArray(vertex_array());
 
-    for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+    for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         (*it)->prepare_to_draw();
 
     m_renderer->draw(this);
