@@ -72,8 +72,12 @@ namespace LR
         Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index);
         const Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index) const;
 
+    protected:
+        virtual void M_update_internal(float _dt);
+
     public:
         void update(float _dt) override;
+        virtual void draw();
 
 	};
 

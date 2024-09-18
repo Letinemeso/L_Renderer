@@ -82,16 +82,34 @@ const Graphics_Component* Draw_Module::get_graphics_component_with_buffer_index(
 
 
 
+void Draw_Module::M_update_internal(float _dt)
+{
+    glBindVertexArray(vertex_array());
+
+    for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+        (*it)->update(_dt);
+
+    if(m_should_recalculate_vertices_before_draw)
+        recalculate_vertices_amount();
+}
+
+
+
 void Draw_Module::update(float _dt)
 {
-    if(!m_visible)
-        return;
+    M_update_internal(_dt);
 
-    if(!m_draw_on_update)
-        return;
+    if(m_draw_on_update)
+        draw();
+}
 
+void Draw_Module::draw()
+{
     L_ASSERT(m_renderer);
     L_ASSERT(m_graphics_components.size() > 0);
+
+    if(!m_visible)
+        return;
 
     m_renderer->prepare();
 
@@ -100,10 +118,7 @@ void Draw_Module::update(float _dt)
     glBindVertexArray(vertex_array());
 
     for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
-        (*it)->update(_dt);
-
-    if(m_should_recalculate_vertices_before_draw)
-        recalculate_vertices_amount();
+        (*it)->prepare_to_draw();
 
     m_renderer->draw(this);
 }

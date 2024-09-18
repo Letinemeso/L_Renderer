@@ -30,7 +30,10 @@ void Graphics_Component::update(float _dt) const
 {
     if(m_reconstructor)
         m_reconstructor->update(_dt);
+}
 
+void Graphics_Component::prepare_to_draw() const
+{
     m_buffer.bind();
 
     if(m_on_prepare_func)

@@ -45,6 +45,7 @@ namespace LR
 
     public:
         virtual void update(float _dt) const;
+        virtual void prepare_to_draw() const;
 
     };
 

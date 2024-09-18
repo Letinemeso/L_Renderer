@@ -44,6 +44,7 @@ namespace LR
 
     public:
         void update(float _dt) const override;
+        void prepare_to_draw() const override;
 
     };
 
