@@ -55,7 +55,7 @@ void Shader::M_debug() const
     int size = 0;
     char log[2048];
     glGetShaderInfoLog(m_opengl_shader_handle, 2048, &size, log);
-    std::cout << log << "\n";
+    std::cout << log << std::endl;
 
     L_ASSERT(false);
 }
