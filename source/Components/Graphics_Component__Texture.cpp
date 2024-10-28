@@ -91,6 +91,9 @@ void Graphics_Component_Stub__Texture::M_init_constructed_product(LV::Variable_B
 
     product->set_picture(picture);
 
+    if(data == nullptr || data_size == 0)
+        return;
+
     if(texture_coords_in_pixels)
         product->reconfigure_texture_coords();
 }
