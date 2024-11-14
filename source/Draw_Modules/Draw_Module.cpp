@@ -9,7 +9,7 @@ using namespace LR;
 Draw_Module::Draw_Module()
 {
     glGenVertexArrays(1, &m_vertex_array);
-    glBindVertexArray(m_vertex_array);
+    bind_vertex_array();
 }
 
 Draw_Module::~Draw_Module()
@@ -95,6 +95,11 @@ void Draw_Module::recalculate_vertices_amount()
     });
 }
 
+void Draw_Module::bind_vertex_array() const
+{
+    glBindVertexArray(vertex_array());
+}
+
 
 
 Graphics_Component* Draw_Module::get_graphics_component_with_buffer_index(unsigned int _index)
@@ -121,7 +126,7 @@ const Graphics_Component* Draw_Module::get_graphics_component_with_buffer_index(
 
 void Draw_Module::M_update_internal(float _dt)
 {
-    glBindVertexArray(vertex_array());
+    bind_vertex_array();
 
     for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         (*it)->update(_dt);
@@ -155,7 +160,7 @@ void Draw_Module::draw() const
 
     transformation_data()->update_matrix();
 
-    glBindVertexArray(vertex_array());
+    bind_vertex_array();
 
     for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         (*it)->prepare_to_draw();

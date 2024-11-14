@@ -74,6 +74,7 @@ namespace LR
     public:
         void add_graphics_component(Graphics_Component* _ptr);
         void recalculate_vertices_amount();
+        void bind_vertex_array() const;
 
     public:
         inline const Graphics_Component_List& graphics_components() const { return m_graphics_components; }

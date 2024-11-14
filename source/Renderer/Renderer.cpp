@@ -37,7 +37,7 @@ void Renderer::draw(const Draw_Module* _draw_module) const
 {
     L_ASSERT(_draw_module);
 
-    glBindVertexArray(_draw_module->vertex_array());
+    _draw_module->bind_vertex_array();
 
     m_shader_program->update(_draw_module);
 
