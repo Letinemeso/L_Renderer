@@ -10,6 +10,17 @@
 namespace LR
 {
 
+    struct Texture_Settings
+    {
+        int min_filter = GL_NEAREST;
+        int mag_filter = GL_NEAREST;
+        int wrap_s = GL_REPEAT;
+        int wrap_t = GL_REPEAT;
+
+        Texture_Settings() { };
+    };
+
+
     class Graphics_Component__Texture final : public Graphics_Component
     {
     public:
@@ -36,7 +47,7 @@ namespace LR
         inline const LEti::Resources_Manager* resources_manager() const { return m_resources_manager; }
 
     public:
-        void set_picture(const Picture* _picture);
+        void set_picture(const Picture* _picture, const Texture_Settings& _settings = Texture_Settings());
         void reconfigure_texture_coords();
 
     public:

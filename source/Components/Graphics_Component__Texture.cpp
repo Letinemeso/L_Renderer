@@ -16,7 +16,7 @@ Graphics_Component__Texture::~Graphics_Component__Texture()
 
 
 
-void Graphics_Component__Texture::set_picture(const Picture* _picture)
+void Graphics_Component__Texture::set_picture(const Picture* _picture, const Texture_Settings& _settings)
 {
     glDeleteTextures(1, &m_texture_object);
 
@@ -24,10 +24,10 @@ void Graphics_Component__Texture::set_picture(const Picture* _picture)
 
     glGenTextures(1, &m_texture_object);
     glBindTexture(GL_TEXTURE_2D, m_texture_object);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _settings.min_filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _settings.mag_filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _settings.wrap_s);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _settings.wrap_t);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_picture->width(), m_picture->height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_picture->data());
 }
 
