@@ -19,6 +19,9 @@ namespace LR
     private:
         friend class Picture_Stub;
 
+    public:
+        using Pixel = const unsigned char*;
+
     private:
         unsigned int m_width = 0;
         unsigned int m_height = 0;
