@@ -51,7 +51,7 @@ namespace LR
         inline unsigned int height() const { return m_height; }
         inline unsigned int channels() const { return m_channels; }
         inline const unsigned char* data() const { return m_picture_data; }
-        inline const unsigned char* pixel(unsigned int _x, unsigned int _y) const { return m_picture_grid_representation[_x][_y]; }
+        inline Pixel pixel(unsigned int _x, unsigned int _y) const { return m_picture_grid_representation[_x][_y]; }
 
     public:
         void convert_texture_coords_vertex(glm::vec2& _vertex) const;
