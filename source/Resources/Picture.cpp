@@ -87,7 +87,7 @@ void Picture::fill_square_with_color(unsigned int _x, unsigned int _y, unsigned 
     }
 }
 
-void Picture::replace_with_picture(unsigned int _x, unsigned int _y, const Picture* _picture, unsigned int _offset_for_picture_x, unsigned int _offset_for_picture_y, unsigned int _picture_size_x, unsigned int _picture_size_y)
+void Picture::replace_with_picture(unsigned int _x, unsigned int _y, const Picture* _picture, const glm::vec4& _color_multipliers, unsigned int _offset_for_picture_x, unsigned int _offset_for_picture_y, unsigned int _picture_size_x, unsigned int _picture_size_y)
 {
     L_ASSERT(_picture);
     L_ASSERT(m_channels == _picture->m_channels);
@@ -101,12 +101,28 @@ void Picture::replace_with_picture(unsigned int _x, unsigned int _y, const Pictu
     L_ASSERT(_offset_for_picture_y + _picture_size_y <= _picture->m_height);
     L_ASSERT(_x + _picture_size_x <= m_width);
     L_ASSERT(_y + _picture_size_y <= m_height);
+    L_DEBUG_FUNC_NOARG([&]()
+    {
+        for(unsigned int i=0; i<4; ++i)
+            L_ASSERT(_color_multipliers[i] <= 1.0f && _color_multipliers[i] >= 0.0f);
+    });
+
+    unsigned char* color_buffer = new unsigned char[m_channels];
 
     for(unsigned int x = 0; x < _picture_size_x; ++x)
     {
         for(unsigned int y = 0; y < _picture_size_y; ++y)
-            color_pixel(x + _x, y + _y, _picture->pixel(x + _offset_for_picture_x, y + _offset_for_picture_y));
+        {
+            Pixel picture_pixel = _picture->pixel(x + _offset_for_picture_x, y + _offset_for_picture_y);
+
+            for(unsigned int i=0; i<m_channels; ++i)
+                color_buffer[i] = (float)picture_pixel[i] * _color_multipliers[i];
+
+            color_pixel(x + _x, y + _y, color_buffer);
+        }
     }
+
+    delete[] color_buffer;
 }
 
 

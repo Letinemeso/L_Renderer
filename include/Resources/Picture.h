@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vec2.hpp>
+#include <vec4.hpp>
 
 #include <L_Debug/L_Debug.h>
 
@@ -59,7 +60,7 @@ namespace LR
     public:
         void color_pixel(unsigned int _x, unsigned int _y, const unsigned char* _color);
         void fill_square_with_color(unsigned int _x, unsigned int _y, unsigned int _width, unsigned int _height, const unsigned char* _color);
-        void replace_with_picture(unsigned int _x, unsigned int _y, const Picture* _picture, unsigned int _offset_for_picture_x = 0, unsigned int _offset_for_picture_y = 0, unsigned int _picture_size_x = 0xFFFFFFFF, unsigned int _picture_size_y = 0xFFFFFFFF);
+        void replace_with_picture(unsigned int _x, unsigned int _y, const Picture* _picture, const glm::vec4& _color_multipliers = {1.0f, 1.0f, 1.0f, 1.0f}, unsigned int _offset_for_picture_x = 0, unsigned int _offset_for_picture_y = 0, unsigned int _picture_size_x = 0xFFFFFFFF, unsigned int _picture_size_y = 0xFFFFFFFF);
 
     };
 
