@@ -1,24 +1,27 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-
-#include <glew.h>
-#include <mat4x4.hpp>
-
 #include <Data_Structures/Map.h>
 #include <Data_Structures/List.h>
 #include <L_Debug/L_Debug.h>
 
-#include <Shader/Shader_Types/Shader.h>
+#include <Variable_Base.h>
+#include <Builder_Stub.h>
+
+#include <glew.h>
+#include <mat4x4.hpp>
+
+#include <Shader/Shader.h>
 #include <Draw_Modules/Draw_Module.h>
 
 
 namespace LR
 {
 
-    class Shader_Program
+    class Shader_Program : public LV::Variable_Base
     {
+    public:
+        INIT_VARIABLE(LR::Shader_Program, LV::Variable_Base)
+
     private:
         unsigned int m_program_handle = 0;
         LDS::List<Shader*> m_shader_objects;
@@ -50,6 +53,27 @@ namespace LR
 
     public:
         void use() const;
+
+    };
+
+
+    class Shader_Program_Stub : public LV::Builder_Stub
+    {
+    public:
+        INIT_VARIABLE(LR::Shader_Program_Stub, LV::Builder_Stub)
+
+        INIT_CHILDS_LISTS
+        ADD_CHILDS_LIST("Shader__*", &shaders)
+        CHILDS_LISTS_END
+
+    public:
+        LV::Variable_Base::Childs_List shaders;
+
+    public:
+        ~Shader_Program_Stub();
+
+    public:
+        INIT_BUILDER_STUB(Shader_Program);
 
     };
 

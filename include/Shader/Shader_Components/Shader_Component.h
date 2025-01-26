@@ -1,5 +1,8 @@
 #pragma once
 
+#include <Variable_Base.h>
+#include <Builder_Stub.h>
+
 #include <glew.h>
 
 #include <Draw_Modules/Draw_Module.h>
@@ -8,7 +11,7 @@
 namespace LR
 {
 
-    class Shader_Component
+    class Shader_Component : public LV::Variable_Base
     {
     public:
         struct Vertex_Data
@@ -60,4 +63,25 @@ namespace LR
         virtual void update(const Draw_Module* /*_draw_module*/) {  }
 
     };
+
+
+    class Shader_Component_Stub : public LV::Builder_Stub
+    {
+    public:
+        INIT_VARIABLE(LR::Shader_Component_Stub, LV::Builder_Stub);
+
+        INIT_FIELDS;
+        ADD_FIELD(std::string, source)
+        ADD_FIELD(std::string, main_function_name);
+        FIELDS_END
+
+    public:
+        std::string source;
+        std::string main_function_name;
+
+    public:
+        INIT_BUILDER_STUB(Shader_Component);
+
+    };
+
 }

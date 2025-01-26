@@ -1,4 +1,4 @@
-#include <Shader/Shader_Types/Shader.h>
+#include <Shader/Shader.h>
 
 using namespace LR;
 
@@ -160,4 +160,50 @@ void Shader::update(const Draw_Module *_draw_module)
 
     for(LDS::List<Shader_Component*>::Iterator it = m_components.begin(); !it.end_reached(); ++it)
         (*it)->update(_draw_module);
+}
+
+
+
+
+
+Shader_Stub::~Shader_Stub()
+{
+    clear_childs_list(shader_components);
+}
+
+
+
+unsigned int Shader_Stub::M_parse_shader_type() const
+{
+    if(shader_type == "Vertex")
+        return GL_VERTEX_SHADER;
+    else if(shader_type == "Fragment")
+        return GL_FRAGMENT_SHADER;
+    else if(shader_type == "Geometry")
+        return GL_GEOMETRY_SHADER;
+
+    L_ASSERT(false);    //  unregistred shader type
+    return 0;
+}
+
+
+
+BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Shader_Stub);
+
+BUILDER_STUB_INITIALIZATION_FUNC(Shader_Stub)
+{
+    BUILDER_STUB_PARENT_INITIALIZATION;
+    BUILDER_STUB_CAST_PRODUCT;
+
+    product->set_glsl_version(glsl_version);
+    product->set_shader_type(M_parse_shader_type());
+
+    for(LV::Variable_Base::Childs_List::Const_Iterator it = shader_components.begin(); !it.end_reached(); ++it)
+    {
+        Shader_Component_Stub* stub = (Shader_Component_Stub*)it->child_ptr;
+        L_ASSERT(LV::cast_variable<Shader_Component_Stub>(stub));
+
+        Shader_Component* component = Shader_Component_Stub::construct_from(stub);
+        product->add_component(component);
+    }
 }

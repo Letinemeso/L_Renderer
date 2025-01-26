@@ -125,64 +125,26 @@ void Shader_Program::use() const
 
 
 
+Shader_Program_Stub::~Shader_Program_Stub()
+{
+    clear_childs_list(shaders);
+}
 
 
 
+BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Shader_Program_Stub)
 
+BUILDER_STUB_INITIALIZATION_FUNC(Shader_Program_Stub)
+{
+    BUILDER_STUB_PARENT_INITIALIZATION;
+    BUILDER_STUB_CAST_PRODUCT;
 
+    for(LV::Variable_Base::Childs_List::Const_Iterator it = shaders.begin(); !it.end_reached(); ++it)
+    {
+        Shader_Stub* stub = (Shader_Stub*)it->child_ptr;
+        L_ASSERT(LV::cast_variable<Shader_Stub>(stub));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        Shader* shader = Shader_Stub::construct_from(stub);
+        product->add_shader(shader);
+    }
+}

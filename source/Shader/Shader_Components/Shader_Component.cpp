@@ -58,3 +58,18 @@ void Shader_Component::init(unsigned int _opengl_program_handle)
 {
     m_assigned_opengl_program_handle = _opengl_program_handle;
 }
+
+
+
+
+
+BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Shader_Component_Stub)
+
+BUILDER_STUB_INITIALIZATION_FUNC(Shader_Component_Stub)
+{
+    BUILDER_STUB_PARENT_INITIALIZATION;
+    BUILDER_STUB_CAST_PRODUCT;
+
+    product->set_source(source);
+    product->set_main_call(main_function_name);
+}
