@@ -112,6 +112,7 @@ namespace LR
         INIT_VARIABLE(LR::Shader_Stub, LV::Builder_Stub)
 
         INIT_FIELDS
+        ADD_FIELD(std::string, shader_type)
         ADD_FIELD(std::string, glsl_version)
         FIELDS_END
 

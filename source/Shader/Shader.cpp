@@ -126,7 +126,7 @@ void Shader::compile()
     {
         Shader_Component* component = *it;
         main_func_str += component->main_call();
-        main_func_str += "\n";
+        main_func_str += "();\n";
     }
 
     main_func_str += "}\n";
@@ -206,4 +206,6 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Stub)
         Shader_Component* component = Shader_Component_Stub::construct_from(stub);
         product->add_component(component);
     }
+
+    product->compile();
 }

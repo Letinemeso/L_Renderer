@@ -77,12 +77,12 @@ namespace LR
         FIELDS_END
 
     public:
-        std::string projection_matrix_uniform_name = "projection_matrix";
-        std::string transform_matrix_uniform_name = "transform_matrix";
-        std::string texture_uniform_name = "fp_in_texture";
-        std::string coords_input_buffer_name = "vs_in_pos";
-        std::string colors_input_buffer_name = "vs_in_colors";
-        std::string texture_coords_input_buffer_name = "vs_in_tex_coords";
+        std::string projection_matrix_uniform_name;
+        std::string transform_matrix_uniform_name;
+        std::string texture_uniform_name;
+        std::string coords_input_buffer_name;
+        std::string colors_input_buffer_name;
+        std::string texture_coords_input_buffer_name;
 
     public:
         INIT_BUILDER_STUB(Shader_Transform_Component);

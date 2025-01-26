@@ -169,4 +169,6 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Program_Stub)
         Shader* shader = Shader_Stub::construct_from(stub);
         product->add_shader(shader);
     }
+
+    product->init();
 }
