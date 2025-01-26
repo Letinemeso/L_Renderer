@@ -14,14 +14,14 @@ Shader_Program::Shader_Program()
 
 Shader_Program::Shader_Program(Shader_Program&& _other)
 {
-    m_shader_objects = (LDS::List<Shader*>&&)_other.m_shader_objects;
+    m_shaders = (LDS::List<Shader*>&&)_other.m_shaders;
     m_program_handle = _other.m_program_handle;
     _other.m_program_handle = 0;
 }
 
 void Shader_Program::operator=(Shader_Program&& _other)
 {
-    m_shader_objects = (LDS::List<Shader*>&&)_other.m_shader_objects;
+    m_shaders = (LDS::List<Shader*>&&)_other.m_shaders;
     m_program_handle = _other.m_program_handle;
     _other.m_program_handle = 0;
 }
@@ -54,12 +54,12 @@ void Shader_Program::M_debug() const
 
 void Shader_Program::reset()
 {
-    for(LDS::List<Shader*>::Iterator it = m_shader_objects.begin(); !it.end_reached(); ++it)
+    for(LDS::List<Shader*>::Iterator it = m_shaders.begin(); !it.end_reached(); ++it)
     {
         Shader* shader = *it;
         delete shader;
     }
-    m_shader_objects.clear();
+    m_shaders.clear();
 
     glDeleteProgram(m_program_handle);
     m_program_handle = 0;
@@ -69,7 +69,7 @@ void Shader_Program::add_shader(Shader *_shader)
 {
     L_ASSERT(_shader);
 
-    m_shader_objects.push_back(_shader);
+    m_shaders.push_back(_shader);
 }
 
 void Shader_Program::init()
@@ -78,7 +78,7 @@ void Shader_Program::init()
 
     m_program_handle = glCreateProgram();
 
-    for(LDS::List<Shader*>::Iterator it = m_shader_objects.begin(); !it.end_reached(); ++it)
+    for(LDS::List<Shader*>::Iterator it = m_shaders.begin(); !it.end_reached(); ++it)
     {
         Shader* shader = *it;
         L_ASSERT(shader->handle() != 0);
@@ -91,7 +91,7 @@ void Shader_Program::init()
     glUseProgram(m_program_handle);
     s_current_shader_program = m_program_handle;
 
-    for(LDS::List<Shader*>::Iterator it = m_shader_objects.begin(); !it.end_reached(); ++it)
+    for(LDS::List<Shader*>::Iterator it = m_shaders.begin(); !it.end_reached(); ++it)
     {
         Shader* shader = *it;
 
@@ -101,15 +101,37 @@ void Shader_Program::init()
 
 
 
+Shader* Shader_Program::get_shader_of_type(Shader_Type _type)
+{
+    for(Shaders_List::Iterator it = m_shaders.begin(); !it.end_reached(); ++it)
+    {
+        Shader* shader = *it;
+        if(shader->shader_type() == _type)
+            return shader;
+    }
+    return nullptr;
+}
+
+const Shader* Shader_Program::get_shader_of_type(Shader_Type _type) const
+{
+    for(Shaders_List::Const_Iterator it = m_shaders.begin(); !it.end_reached(); ++it)
+    {
+        const Shader* shader = *it;
+        if(shader->shader_type() == _type)
+            return shader;
+    }
+    return nullptr;
+}
+
+
+
 void Shader_Program::update(const Draw_Module* _draw_module)
 {
     L_ASSERT(_draw_module);
 
-    for(LDS::List<Shader*>::Iterator it = m_shader_objects.begin(); !it.end_reached(); ++it)
+    for(LDS::List<Shader*>::Iterator it = m_shaders.begin(); !it.end_reached(); ++it)
         (*it)->update(_draw_module);
 }
-
-
 
 void Shader_Program::use() const
 {

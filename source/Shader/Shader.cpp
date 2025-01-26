@@ -173,17 +173,17 @@ Shader_Stub::~Shader_Stub()
 
 
 
-unsigned int Shader_Stub::M_parse_shader_type() const
+Shader_Type Shader_Stub::M_parse_shader_type() const
 {
     if(shader_type == "Vertex")
-        return GL_VERTEX_SHADER;
+        return Shader_Type::Vertex;
     else if(shader_type == "Fragment")
-        return GL_FRAGMENT_SHADER;
+        return Shader_Type::Fragment;
     else if(shader_type == "Geometry")
-        return GL_GEOMETRY_SHADER;
+        return Shader_Type::Geometry;
 
     L_ASSERT(false);    //  unregistred shader type
-    return 0;
+    return Shader_Type::Unknown;
 }
 
 

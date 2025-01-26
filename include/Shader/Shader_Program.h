@@ -22,9 +22,12 @@ namespace LR
     public:
         INIT_VARIABLE(LR::Shader_Program, LV::Variable_Base)
 
+    public:
+        using Shaders_List = LDS::List<Shader*>;
+
     private:
         unsigned int m_program_handle = 0;
-        LDS::List<Shader*> m_shader_objects;
+        Shaders_List m_shaders;
 
     private:
         static unsigned int s_current_shader_program;
@@ -40,6 +43,9 @@ namespace LR
 
         ~Shader_Program();
 
+    public:
+        inline const Shaders_List& shaders() const { return m_shaders; }
+
     private:
         void M_debug() const;
 
@@ -49,9 +55,11 @@ namespace LR
         void init();
 
     public:
-        void update(const Draw_Module* _draw_module);
+        Shader* get_shader_of_type(Shader_Type _type);
+        const Shader* get_shader_of_type(Shader_Type _type) const;
 
     public:
+        void update(const Draw_Module* _draw_module);
         void use() const;
 
     };

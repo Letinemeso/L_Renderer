@@ -15,6 +15,15 @@
 namespace LR
 {
 
+    enum Shader_Type : unsigned int
+    {
+        Unknown = 0,
+        Vertex = (Shader_Type)GL_VERTEX_SHADER,
+        Fragment = (Shader_Type)GL_FRAGMENT_SHADER,
+        Geometry = (Shader_Type)GL_GEOMETRY_SHADER
+    };
+
+
     class Shader : public LV::Variable_Base
     {
     public:
@@ -22,14 +31,15 @@ namespace LR
 
     private:
         unsigned int m_assigned_opengl_program_handle = 0;
-
-	private:
         unsigned int m_opengl_shader_handle = 0;
 
+    public:
+        using Shader_Components_List = LDS::List<Shader_Component*>;
+
     private:
-        unsigned int m_shader_type = 0;
+        Shader_Type m_shader_type = Shader_Type::Unknown;
         std::string m_glsl_version;
-        LDS::List<Shader_Component*> m_components;
+        Shader_Components_List m_components;
 
     public:
         Shader(const Shader&) = delete;
@@ -40,18 +50,19 @@ namespace LR
         Shader(Shader&& _other);
         void operator=(Shader&& _other);
 
-        virtual ~Shader();
+        ~Shader();
 
     private:
         void M_debug() const;
         bool M_component_already_added(Shader_Component* _component) const;
 
 	public:
-        inline void set_shader_type(unsigned int _value) { m_shader_type = _value; }
+        inline void set_shader_type(Shader_Type _value) { m_shader_type = _value; }
         inline void set_glsl_version(const std::string& _value) { m_glsl_version = _value; }
 
-        inline unsigned int shader_type() const { return m_shader_type; }
+        inline Shader_Type shader_type() const { return m_shader_type; }
         inline unsigned int handle() const { return m_opengl_shader_handle; }
+        inline const Shader_Components_List& components() const { return m_components; }
 
     public:
         void reset();
@@ -60,9 +71,39 @@ namespace LR
         void init(unsigned int _opengl_program_handle);
 
     public:
+        template<typename Shader_Component_Type>
+        Shader_Component_Type* get_shader_component_of_type();
+        template<typename Shader_Component_Type>
+        const Shader_Component_Type* get_shader_component_of_type() const;
+
+    public:
         void update(const Draw_Module* _draw_module);
 
 	};
+
+    template<typename Shader_Component_Type>
+    Shader_Component_Type* Shader::get_shader_component_of_type()
+    {
+        for(Shader_Components_List::Iterator it = m_components.begin(); !it.end_reached(); ++it)
+        {
+            Shader_Component_Type* component = LV::cast_variable<Shader_Component_Type>(*it);
+            if(component)
+                return component;
+        }
+        return nullptr;
+    }
+
+    template<typename Shader_Component_Type>
+    const Shader_Component_Type* Shader::get_shader_component_of_type() const
+    {
+        for(Shader_Components_List::Const_Iterator it = m_components.begin(); !it.end_reached(); ++it)
+        {
+            const Shader_Component_Type* component = LV::cast_variable<Shader_Component_Type>(*it);
+            if(component)
+                return component;
+        }
+        return nullptr;
+    }
 
 
     class Shader_Stub : public LV::Builder_Stub
@@ -88,7 +129,7 @@ namespace LR
         ~Shader_Stub();
 
     private:
-        unsigned int M_parse_shader_type() const;
+        Shader_Type M_parse_shader_type() const;
 
     public:
         INIT_BUILDER_STUB(Shader);
