@@ -2,6 +2,7 @@
 
 #include <Renderer/Renderer.h>
 #include <Draw_Order_Controller/Draw_Order_Controller.h>
+#include <Shader/Shader_Manager.h>
 
 using namespace LR;
 
@@ -156,6 +157,9 @@ void Draw_Module::draw() const
     if(!m_visible)
         return;
 
+    L_ASSERT(m_shader_program);
+
+    m_renderer->set_shader_program(m_shader_program);
     m_renderer->prepare();
 
     transformation_data()->update_matrix();
@@ -196,6 +200,10 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
 
     if(draw_order_controller && draw_layer.size() > 0)
         product->set_draw_layer(draw_order_controller, draw_layer);
+
+    L_ASSERT(shader_manager);
+    Shader_Program* shader = shader_manager->get_shader_program(shader_id);
+    product->set_shader_program(shader);
 }
 
 

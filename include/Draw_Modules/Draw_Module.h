@@ -15,8 +15,10 @@
 namespace LR
 {
 
+    class Shader_Program;
     class Renderer;
     class Draw_Order_Controller;
+    class Shader_Manager;
 
 
     class Draw_Module : public LEti::Module
@@ -26,6 +28,7 @@ namespace LR
 
     protected:
         LR::Renderer* m_renderer = nullptr;
+        Shader_Program* m_shader_program = nullptr;
         Draw_Order_Controller* m_draw_order_controller = nullptr;
 
     public:
@@ -50,7 +53,9 @@ namespace LR
         ~Draw_Module();
 
     public:
-        inline void set_renderer(LR::Renderer* _renderer) { m_renderer = _renderer; }
+        inline void set_renderer(LR::Renderer* _ptr) { m_renderer = _ptr; }
+        inline void set_shader_program(LR::Shader_Program* _ptr) { m_shader_program = _ptr; }
+
         inline LR::Renderer* renderer() const { return m_renderer; }
 
     public:
@@ -103,6 +108,7 @@ namespace LR
         ADD_FIELD(bool, visible)
         ADD_FIELD(std::string, draw_mode)
         ADD_FIELD(std::string, draw_layer)
+        ADD_FIELD(std::string, shader_id)
         FIELDS_END
 
         INIT_CHILDS_LISTS
@@ -113,10 +119,12 @@ namespace LR
         bool visible = true;
         std::string draw_mode = "GL_TRIANGLES";
         std::string draw_layer;
+        std::string shader_id;
 
     public:
-        LR::Renderer* renderer = nullptr;
+        Renderer* renderer = nullptr;
         Draw_Order_Controller* draw_order_controller = nullptr;
+        Shader_Manager* shader_manager = nullptr;
 
     public:
         LV::Variable_Base::Childs_List graphics_component_stubs;
