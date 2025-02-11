@@ -19,39 +19,11 @@ Picture::Picture(unsigned int _width, unsigned int _height, bool _has_alpha)
 
     m_buffer_size = m_width * m_height * m_channels;
     m_picture_data = new unsigned char[m_buffer_size] { 0 };
-
-    M_construct_grid_representation();
 }
 
 Picture::~Picture()
 {
     delete[] m_picture_data;
-}
-
-
-
-void Picture::M_construct_grid_representation()
-{
-    if(m_picture_grid_representation)
-    {
-        for(unsigned int i = 0; i < m_height; ++i)
-            delete m_picture_grid_representation[i];
-        delete m_picture_grid_representation;
-    }
-
-    m_picture_grid_representation = new unsigned char**[m_width];
-    for(unsigned int x = 0; x < m_width; ++x)
-        m_picture_grid_representation[x] = new unsigned char*[m_height];
-
-    unsigned int grid_elements_amount = m_width * m_height;
-    for(unsigned int i = 0; i < grid_elements_amount; ++i)
-    {
-        unsigned int buffer_index = i * m_channels;
-        unsigned int grid_x = i % m_width;
-        unsigned int grid_y = i / m_width;
-
-        m_picture_grid_representation[grid_x][grid_y] = m_picture_data + buffer_index;
-    }
 }
 
 
@@ -66,7 +38,7 @@ void Picture::convert_texture_coords_vertex(glm::vec2 &_vertex) const
 
 void Picture::color_pixel(unsigned int _x, unsigned int _y, const unsigned char* _color)
 {
-    unsigned char* pixel_data = m_picture_grid_representation[_x][_y];
+    Pixel pixel_data = pixel(_x, _y);
 
     for(unsigned int i=0; i<m_channels; ++i)
         pixel_data[i] = _color[i];
@@ -113,7 +85,7 @@ void Picture::replace_with_picture(unsigned int _x, unsigned int _y, const Pictu
     {
         for(unsigned int y = 0; y < _picture_size_y; ++y)
         {
-            Pixel picture_pixel = _picture->pixel(x + _offset_for_picture_x, y + _offset_for_picture_y);
+            Const_Pixel picture_pixel = _picture->pixel(x + _offset_for_picture_x, y + _offset_for_picture_y);
 
             for(unsigned int i=0; i<m_channels; ++i)
                 color_buffer[i] = (float)picture_pixel[i] * _color_multipliers[i];
@@ -150,6 +122,4 @@ BUILDER_STUB_INITIALIZATION_FUNC(Picture_Stub)
 
     product->m_buffer_size = width * height * channels;
     product->m_picture_data = picture_data;
-
-    product->M_construct_grid_representation();
 }

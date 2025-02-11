@@ -21,7 +21,8 @@ namespace LR
         friend class Picture_Stub;
 
     public:
-        using Pixel = const unsigned char*;
+        using Const_Pixel = const unsigned char*;
+        using Pixel = unsigned char*;
 
     private:
         unsigned int m_width = 0;
@@ -30,8 +31,6 @@ namespace LR
 
         unsigned int m_buffer_size = 0;
         unsigned char* m_picture_data = nullptr;
-
-        unsigned char*** m_picture_grid_representation = nullptr;
 
     public:
         Picture(const Picture&) = delete;
@@ -44,15 +43,13 @@ namespace LR
         Picture(unsigned int _width, unsigned int _height, bool _has_alpha);
         ~Picture();
 
-    private:
-        void M_construct_grid_representation();
-
     public:
         inline unsigned int width() const { return m_width; }
         inline unsigned int height() const { return m_height; }
         inline unsigned int channels() const { return m_channels; }
         inline const unsigned char* data() const { return m_picture_data; }
-        inline Pixel pixel(unsigned int _x, unsigned int _y) const { return m_picture_grid_representation[_x][_y]; }
+        inline Pixel pixel(unsigned int _x, unsigned int _y) { return m_picture_data + ((m_width * m_channels * _y) + (m_channels * _x)); }
+        inline Const_Pixel pixel(unsigned int _x, unsigned int _y) const { return m_picture_data + ((m_width * m_channels * _y) + (m_channels * _x)); }
 
     public:
         void convert_texture_coords_vertex(glm::vec2& _vertex) const;
