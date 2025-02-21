@@ -46,7 +46,6 @@ void Graphics_Component::prepare_to_draw() const
 
 Graphics_Component_Stub::~Graphics_Component_Stub()
 {
-    delete[] data;
     delete reconstructor_stub;
 }
 
@@ -63,14 +62,13 @@ void Graphics_Component_Stub::M_init_constructed_product(LV::Variable_Base* _pro
 
     Graphics_Component* product = (Graphics_Component*)_product;
 
-    L_ASSERT(!(data == nullptr ^ data_size == 0));      //  eigher both valid data and size or both invalid
     L_ASSERT(floats_per_vertex > 0);
 
-    if(data != nullptr && data_size > 0)
+    if(data.size() > 0)
     {
         product->buffer().free_memory();
-        product->buffer().allocate_memory(data_size);
-        product->buffer().copy_array(data, data_size);
+        product->buffer().allocate_memory(data.size());
+        product->buffer().copy_array(data.raw_data(), data.size());
     }
     product->buffer().setup_buffer(attribute_index, floats_per_vertex);
 

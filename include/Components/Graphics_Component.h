@@ -59,8 +59,7 @@ namespace LR
         INIT_FIELDS
         ADD_FIELD(unsigned int, attribute_index)
         ADD_FIELD(unsigned int, floats_per_vertex)
-        ADD_FIELD(float*, data)
-        ADD_FIELD(unsigned int, data_size)
+        ADD_FIELD(LDS::Vector<float>, data)
         FIELDS_END
 
         INIT_CHILDS
@@ -71,8 +70,7 @@ namespace LR
         unsigned int attribute_index = 0;
         unsigned int floats_per_vertex = 0;
 
-        float* data = nullptr;
-        unsigned int data_size = 0;
+        LDS::Vector<float> data;
 
     public:
         Graphics_Component_Reconstructor_Stub* reconstructor_stub = nullptr;
