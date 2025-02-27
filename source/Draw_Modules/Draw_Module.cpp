@@ -20,7 +20,7 @@ Draw_Module::~Draw_Module()
 
     glDeleteVertexArrays(1, &m_vertex_array);
 
-    if(m_draw_order_controller)
+    if(m_draw_order_controller && !m_should_update_draw_layer)
         m_draw_order_controller->unregister_module(this);
 }
 
@@ -34,15 +34,9 @@ void Draw_Module::set_draw_layer(Draw_Order_Controller* _draw_order_controller, 
     reset_draw_layer();
 
     m_draw_order_controller = _draw_order_controller;
-    m_draw_order_controller->register_module(_layer_name, this,
-                                             [this]()
-                                             {
-                                                 draw();
-                                             });
-
-    set_draw_on_update(false);
-
     m_draw_layer = _layer_name;
+
+    m_should_update_draw_layer = true;
 }
 
 void Draw_Module::reset_draw_layer()
@@ -55,6 +49,8 @@ void Draw_Module::reset_draw_layer()
     m_draw_layer.clear();
 
     set_draw_on_update(true);
+
+    m_should_update_draw_layer = false;
 }
 
 
@@ -125,6 +121,21 @@ const Graphics_Component* Draw_Module::get_graphics_component_with_buffer_index(
 
 
 
+void Draw_Module::M_update_draw_layer_if_needed()
+{
+    if(!m_should_update_draw_layer)
+        return;
+
+    m_draw_order_controller->register_module(m_draw_layer, this,
+                                             [this]()
+                                             {
+                                                 draw();
+                                             });
+    set_draw_on_update(false);
+
+    m_should_update_draw_layer = false;
+}
+
 void Draw_Module::M_update_internal(float _dt)
 {
     bind_vertex_array();
@@ -140,6 +151,8 @@ void Draw_Module::M_update_internal(float _dt)
 
 void Draw_Module::update(float _dt)
 {
+    M_update_draw_layer_if_needed();
+
     M_update_internal(_dt);
 
     if(m_draw_on_update)

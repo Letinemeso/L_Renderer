@@ -36,6 +36,7 @@ namespace LR
 
     protected:
         std::string m_draw_layer;
+        bool m_should_update_draw_layer = false;
 
         unsigned int m_vertex_array = 0;
 
@@ -89,6 +90,7 @@ namespace LR
         const Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index) const;
 
     protected:
+        void M_update_draw_layer_if_needed();
         virtual void M_update_internal(float _dt);
 
     public:
