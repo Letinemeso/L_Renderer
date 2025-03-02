@@ -12,6 +12,7 @@ Draw_Order_Controller::Registred_Modules& Draw_Order_Controller::M_get_modules_s
     }
 
     L_ASSERT(false);
+    return m_draw_layers.begin()->modules_set;      //  this should never happen
 }
 
 
