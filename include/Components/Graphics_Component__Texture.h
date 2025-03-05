@@ -10,21 +10,21 @@
 namespace LR
 {
 
-    struct Texture_Settings
-    {
-        int min_filter = GL_NEAREST;
-        int mag_filter = GL_NEAREST;
-        int wrap_s = GL_REPEAT;
-        int wrap_t = GL_REPEAT;
-
-        Texture_Settings() { };
-    };
-
-
     class Graphics_Component__Texture final : public Graphics_Component
     {
     public:
         INIT_VARIABLE(LR::Graphics_Component__Texture, LR::Graphics_Component)
+
+    public:
+        struct Texture_Settings
+        {
+            int min_filter = GL_NEAREST;
+            int mag_filter = GL_NEAREST;
+            int wrap_s = GL_REPEAT;
+            int wrap_t = GL_REPEAT;
+
+            Texture_Settings() { }
+        };
 
     private:
         const LEti::Resources_Manager* m_resources_manager = nullptr;
@@ -60,7 +60,6 @@ namespace LR
     };
 
 
-
     class Graphics_Component_Stub__Texture : public Graphics_Component_Stub
     {
     public:
@@ -69,6 +68,10 @@ namespace LR
         INIT_FIELDS
         ADD_FIELD(std::string, picture_name)
         ADD_FIELD(bool, texture_coords_in_pixels)
+        ADD_FIELD(std::string, min_filter)
+        ADD_FIELD(std::string, mag_filter)
+        ADD_FIELD(std::string, wrap_s)
+        ADD_FIELD(std::string, wrap_t)
         FIELDS_END
 
     public:
@@ -77,10 +80,16 @@ namespace LR
     public:
         std::string picture_name;
         bool texture_coords_in_pixels = true;
+        std::string min_filter = "Nearest";
+        std::string mag_filter = "Nearest";
+        std::string wrap_s = "Repeat";
+        std::string wrap_t = "Repeat";
 
     protected:
-        LV::Variable_Base* M_construct_product() const override;
-        void M_init_constructed_product(LV::Variable_Base* _product) const override;
+        INIT_BUILDER_STUB(Graphics_Component__Texture)
+
+    private:
+        Graphics_Component__Texture::Texture_Settings M_parse_settings() const;
 
     };
 
