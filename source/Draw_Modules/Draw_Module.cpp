@@ -172,8 +172,8 @@ void Draw_Module::draw() const
 
     L_ASSERT(m_shader_program);
 
-    m_renderer->set_shader_program(m_shader_program);
-    m_renderer->prepare();
+    // m_renderer->set_shader_program(m_shader_program);        //  this used to work, but seems like it should be lower now. should remove it some time later if nothing breaks
+    // m_renderer->prepare();
 
     transformation_data()->update_matrix();
 
@@ -182,6 +182,8 @@ void Draw_Module::draw() const
     for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         (*it)->prepare_to_draw();
 
+    m_renderer->set_shader_program(m_shader_program);
+    m_renderer->prepare();
     m_renderer->draw(this);
 }
 

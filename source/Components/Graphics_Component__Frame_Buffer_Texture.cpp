@@ -69,11 +69,10 @@ void Graphics_Component__Frame_Buffer_Texture::prepare_to_draw() const
     glBindFramebuffer(GL_FRAMEBUFFER, m_frame_buffer_object);
     glClear(m_clear_hint);
     m_draw_func();
-    glBindFramebuffer(GL_FRAMEBUFFER, current_frame_buffer);
-
-    glBindVertexArray(current_vertex_array);
 
     glBindTexture(GL_TEXTURE_2D, m_texture_object);
+    glBindFramebuffer(GL_FRAMEBUFFER, current_frame_buffer);
+    glBindVertexArray(current_vertex_array);
 }
 
 
@@ -86,8 +85,6 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Frame_Buffer_Texture)
 {
     BUILDER_STUB_PARENT_INITIALIZATION;
     BUILDER_STUB_CAST_PRODUCT;
-
-    L_ASSERT(resources_manager);
 
     Graphics_Component__Frame_Buffer_Texture::Settings settings = M_parse_settings();
     product->init_texture(settings);

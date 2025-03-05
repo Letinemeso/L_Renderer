@@ -14,6 +14,9 @@ namespace LR
     class Shader_Component : public LV::Variable_Base
     {
     public:
+        INIT_VARIABLE(LR::Shader_Component, LV::Variable_Base)
+
+    public:
         struct Vertex_Data
         {
             Vertex_Data() { }
@@ -68,7 +71,7 @@ namespace LR
     class Shader_Component_Stub : public LV::Builder_Stub
     {
     public:
-        INIT_VARIABLE(LR::Shader_Component_Stub, LV::Builder_Stub);
+        INIT_VARIABLE(LR::Shader_Component_Stub, LV::Builder_Stub)
 
         INIT_FIELDS;
         ADD_FIELD(std::string, source)
@@ -80,7 +83,7 @@ namespace LR
         std::string main_function_name;
 
     public:
-        INIT_BUILDER_STUB(Shader_Component);
+        INIT_BUILDER_STUB(Shader_Component)
 
     };
 
