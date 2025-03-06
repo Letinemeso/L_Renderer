@@ -33,8 +33,7 @@ namespace LR
         inline const Shader_Program* shader_program() const { return m_shader_program; }
 
     public:
-        void prepare() const;
-        void draw(const Draw_Module* _draw_module) const;
+        void prepare(const Draw_Module* _draw_module) const;
 
     };
 

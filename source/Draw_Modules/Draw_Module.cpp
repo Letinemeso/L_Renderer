@@ -183,8 +183,9 @@ void Draw_Module::draw() const
         (*it)->prepare_to_draw();
 
     m_renderer->set_shader_program(m_shader_program);
-    m_renderer->prepare();
-    m_renderer->draw(this);
+    m_renderer->prepare(this);
+
+    glDrawArrays(draw_mode(), 0, vertices_amount());
 }
 
 
