@@ -92,6 +92,7 @@ namespace LR
     protected:
         void M_update_draw_layer_if_needed();
         virtual void M_update_internal(float _dt);
+        virtual void M_draw_internal() const;
 
     public:
         void update(float _dt) override;

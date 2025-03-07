@@ -147,6 +147,11 @@ void Draw_Module::M_update_internal(float _dt)
         recalculate_vertices_amount();
 }
 
+void Draw_Module::M_draw_internal() const
+{
+    glDrawArrays(draw_mode(), 0, vertices_amount());
+}
+
 
 
 void Draw_Module::update(float _dt)
@@ -172,9 +177,6 @@ void Draw_Module::draw() const
 
     L_ASSERT(m_shader_program);
 
-    // m_renderer->set_shader_program(m_shader_program);        //  this used to work, but seems like it should be lower now. should remove it some time later if nothing breaks
-    // m_renderer->prepare();
-
     transformation_data()->update_matrix();
 
     bind_vertex_array();
@@ -185,7 +187,7 @@ void Draw_Module::draw() const
     m_renderer->set_shader_program(m_shader_program);
     m_renderer->prepare(this);
 
-    glDrawArrays(draw_mode(), 0, vertices_amount());
+    M_draw_internal();
 }
 
 
