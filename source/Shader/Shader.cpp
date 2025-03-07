@@ -125,6 +125,9 @@ void Shader::compile()
     for(LDS::List<Shader_Component*>::Iterator it = m_components.begin(); !it.end_reached(); ++it)
     {
         Shader_Component* component = *it;
+        if(component->main_call().size() == 0)
+            continue;
+
         main_func_str += component->main_call();
         main_func_str += "();\n";
     }
