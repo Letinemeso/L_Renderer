@@ -20,7 +20,8 @@ namespace LR
         Unknown = 0,
         Vertex = (Shader_Type)GL_VERTEX_SHADER,
         Fragment = (Shader_Type)GL_FRAGMENT_SHADER,
-        Geometry = (Shader_Type)GL_GEOMETRY_SHADER
+        Geometry = (Shader_Type)GL_GEOMETRY_SHADER,
+        Compute = (Shader_Type)GL_COMPUTE_SHADER
     };
 
 
@@ -133,7 +134,7 @@ namespace LR
         Shader_Type M_parse_shader_type() const;
 
     public:
-        INIT_BUILDER_STUB(Shader);
+        INIT_BUILDER_STUB(Shader)
 
     };
 

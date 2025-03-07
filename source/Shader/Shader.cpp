@@ -181,6 +181,8 @@ Shader_Type Shader_Stub::M_parse_shader_type() const
         return Shader_Type::Fragment;
     else if(shader_type == "Geometry")
         return Shader_Type::Geometry;
+    else if(shader_type == "Compute")
+        return Shader_Type::Compute;
 
     L_ASSERT(false);    //  unregistred shader type
     return Shader_Type::Unknown;
@@ -188,7 +190,7 @@ Shader_Type Shader_Stub::M_parse_shader_type() const
 
 
 
-BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Shader_Stub);
+BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Shader_Stub)
 
 BUILDER_STUB_INITIALIZATION_FUNC(Shader_Stub)
 {

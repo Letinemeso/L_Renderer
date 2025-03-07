@@ -42,7 +42,7 @@ namespace LR
         unsigned int size() const;
 
         void bind() const;
-        void bind_to_index(unsigned int _index) const;
+        void bind_for_computation() const;
 
     };
 

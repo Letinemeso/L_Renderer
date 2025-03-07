@@ -27,9 +27,18 @@ namespace LR
         INIT_VARIABLE(LR::Draw_Module, LEti::Module)
 
     protected:
+        struct Compute_Shader_Work_Groups_Sizes
+        {
+            unsigned int x = 0;
+            unsigned int y = 0;
+            unsigned int z = 0;
+        };
+
+    protected:
         LR::Renderer* m_renderer = nullptr;
         Shader_Program* m_rendering_shader_program = nullptr;
         Shader_Program* m_compute_shader_program = nullptr;
+        Compute_Shader_Work_Groups_Sizes m_compute_shader_work_group_sizes;
         Draw_Order_Controller* m_draw_order_controller = nullptr;
 
     public:
@@ -57,7 +66,7 @@ namespace LR
     public:
         inline void set_renderer(LR::Renderer* _ptr) { m_renderer = _ptr; }
         inline void set_rendering_shader_program(LR::Shader_Program* _ptr) { m_rendering_shader_program = _ptr; }
-        inline void set_compute_shader_program(LR::Shader_Program* _ptr) { m_compute_shader_program = _ptr; }
+        inline void set_compute_shader_program(LR::Shader_Program* _ptr) { m_compute_shader_program = _ptr; M_update_compute_shader_work_groups_sizes(); }
 
         inline LR::Renderer* renderer() const { return m_renderer; }
 
@@ -92,7 +101,9 @@ namespace LR
         const Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index) const;
 
     protected:
+        void M_update_compute_shader_work_groups_sizes();
         void M_update_draw_layer_if_needed();
+        unsigned int M_calculate_necessary_work_groups(unsigned int _work_group_size) const;
         void M_dispatch_compute_shader_if_any();
         virtual void M_update_internal(float _dt);
         virtual void M_draw_internal() const;

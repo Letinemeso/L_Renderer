@@ -47,6 +47,8 @@ namespace LR
         virtual void update(float _dt) const;
         virtual void prepare_to_draw() const;
 
+        void bind_for_computation() const;
+
     };
 
 

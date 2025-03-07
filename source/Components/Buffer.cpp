@@ -108,8 +108,9 @@ void Buffer::bind() const
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
 }
 
-void Buffer::bind_to_index(unsigned int _index) const
+void Buffer::bind_for_computation() const
 {
     L_ASSERT(!(m_buffer == 0 || m_buffer_size == 0));
-
+    L_ASSERT(m_shader_layout_index != 0xFFFFFFFF);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, m_shader_layout_index, m_buffer);
 }

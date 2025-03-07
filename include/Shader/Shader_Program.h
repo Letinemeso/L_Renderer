@@ -45,6 +45,7 @@ namespace LR
 
     public:
         inline const Shaders_List& shaders() const { return m_shaders; }
+        inline unsigned int handle() const { return m_program_handle; }
 
     private:
         void M_debug() const;

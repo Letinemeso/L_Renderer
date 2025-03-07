@@ -41,6 +41,12 @@ void Graphics_Component::prepare_to_draw() const
 }
 
 
+void Graphics_Component::bind_for_computation() const
+{
+    m_buffer.bind_for_computation();
+}
+
+
 
 
 

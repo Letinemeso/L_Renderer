@@ -121,6 +121,18 @@ const Graphics_Component* Draw_Module::get_graphics_component_with_buffer_index(
 
 
 
+void Draw_Module::M_update_compute_shader_work_groups_sizes()
+{
+    if(!m_compute_shader_program)
+    {
+        m_compute_shader_work_group_sizes = Compute_Shader_Work_Groups_Sizes();
+        return;
+    }
+
+    GLint* groups_sizes = (GLint*)&m_compute_shader_work_group_sizes;       //  oooh what a crutch! i love it! it MUST stay here FOREVER. DO NOT remove at all costs.
+    glGetProgramiv(m_compute_shader_program->handle(), GL_COMPUTE_WORK_GROUP_SIZE, groups_sizes);
+}
+
 void Draw_Module::M_update_draw_layer_if_needed()
 {
     if(!m_should_update_draw_layer)
@@ -136,14 +148,31 @@ void Draw_Module::M_update_draw_layer_if_needed()
     m_should_update_draw_layer = false;
 }
 
+unsigned int Draw_Module::M_calculate_necessary_work_groups(unsigned int _work_group_size) const
+{
+    return (m_vertices_amount + _work_group_size - 1) / _work_group_size;
+}
+
 void Draw_Module::M_dispatch_compute_shader_if_any()
 {
     if(!m_compute_shader_program)
         return;
 
+    L_ASSERT(m_vertices_amount > 0);
+
     m_compute_shader_program->use();
+    m_compute_shader_program->update(this);
 
+    for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+    {
+        Graphics_Component* component = *it;
+        component->bind_for_computation();
+    }
 
+    glDispatchCompute(M_calculate_necessary_work_groups(m_compute_shader_work_group_sizes.x),
+                      M_calculate_necessary_work_groups(m_compute_shader_work_group_sizes.y),
+                      M_calculate_necessary_work_groups(m_compute_shader_work_group_sizes.z));
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
 void Draw_Module::M_update_internal(float _dt)
@@ -186,6 +215,8 @@ void Draw_Module::draw() const
         return;
 
     transformation_data()->update_matrix();
+
+    M_dispatch_compute_shader_if_any();
 
     bind_vertex_array();
 
