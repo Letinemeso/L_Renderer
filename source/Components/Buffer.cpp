@@ -52,22 +52,39 @@ void Buffer::copy_array(const float* _data, unsigned int _count, unsigned int _o
 }
 
 
-void Buffer::setup_buffer(unsigned int _attrib_index, unsigned int _floats_per_vertex)
+void Buffer::set_shader_layout_index(unsigned int _index)
 {
-    if(_attrib_index == m_shader_layout_index && m_floats_per_vertex == _floats_per_vertex)
+    L_ASSERT(_index != 0xFFFFFFFF);
+
+    if(_index == m_shader_layout_index)
         return;
 
-    if(m_buffer != 0 && m_buffer_size != 0)
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-        glVertexAttribPointer(_attrib_index, _floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * _floats_per_vertex, nullptr);
-    }
-
     glDisableVertexAttribArray(m_shader_layout_index);
-    glEnableVertexAttribArray(_attrib_index);
+    glEnableVertexAttribArray(_index);
 
-    m_shader_layout_index = _attrib_index;
+    m_shader_layout_index = _index;
+
+    if(m_buffer == 0 || m_buffer_size == 0 || m_floats_per_vertex == 0)
+        return;
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
+    glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
+}
+
+void Buffer::set_floats_per_vertex(unsigned int _floats_per_vertex)
+{
+    L_ASSERT(_floats_per_vertex > 0);
+
+    if(_floats_per_vertex == m_floats_per_vertex)
+        return;
+
     m_floats_per_vertex = _floats_per_vertex;
+
+    if(m_buffer == 0 || m_buffer_size == 0 || m_shader_layout_index == 0xFFFFFFFF)
+        return;
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
+    glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
 
 
@@ -107,12 +124,19 @@ unsigned int Buffer::size() const
 void Buffer::bind_for_draw() const
 {
     L_ASSERT(!(m_buffer == 0 || m_buffer_size == 0));
+
+    if(m_shader_layout_index == 0xFFFFFFFF)
+        return;
+
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
 }
 
 void Buffer::bind_for_computation() const
 {
     L_ASSERT(!(m_buffer == 0 || m_buffer_size == 0));
-    L_ASSERT(m_shader_layout_index != 0xFFFFFFFF);
-    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, m_shader_layout_index, m_buffer);
+
+    if(m_compute_shader_index == 0xFFFFFFFF)
+        return;
+
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, m_compute_shader_index, m_buffer);
 }

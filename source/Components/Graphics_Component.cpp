@@ -71,7 +71,12 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub)
         product->buffer().resize(data.size());
         product->buffer().copy_array(data.raw_data(), data.size());
     }
-    product->buffer().setup_buffer(attribute_index, floats_per_vertex);
+    product->buffer().set_floats_per_vertex(floats_per_vertex);
+
+    if(attribute_index != 0xFFFFFFFF)
+        product->buffer().set_shader_layout_index(attribute_index);
+    if(compute_shader_index != 0xFFFFFFFF)
+        product->buffer().set_compute_shader_index(compute_shader_index);
 
     if(on_prepare_func)
         product->set_on_prepare_func(on_prepare_func);

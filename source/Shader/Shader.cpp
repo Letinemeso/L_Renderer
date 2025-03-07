@@ -129,7 +129,7 @@ void Shader::compile()
             continue;
 
         main_func_str += component->main_call();
-        main_func_str += "();\n";
+        main_func_str += "\n";
     }
 
     main_func_str += "}\n";
