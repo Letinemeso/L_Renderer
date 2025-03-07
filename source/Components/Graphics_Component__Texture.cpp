@@ -36,15 +36,16 @@ void Graphics_Component__Texture::reconfigure_texture_coords()
     L_ASSERT(m_picture);
     L_ASSERT(m_buffer.size() > 0);
 
-    for(unsigned int i=0; i<m_buffer.size(); i += 2)
+    Buffer::Element_Modification_Func modification_func = [this](float& _element, unsigned int _index)
     {
-        glm::vec2 vertex;
-        vertex.x = m_buffer[i];
-        vertex.y = m_buffer[i + 1];
-        m_picture->convert_texture_coords_vertex(vertex);
-        m_buffer[i] = vertex.x;
-        m_buffer[i + 1] = vertex.y;
-    }
+        unsigned int component_index = _index % m_buffer.floats_per_vertex();
+        if(component_index == 0)
+            _element /= m_picture->width();
+        else if(component_index == 1)
+            _element /= m_picture->height();
+    };
+
+    m_buffer.modify_buffer(modification_func);
 }
 
 

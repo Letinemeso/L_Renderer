@@ -51,23 +51,18 @@ Graphics_Component_Stub::~Graphics_Component_Stub()
 
 
 
-LV::Variable_Base* Graphics_Component_Stub::M_construct_product() const
-{
-    return new Graphics_Component;
-}
+BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Graphics_Component_Stub)
 
-void Graphics_Component_Stub::M_init_constructed_product(LV::Variable_Base* _product) const
+BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub)
 {
-    LV::Builder_Stub::M_init_constructed_product(_product);
-
-    Graphics_Component* product = (Graphics_Component*)_product;
+    BUILDER_STUB_PARENT_INITIALIZATION;
+    BUILDER_STUB_CAST_PRODUCT;
 
     L_ASSERT(floats_per_vertex > 0);
 
     if(data.size() > 0)
     {
-        product->buffer().free_memory();
-        product->buffer().allocate_memory(data.size());
+        product->buffer().resize(data.size());
         product->buffer().copy_array(data.raw_data(), data.size());
     }
     product->buffer().setup_buffer(attribute_index, floats_per_vertex);

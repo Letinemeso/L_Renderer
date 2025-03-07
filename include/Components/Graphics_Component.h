@@ -82,8 +82,7 @@ namespace LR
         LST::Function<void(const Graphics_Component*)> on_prepare_func;
 
     protected:
-        LV::Variable_Base* M_construct_product() const override;
-        void M_init_constructed_product(LV::Variable_Base* _product) const override;
+        INIT_BUILDER_STUB(Graphics_Component)
 
     };
 

@@ -3,59 +3,9 @@
 using namespace LR;
 
 
-void Buffer::float_container::M_update_buffer()
-{
-    glBindBuffer(GL_ARRAY_BUFFER, *buffer);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(float) * last_requested_index, sizeof(float), &buffer_data[last_requested_index]);
-}
-
-
-
-void Buffer::float_container::operator=(float _f)
-{
-    buffer_data[last_requested_index] = _f;
-    M_update_buffer();
-}
-
-void Buffer::float_container::operator+=(float _f)
-{
-    buffer_data[last_requested_index] += _f;
-    M_update_buffer();
-}
-
-void Buffer::float_container::operator-=(float _f)
-{
-    buffer_data[last_requested_index] -= _f;
-    M_update_buffer();
-}
-
-void Buffer::float_container::operator*=(float _f)
-{
-    buffer_data[last_requested_index] *= _f;
-    M_update_buffer();
-}
-
-void Buffer::float_container::operator/=(float _f)
-{
-    buffer_data[last_requested_index] /= _f;
-    M_update_buffer();
-}
-
-float Buffer::float_container::operator*() const
-{
-    return buffer_data[last_requested_index];
-}
-
-Buffer::float_container::operator float() const
-{
-    return buffer_data[last_requested_index];
-}
-
-
-
 Buffer::Buffer()
 {
-    fc.buffer = &m_buffer;
+
 }
 
 Buffer::~Buffer()
@@ -65,30 +15,9 @@ Buffer::~Buffer()
 
 
 
-void Buffer::allocate_memory(unsigned int _size)
-{
-    L_ASSERT(_size > 0);
-
-    free_memory();
-
-    m_buffer_data = new float[_size];
-    fc.buffer_data = m_buffer_data;
-    for (unsigned int i = 0; i < _size; ++i)
-        m_buffer_data[i] = 0.0f;
-    m_buffer_size = _size;
-
-    glGenBuffers(1, &m_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (m_buffer_size + 1), nullptr, GL_DYNAMIC_DRAW);
-}
-
 void Buffer::free_memory()
 {
-    delete[] m_buffer_data;
-    m_buffer_data = nullptr;
-    fc.buffer_data = nullptr;
     m_buffer_size = 0;
-
     glDeleteBuffers(1, &m_buffer);
 }
 
@@ -96,38 +25,21 @@ void Buffer::resize(unsigned int _new_size)
 {
     L_ASSERT(_new_size > 0);
 
-    float* tempf = new float[_new_size];
-    if (m_buffer_size < _new_size)
-    {
-        for (unsigned int i = 0; i < m_buffer_size; ++i)
-            tempf[i] = m_buffer_data[i];
-        for (unsigned int i = m_buffer_size; i < _new_size; ++i)
-            tempf[i] = 0.0f;
-    }
-    else
-    {
-        for (unsigned int i = 0; i < _new_size; ++i)
-            tempf[i] = m_buffer_data[i];
-    }
+    if(_new_size == m_buffer_size)
+        return;
 
     glDeleteBuffers(1, &m_buffer);
-    delete[] m_buffer_data;
-
     m_buffer_size = _new_size;
-    m_buffer_data = tempf;
-    fc.buffer_data = tempf;
+
     glGenBuffers(1, &m_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (m_buffer_size + 1), m_buffer_data, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (m_buffer_size + 1), nullptr, GL_DYNAMIC_DRAW);
 }
 
 
 void Buffer::copy_array(const float* _data, unsigned int _count, unsigned int _offset)
 {
     L_ASSERT(!(_offset + _count > m_buffer_size || _data == nullptr || _count == 0));
-
-    for(unsigned int i=0; i<_count; ++i)
-        m_buffer_data[i + _offset] = _data[i];
 
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
     glBufferSubData(GL_ARRAY_BUFFER, sizeof(float) * _offset, sizeof(float) * _count, _data);
@@ -138,35 +50,13 @@ void Buffer::copy_array(const float* _data, unsigned int _count, unsigned int _o
     glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
 
-void Buffer::use_array(float* _data, unsigned int _count)
-{
-    L_ASSERT(!(_data == nullptr || _count == 0));
-
-    delete[] m_buffer_data;
-    m_buffer_data = _data;
-    m_buffer_size = _count;
-    fc.buffer_data = _data;
-
-    glDeleteBuffers(1, &m_buffer);
-    glGenBuffers(1, &m_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (m_buffer_size + 1), m_buffer_data, GL_DYNAMIC_DRAW);
-
-    if(m_shader_layout_index == 0xFFFFFFFF || m_floats_per_vertex == 0)
-        return;
-
-    glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
-}
-
 
 void Buffer::setup_buffer(unsigned int _attrib_index, unsigned int _floats_per_vertex)
 {
-//    L_ASSERT(m_buffer != 0 && m_buffer_size != 0 && m_buffer_data != nullptr);
-
     if(_attrib_index == m_shader_layout_index && m_floats_per_vertex == _floats_per_vertex)
         return;
 
-    if(m_buffer != 0 && m_buffer_size != 0 && m_buffer_data != nullptr)
+    if(m_buffer != 0 && m_buffer_size != 0)
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
         glVertexAttribPointer(_attrib_index, _floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * _floats_per_vertex, nullptr);
@@ -180,18 +70,27 @@ void Buffer::setup_buffer(unsigned int _attrib_index, unsigned int _floats_per_v
 }
 
 
-
-Buffer::float_container& Buffer::operator[](unsigned int _index)
+void Buffer::modify_buffer(const Element_Modification_Func& _func, unsigned int _offset, unsigned int _amount, unsigned int _stride)
 {
-    L_ASSERT(!(_index >= m_buffer_size));
-    fc.last_requested_index = _index;
-    return fc;
-}
+    L_ASSERT(_func);
+    L_ASSERT(_offset < m_buffer_size);
+    L_ASSERT(_stride > 0);
 
-float Buffer::operator[](unsigned int _index) const
-{
-    L_ASSERT(!(_index >= m_buffer_size));
-    return m_buffer_data[_index];
+    if(_amount == 0xFFFFFFFF)
+        _amount = m_buffer_size - _offset;
+
+    L_ASSERT(_amount > 0);
+    L_ASSERT(_offset + _amount <= m_buffer_size);
+
+    bind();
+
+    float* mapped_data = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+    L_ASSERT(mapped_data);
+    for(unsigned int i = _offset; i < _amount; i += _stride)
+        _func(mapped_data[i], i);
+    glUnmapBuffer(GL_ARRAY_BUFFER);
+
+    glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
 
 
@@ -205,6 +104,12 @@ unsigned int Buffer::size() const
 
 void Buffer::bind() const
 {
-    L_ASSERT(!(m_buffer == 0 || m_buffer_size == 0 || m_buffer_data == nullptr));
+    L_ASSERT(!(m_buffer == 0 || m_buffer_size == 0));
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
+}
+
+void Buffer::bind_to_index(unsigned int _index) const
+{
+    L_ASSERT(!(m_buffer == 0 || m_buffer_size == 0));
+
 }

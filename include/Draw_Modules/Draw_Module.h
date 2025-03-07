@@ -28,7 +28,8 @@ namespace LR
 
     protected:
         LR::Renderer* m_renderer = nullptr;
-        Shader_Program* m_shader_program = nullptr;
+        Shader_Program* m_rendering_shader_program = nullptr;
+        Shader_Program* m_compute_shader_program = nullptr;
         Draw_Order_Controller* m_draw_order_controller = nullptr;
 
     public:
@@ -55,7 +56,8 @@ namespace LR
 
     public:
         inline void set_renderer(LR::Renderer* _ptr) { m_renderer = _ptr; }
-        inline void set_shader_program(LR::Shader_Program* _ptr) { m_shader_program = _ptr; }
+        inline void set_rendering_shader_program(LR::Shader_Program* _ptr) { m_rendering_shader_program = _ptr; }
+        inline void set_compute_shader_program(LR::Shader_Program* _ptr) { m_compute_shader_program = _ptr; }
 
         inline LR::Renderer* renderer() const { return m_renderer; }
 
@@ -91,6 +93,7 @@ namespace LR
 
     protected:
         void M_update_draw_layer_if_needed();
+        void M_dispatch_compute_shader_if_any();
         virtual void M_update_internal(float _dt);
         virtual void M_draw_internal() const;
 
@@ -111,7 +114,8 @@ namespace LR
         ADD_FIELD(bool, visible)
         ADD_FIELD(std::string, draw_mode)
         ADD_FIELD(std::string, draw_layer)
-        ADD_FIELD(std::string, shader_id)
+        ADD_FIELD(std::string, rendering_shader_id)
+        ADD_FIELD(std::string, compute_shader_id)
         FIELDS_END
 
         INIT_CHILDS_LISTS
@@ -122,7 +126,8 @@ namespace LR
         bool visible = true;
         std::string draw_mode = "GL_TRIANGLES";
         std::string draw_layer;
-        std::string shader_id;
+        std::string rendering_shader_id;
+        std::string compute_shader_id;
 
     public:
         Renderer* renderer = nullptr;
@@ -133,7 +138,7 @@ namespace LR
         LV::Variable_Base::Childs_List graphics_component_stubs;
 
     protected:
-        INIT_BUILDER_STUB(Draw_Module);
+        INIT_BUILDER_STUB(Draw_Module)
 
     private:
         void M_apply_draw_mode(Draw_Module* _product) const;

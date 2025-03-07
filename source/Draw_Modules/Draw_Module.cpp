@@ -136,6 +136,16 @@ void Draw_Module::M_update_draw_layer_if_needed()
     m_should_update_draw_layer = false;
 }
 
+void Draw_Module::M_dispatch_compute_shader_if_any()
+{
+    if(!m_compute_shader_program)
+        return;
+
+    m_compute_shader_program->use();
+
+
+}
+
 void Draw_Module::M_update_internal(float _dt)
 {
     bind_vertex_array();
@@ -175,8 +185,6 @@ void Draw_Module::draw() const
     if(!m_visible)
         return;
 
-    L_ASSERT(m_shader_program);
-
     transformation_data()->update_matrix();
 
     bind_vertex_array();
@@ -184,7 +192,8 @@ void Draw_Module::draw() const
     for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         (*it)->prepare_to_draw();
 
-    m_renderer->set_shader_program(m_shader_program);
+    L_ASSERT(m_rendering_shader_program);
+    m_renderer->set_shader_program(m_rendering_shader_program);
     m_renderer->prepare(this);
 
     M_draw_internal();
@@ -220,8 +229,14 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
         product->set_draw_layer(draw_order_controller, draw_layer);
 
     L_ASSERT(shader_manager);
-    Shader_Program* shader = shader_manager->get_shader_program(shader_id);
-    product->set_shader_program(shader);
+    Shader_Program* rendering_shader = shader_manager->get_shader_program(rendering_shader_id);
+    product->set_rendering_shader_program(rendering_shader);
+
+    if(compute_shader_id.size() > 0)
+    {
+        Shader_Program* compute_shader = shader_manager->get_shader_program(compute_shader_id);
+        product->set_compute_shader_program(compute_shader);
+    }
 }
 
 
