@@ -32,8 +32,8 @@ void Buffer::resize(unsigned int _new_size)
     m_buffer_size = _new_size;
 
     glGenBuffers(1, &m_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (m_buffer_size + 1), nullptr, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_buffer);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float) * m_buffer_size, nullptr, GL_DYNAMIC_DRAW);
 }
 
 
@@ -41,12 +41,13 @@ void Buffer::copy_array(const float* _data, unsigned int _count, unsigned int _o
 {
     L_ASSERT(!(_offset + _count > m_buffer_size || _data == nullptr || _count == 0));
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(float) * _offset, sizeof(float) * _count, _data);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_buffer);
+    glBufferSubData(GL_SHADER_STORAGE_BUFFER, sizeof(float) * _offset, sizeof(float) * _count, _data);
 
     if(m_shader_layout_index == 0xFFFFFFFF || m_floats_per_vertex == 0)
         return;
 
+    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
     glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
 
@@ -82,14 +83,15 @@ void Buffer::modify_buffer(const Element_Modification_Func& _func, unsigned int 
     L_ASSERT(_amount > 0);
     L_ASSERT(_offset + _amount <= m_buffer_size);
 
-    bind();
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_buffer);
 
-    float* mapped_data = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+    float* mapped_data = (float*)glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
     L_ASSERT(mapped_data);
     for(unsigned int i = _offset; i < _offset + _amount; i += _stride)
         _func(mapped_data[i], i);
-    glUnmapBuffer(GL_ARRAY_BUFFER);
+    glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
+    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
     glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
 
@@ -102,7 +104,7 @@ unsigned int Buffer::size() const
 
 
 
-void Buffer::bind() const
+void Buffer::bind_for_draw() const
 {
     L_ASSERT(!(m_buffer == 0 || m_buffer_size == 0));
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);

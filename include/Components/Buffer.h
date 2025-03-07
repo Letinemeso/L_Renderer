@@ -41,7 +41,7 @@ namespace LR
     public:
         unsigned int size() const;
 
-        void bind() const;
+        void bind_for_draw() const;
         void bind_for_computation() const;
 
     };

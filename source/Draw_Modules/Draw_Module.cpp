@@ -169,7 +169,8 @@ void Draw_Module::M_dispatch_compute_shader_if_any() const
         component->bind_for_computation();
     }
 
-    glDispatchCompute(M_calculate_necessary_work_groups(m_compute_shader_work_group_sizes.x), 1, 1);
+    unsigned int vertices_groups = M_calculate_necessary_work_groups(m_compute_shader_work_group_sizes.x);
+    glDispatchCompute(vertices_groups, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 

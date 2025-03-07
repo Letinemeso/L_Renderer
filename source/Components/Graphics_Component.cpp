@@ -34,7 +34,7 @@ void Graphics_Component::update(float _dt) const
 
 void Graphics_Component::prepare_to_draw() const
 {
-    m_buffer.bind();
+    m_buffer.bind_for_draw();
 
     if(m_on_prepare_func)
         m_on_prepare_func(this);
