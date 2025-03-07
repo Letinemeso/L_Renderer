@@ -86,7 +86,7 @@ void Buffer::modify_buffer(const Element_Modification_Func& _func, unsigned int 
 
     float* mapped_data = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
     L_ASSERT(mapped_data);
-    for(unsigned int i = _offset; i < _amount; i += _stride)
+    for(unsigned int i = _offset; i < _offset + _amount; i += _stride)
         _func(mapped_data[i], i);
     glUnmapBuffer(GL_ARRAY_BUFFER);
 

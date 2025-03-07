@@ -153,7 +153,7 @@ unsigned int Draw_Module::M_calculate_necessary_work_groups(unsigned int _work_g
     return (m_vertices_amount + _work_group_size - 1) / _work_group_size;
 }
 
-void Draw_Module::M_dispatch_compute_shader_if_any()
+void Draw_Module::M_dispatch_compute_shader_if_any() const
 {
     if(!m_compute_shader_program)
         return;
@@ -163,15 +163,13 @@ void Draw_Module::M_dispatch_compute_shader_if_any()
     m_compute_shader_program->use();
     m_compute_shader_program->update(this);
 
-    for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+    for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
     {
         Graphics_Component* component = *it;
         component->bind_for_computation();
     }
 
-    glDispatchCompute(M_calculate_necessary_work_groups(m_compute_shader_work_group_sizes.x),
-                      M_calculate_necessary_work_groups(m_compute_shader_work_group_sizes.y),
-                      M_calculate_necessary_work_groups(m_compute_shader_work_group_sizes.z));
+    glDispatchCompute(M_calculate_necessary_work_groups(m_compute_shader_work_group_sizes.x), 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
