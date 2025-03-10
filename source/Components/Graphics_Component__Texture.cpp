@@ -16,6 +16,12 @@ Graphics_Component__Texture::~Graphics_Component__Texture()
 
 
 
+void Graphics_Component__Texture::set_texture_bind_index(unsigned int _value)
+{
+    m_texture_bind_index = GL_TEXTURE0 + _value;
+    L_ASSERT(m_texture_bind_index < GL_MAX_TEXTURE_UNITS);
+}
+
 void Graphics_Component__Texture::set_picture(const Picture* _picture, const Texture_Settings& _settings)
 {
     glDeleteTextures(1, &m_texture_object);
@@ -61,6 +67,7 @@ void Graphics_Component__Texture::prepare_to_draw() const
 
     L_ASSERT(m_texture_object);
 
+    glActiveTexture(m_texture_bind_index);
     glBindTexture(GL_TEXTURE_2D, m_texture_object);
 }
 
@@ -75,8 +82,9 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Texture)
     BUILDER_STUB_PARENT_INITIALIZATION;
     BUILDER_STUB_CAST_PRODUCT;
 
-    L_ASSERT(resources_manager);
+    product->set_texture_bind_index(texture_bind_index);
 
+    L_ASSERT(resources_manager);
     product->inject_resources_manager(resources_manager);
 
     if(picture_name.size() == 0)

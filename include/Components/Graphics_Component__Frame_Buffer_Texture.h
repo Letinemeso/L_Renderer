@@ -40,6 +40,7 @@ namespace LR
     private:
         unsigned int m_texture_object = 0;
         unsigned int m_frame_buffer_object = 0;
+        unsigned int m_texture_bind_index = GL_TEXTURE0;
 
         unsigned int m_clear_hint = 0;
 
@@ -60,6 +61,7 @@ namespace LR
         inline void set_draw_func(const Draw_Func& _func) { m_draw_func = _func; }
 
     public:
+        void set_texture_bind_index(unsigned int _value);
         void init_texture(const Settings& _settings = Settings());
 
     public:
@@ -86,6 +88,7 @@ namespace LR
         ADD_FIELD(float, clear_color_blue)
         ADD_FIELD(float, clear_color_alpha)
         ADD_FIELD(bool, clear_depth_bit)
+        ADD_FIELD(unsigned int, texture_bind_index)
         FIELDS_END
 
     public:
@@ -100,6 +103,7 @@ namespace LR
         float clear_color_blue = 0.0f;
         float clear_color_alpha = 0.0f;
         bool clear_depth_bit = false;
+        unsigned int texture_bind_index = 0;
 
     protected:
         INIT_BUILDER_STUB(Graphics_Component__Frame_Buffer_Texture)

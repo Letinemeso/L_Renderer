@@ -17,6 +17,12 @@ Graphics_Component__Frame_Buffer_Texture::~Graphics_Component__Frame_Buffer_Text
 
 
 
+void Graphics_Component__Frame_Buffer_Texture::set_texture_bind_index(unsigned int _value)
+{
+    m_texture_bind_index = GL_TEXTURE0 + _value;
+    L_ASSERT(m_texture_bind_index < GL_MAX_TEXTURE_UNITS);
+}
+
 void Graphics_Component__Frame_Buffer_Texture::init_texture(const Settings& _settings)
 {
     glDeleteTextures(1, &m_texture_object);
@@ -70,6 +76,7 @@ void Graphics_Component__Frame_Buffer_Texture::prepare_to_draw() const
     glClear(m_clear_hint);
     m_draw_func();
 
+    glActiveTexture(m_texture_bind_index);
     glBindTexture(GL_TEXTURE_2D, m_texture_object);
     glBindFramebuffer(GL_FRAMEBUFFER, current_frame_buffer);
     glBindVertexArray(current_vertex_array);
@@ -85,6 +92,8 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Frame_Buffer_Texture)
 {
     BUILDER_STUB_PARENT_INITIALIZATION;
     BUILDER_STUB_CAST_PRODUCT;
+
+    product->set_texture_bind_index(texture_bind_index);
 
     Graphics_Component__Frame_Buffer_Texture::Settings settings = M_parse_settings();
     product->init_texture(settings);

@@ -31,6 +31,7 @@ namespace LR
 
     private:
         unsigned int m_texture_object = 0;
+        unsigned int m_texture_bind_index = GL_TEXTURE0;
         const Picture* m_picture = nullptr;
 
     public:
@@ -47,6 +48,7 @@ namespace LR
         inline const LEti::Resources_Manager* resources_manager() const { return m_resources_manager; }
 
     public:
+        void set_texture_bind_index(unsigned int _value);
         void set_picture(const Picture* _picture, const Texture_Settings& _settings = Texture_Settings());
         void reconfigure_texture_coords();
 
@@ -72,6 +74,7 @@ namespace LR
         ADD_FIELD(std::string, mag_filter)
         ADD_FIELD(std::string, wrap_s)
         ADD_FIELD(std::string, wrap_t)
+        ADD_FIELD(unsigned int, texture_bind_index)
         FIELDS_END
 
     public:
@@ -84,6 +87,7 @@ namespace LR
         std::string mag_filter = "Nearest";
         std::string wrap_s = "Repeat";
         std::string wrap_t = "Repeat";
+        unsigned int texture_bind_index = 0;
 
     protected:
         INIT_BUILDER_STUB(Graphics_Component__Texture)
