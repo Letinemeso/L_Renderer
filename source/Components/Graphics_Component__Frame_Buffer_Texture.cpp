@@ -50,6 +50,43 @@ void Graphics_Component__Frame_Buffer_Texture::init_texture(const Settings& _set
 
 
 
+Graphics_Component__Frame_Buffer_Texture::OpenGL_State Graphics_Component__Frame_Buffer_Texture::M_save_opengl_state() const
+{
+    OpenGL_State result;
+    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &result.vertex_array);
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &result.frame_buffer);
+
+    int textures_amount = 0;
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &textures_amount);
+
+    result.bound_textures.resize_and_fill(textures_amount, 0);
+    for(unsigned int i=0; i<textures_amount; ++i)
+    {
+        glActiveTexture(GL_TEXTURE0 + i);
+
+        int bound_texture = 0;
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, &bound_texture);
+
+        result.bound_textures[i] = bound_texture;
+    }
+
+    return result;
+}
+
+void Graphics_Component__Frame_Buffer_Texture::M_restore_opengl_state(const OpenGL_State& _state) const
+{
+    glBindVertexArray(_state.vertex_array);
+    glBindFramebuffer(GL_FRAMEBUFFER, _state.frame_buffer);
+
+    for(unsigned int i=0; i<_state.bound_textures.size(); ++i)
+    {
+        glActiveTexture(GL_TEXTURE0 + i);
+        glBindTexture(GL_TEXTURE_2D, _state.bound_textures[i]);
+    }
+}
+
+
+
 void Graphics_Component__Frame_Buffer_Texture::update(float _dt) const
 {
     Graphics_Component::update(_dt);
@@ -66,20 +103,16 @@ void Graphics_Component__Frame_Buffer_Texture::prepare_to_draw() const
     L_ASSERT(m_frame_buffer_object);
     L_ASSERT(m_draw_func);
 
-    int current_vertex_array = 0;
-    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &current_vertex_array);
-
-    int current_frame_buffer = 0;
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &current_frame_buffer);
+    OpenGL_State opengl_state = M_save_opengl_state();
 
     glBindFramebuffer(GL_FRAMEBUFFER, m_frame_buffer_object);
     glClear(m_clear_hint);
     m_draw_func();
 
+    M_restore_opengl_state(opengl_state);
+
     glActiveTexture(m_texture_bind_index);
     glBindTexture(GL_TEXTURE_2D, m_texture_object);
-    glBindFramebuffer(GL_FRAMEBUFFER, current_frame_buffer);
-    glBindVertexArray(current_vertex_array);
 }
 
 

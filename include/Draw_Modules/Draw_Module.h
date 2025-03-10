@@ -64,11 +64,13 @@ namespace LR
         ~Draw_Module();
 
     public:
-        inline void set_renderer(LR::Renderer* _ptr) { m_renderer = _ptr; }
-        inline void set_rendering_shader_program(LR::Shader_Program* _ptr) { m_rendering_shader_program = _ptr; }
-        inline void set_compute_shader_program(LR::Shader_Program* _ptr) { m_compute_shader_program = _ptr; M_update_compute_shader_work_groups_sizes(); }
+        inline void set_renderer(Renderer* _ptr) { m_renderer = _ptr; }
+        inline void set_rendering_shader_program(Shader_Program* _ptr) { m_rendering_shader_program = _ptr; }
+        inline void set_compute_shader_program(Shader_Program* _ptr) { m_compute_shader_program = _ptr; M_update_compute_shader_work_groups_sizes(); }
 
-        inline LR::Renderer* renderer() const { return m_renderer; }
+        inline Renderer* renderer() const { return m_renderer; }
+        inline Shader_Program* rendering_shader_program() const { return m_rendering_shader_program; }
+        inline Shader_Program* compute_shader_program() const { return m_compute_shader_program; }
 
     public:
         void set_draw_layer(Draw_Order_Controller* _draw_order_controller, const std::string& _layer_name);

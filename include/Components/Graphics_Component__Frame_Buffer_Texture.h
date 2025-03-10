@@ -17,6 +17,14 @@ namespace LR
     public:
         INIT_VARIABLE(LR::Graphics_Component__Frame_Buffer_Texture, LR::Graphics_Component)
 
+    private:
+        struct OpenGL_State
+        {
+            int vertex_array = 0;
+            int frame_buffer = 0;
+            LDS::Vector<unsigned int> bound_textures;
+        };
+
     public:
         struct Settings
         {
@@ -63,6 +71,10 @@ namespace LR
     public:
         void set_texture_bind_index(unsigned int _value);
         void init_texture(const Settings& _settings = Settings());
+
+    private:
+        OpenGL_State M_save_opengl_state() const;
+        void M_restore_opengl_state(const OpenGL_State& _state) const;
 
     public:
         void update(float _dt) const override;
