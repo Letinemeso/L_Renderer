@@ -9,10 +9,6 @@ void Shader_Transform_Component::init(unsigned int _opengl_program_handle)
 {
     Shader_Component::init(_opengl_program_handle);
 
-    m_vertex_attribs.coordinates = M_extract_input_buffer_location(m_coords_input_buffer_name);
-    m_vertex_attribs.colors = M_extract_input_buffer_location(m_colors_input_buffer_name);
-    m_vertex_attribs.texture_coordinates = M_extract_input_buffer_location(m_texture_coords_input_buffer_name);
-
     m_projection_matrix_uniform = M_extract_uniform_location(m_projection_matrix_uniform_name);
     m_transform_matrix_uniform = M_extract_uniform_location(m_transform_matrix_uniform_name);
     m_texture_uniform = M_extract_uniform_location(m_texture_uniform_name);
@@ -64,7 +60,4 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Transform_Component_Stub)
     product->set_projection_matrix_uniform_name(projection_matrix_uniform_name);
     product->set_transform_matrix_uniform_name(transform_matrix_uniform_name);
     product->set_texture_uniform_name(texture_uniform_name);
-    product->set_coords_input_buffer_name(coords_input_buffer_name);
-    product->set_colors_input_buffer_name(colors_input_buffer_name);
-    product->set_texture_coords_input_buffer_name(texture_coords_input_buffer_name);
 }
