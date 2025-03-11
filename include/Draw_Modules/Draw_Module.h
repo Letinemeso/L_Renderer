@@ -1,7 +1,6 @@
 #pragma once
 
 #include <mat4x4.hpp>
-#include <glew.h>
 
 #include <Data_Structures/List.h>
 
@@ -53,7 +52,7 @@ namespace LR
         Graphics_Component_List m_graphics_components;
         unsigned int m_vertices_amount = 0;
 
-        unsigned int m_draw_mode = GL_TRIANGLES;
+        unsigned int m_draw_mode = 0;
 
         bool m_should_recalculate_vertices_before_draw = false;
         bool m_visible = true;

@@ -1,6 +1,22 @@
 #include <Texture/Texture.h>
 
+#include <glew.h>
+
+#include <Binds_Controller/Binds_Controller.h>
+
 using namespace LR;
+
+
+Texture::Settings::Settings()
+{
+    min_filter = GL_NEAREST;
+    mag_filter = GL_NEAREST;
+    wrap_s = GL_REPEAT;
+    wrap_t = GL_REPEAT;
+}
+
+
+
 
 
 Texture::Texture()
@@ -19,7 +35,7 @@ void Texture::set_settings(const Settings& _settings)
 {
     m_current_settings = _settings;
 
-    glBindTexture(GL_TEXTURE_2D, m_texture_object);
+    LR::Binds_Controller::instance().bind_texture(m_bind_index, m_texture_object);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _settings.min_filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _settings.mag_filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _settings.wrap_s);
@@ -36,15 +52,14 @@ void Texture::set_bind_index(unsigned int _index)
         L_ASSERT(_index < textures_amount);
     });
 
-    m_bind_index = GL_TEXTURE0 + _index;
+    m_bind_index = _index;
 }
 
 
 
 void Texture::prepare_to_draw()
 {
-    glActiveTexture(m_bind_index);
-    glBindTexture(GL_TEXTURE_2D, m_texture_object);
+    LR::Binds_Controller::instance().bind_texture(m_bind_index, m_texture_object);
 }
 
 

@@ -13,20 +13,12 @@ class Texture__Frame_Buffer : public LR::Texture
 public:
     INIT_VARIABLE(LR::Texture__Frame_Buffer, LR::Texture)
 
-private:
-    struct OpenGL_State
-    {
-        int vertex_array = 0;
-        int frame_buffer = 0;
-        LDS::Vector<unsigned int> bound_textures;
-    };
-
 public:
     using Draw_Func = LST::Function<void()>;
 
 private:
     unsigned int m_frame_buffer_object = 0;
-    unsigned int m_clear_hint = GL_COLOR_BUFFER_BIT;
+    unsigned int m_clear_hint = 0;
 
     glm::vec4 m_clear_color;
     bool m_should_clear_depth_bit = false;
@@ -50,10 +42,6 @@ public:
     void set_size(unsigned int _width, unsigned int _height);
     void set_should_clear_depth_bit(bool _value);
     void set_clear_color(const glm::vec4& _color);
-
-private:
-    OpenGL_State M_save_opengl_state() const;
-    void M_restore_opengl_state(const OpenGL_State& _state) const;
 
 public:
     void render();

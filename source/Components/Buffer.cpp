@@ -1,5 +1,7 @@
 #include <Components/Buffer.h>
 
+#include <glew.h>
+
 using namespace LR;
 
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <glew.h>
-
 #include <L_Debug/L_Debug.h>
 
 #include <Stuff/Function_Wrapper.h>

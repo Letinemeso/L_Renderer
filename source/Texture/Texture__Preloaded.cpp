@@ -1,5 +1,9 @@
 #include <Texture/Texture__Preloaded.h>
 
+#include <glew.h>
+
+#include <Binds_Controller/Binds_Controller.h>
+
 using namespace LR;
 
 
@@ -10,7 +14,7 @@ void Texture__Preloaded::set_picture(const Picture *_picture)
     m_width = m_picture->width();
     m_height = m_picture->height();
 
-    glBindTexture(GL_TEXTURE_2D, opengl_texture_object());
+    LR::Binds_Controller::instance().bind_texture(bind_index(), opengl_texture_object());
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_picture->data());
 }
 

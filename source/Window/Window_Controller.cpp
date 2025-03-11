@@ -1,5 +1,8 @@
 #include <Window/Window_Controller.h>
 
+#include <glew.h>
+#include <glfw3.h>
+
 using namespace LR;
 
 GLFWwindow* Window_Controller::m_window = nullptr;

@@ -1,6 +1,9 @@
 #include <Draw_Modules/Draw_Module.h>
 
+#include <glew.h>
+
 #include <Renderer/Renderer.h>
+#include <Binds_Controller/Binds_Controller.h>
 #include <Draw_Order_Controller/Draw_Order_Controller.h>
 #include <Shader/Shader_Manager.h>
 
@@ -8,6 +11,7 @@ using namespace LR;
 
 
 Draw_Module::Draw_Module()
+    : m_draw_mode(GL_TRIANGLES)
 {
     glGenVertexArrays(1, &m_vertex_array);
     bind_vertex_array();
@@ -94,7 +98,7 @@ void Draw_Module::recalculate_vertices_amount()
 
 void Draw_Module::bind_vertex_array() const
 {
-    glBindVertexArray(vertex_array());
+    LR::Binds_Controller::instance().bind_vertex_array(vertex_array());
 }
 
 

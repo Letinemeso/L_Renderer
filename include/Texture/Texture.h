@@ -1,7 +1,5 @@
 #pragma once
 
-#include <glew.h>
-
 #include <L_Debug/L_Debug.h>
 
 #include <Variable_Base.h>
@@ -19,15 +17,17 @@ namespace LR
     public:
         struct Settings
         {
-            int min_filter = GL_NEAREST;
-            int mag_filter = GL_NEAREST;
-            int wrap_s = GL_REPEAT;
-            int wrap_t = GL_REPEAT;
+            int min_filter;
+            int mag_filter;
+            int wrap_s;
+            int wrap_t;
+
+            Settings();
         };
 
     private:
         unsigned int m_texture_object = 0;
-        unsigned int m_bind_index = GL_TEXTURE0;
+        unsigned int m_bind_index = 0;
         Settings m_current_settings;
 
     protected:
@@ -40,8 +40,7 @@ namespace LR
 
     public:
         inline unsigned int opengl_texture_object() const { return m_texture_object; }
-        inline unsigned int bind_index() const { return m_bind_index - GL_TEXTURE0; }
-        inline unsigned int bind_index_opengl() const { return m_bind_index; }
+        inline unsigned int bind_index() const { return m_bind_index; }
         inline const Settings& settings() const { return m_current_settings; }
         inline unsigned int width() const { return m_width; }
         inline unsigned int height() const { return m_height; }

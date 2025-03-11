@@ -3,8 +3,6 @@
 #include <Variable_Base.h>
 #include <Builder_Stub.h>
 
-#include <glew.h>
-
 #include <L_Debug/L_Debug.h>
 #include <Data_Structures/List.h>
 
@@ -18,10 +16,10 @@ namespace LR
     enum Shader_Type : unsigned int
     {
         Unknown = 0,
-        Vertex = (Shader_Type)GL_VERTEX_SHADER,
-        Fragment = (Shader_Type)GL_FRAGMENT_SHADER,
-        Geometry = (Shader_Type)GL_GEOMETRY_SHADER,
-        Compute = (Shader_Type)GL_COMPUTE_SHADER
+        Vertex = 1,
+        Fragment = 2,
+        Geometry = 3,
+        Compute = 4
     };
 
 
@@ -56,6 +54,7 @@ namespace LR
     private:
         void M_debug() const;
         bool M_component_already_added(Shader_Component* _component) const;
+        unsigned int M_get_opengl_shader_type() const;
 
 	public:
         inline void set_shader_type(Shader_Type _value) { m_shader_type = _value; }

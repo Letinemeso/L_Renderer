@@ -1,9 +1,8 @@
 #pragma once
 
-#include <glew.h>
-#include <glfw3.h>
-
 #include <L_Debug/L_Debug.h>
+
+struct GLFWwindow;
 
 namespace LR
 {
@@ -21,8 +20,8 @@ namespace LR
 
         static window_size m_window_data;
 
-        static bool m_keys_pressed_before[GLFW_KEY_LAST + 1];
-        static bool m_mouse_buttons_pressed_before[GLFW_MOUSE_BUTTON_LAST + 1];
+        static bool m_keys_pressed_before[349];             //  magic numbers from glfw.h
+        static bool m_mouse_buttons_pressed_before[8];
 
         static int m_mouse_wheel_rotation;
 

@@ -3,8 +3,6 @@
 #include <Variable_Base.h>
 #include <Builder_Stub.h>
 
-#include <glew.h>
-
 #include <Draw_Modules/Draw_Module.h>
 
 

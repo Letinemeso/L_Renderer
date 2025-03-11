@@ -1,5 +1,7 @@
 #include <Shader/Shader_Components/Shader_Component.h>
 
+#include <glew.h>
+
 using namespace LR;
 
 

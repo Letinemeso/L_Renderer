@@ -7,7 +7,6 @@
 #include <Variable_Base.h>
 #include <Builder_Stub.h>
 
-#include <glew.h>
 #include <mat4x4.hpp>
 
 #include <Shader/Shader.h>

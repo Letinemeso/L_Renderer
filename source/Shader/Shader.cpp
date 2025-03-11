@@ -1,5 +1,7 @@
 #include <Shader/Shader.h>
 
+#include <glew.h>
+
 using namespace LR;
 
 
@@ -71,6 +73,21 @@ bool Shader::M_component_already_added(Shader_Component *_component) const
     return false;
 }
 
+unsigned int Shader::M_get_opengl_shader_type() const
+{
+    if(shader_type() == Shader_Type::Vertex)
+        return GL_VERTEX_SHADER;
+    else if(shader_type() == Shader_Type::Fragment)
+        return GL_FRAGMENT_SHADER;
+    else if(shader_type() == Shader_Type::Geometry)
+        return GL_GEOMETRY_SHADER;
+    else if(shader_type() == Shader_Type::Compute)
+        return GL_COMPUTE_SHADER;
+
+    L_ASSERT(false);
+    return 0;
+}
+
 
 
 void Shader::reset()
@@ -101,7 +118,7 @@ void Shader::compile()
 
     L_ASSERT(m_glsl_version.size() > 0);
 
-    m_opengl_shader_handle = glCreateShader(shader_type());
+    m_opengl_shader_handle = glCreateShader(M_get_opengl_shader_type());
 
     const char** sources = new const char*[m_components.size() + 2];
 
