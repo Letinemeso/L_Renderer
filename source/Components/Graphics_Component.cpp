@@ -34,7 +34,8 @@ void Graphics_Component::update(float _dt) const
 
 void Graphics_Component::prepare_to_draw() const
 {
-    m_buffer.bind_for_draw();
+    m_buffer.bind_to_layout();
+    m_buffer.bind_to_binding_point();
 
     if(m_on_prepare_func)
         m_on_prepare_func(this);
@@ -43,7 +44,7 @@ void Graphics_Component::prepare_to_draw() const
 
 void Graphics_Component::bind_for_computation() const
 {
-    m_buffer.bind_for_computation();
+    m_buffer.bind_to_binding_point();
 }
 
 
@@ -73,10 +74,10 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub)
     }
     product->buffer().set_floats_per_vertex(floats_per_vertex);
 
-    if(attribute_index != 0xFFFFFFFF)
-        product->buffer().set_shader_layout_index(attribute_index);
-    if(compute_shader_index != 0xFFFFFFFF)
-        product->buffer().set_compute_shader_index(compute_shader_index);
+    if(layout_index != 0xFFFFFFFF)
+        product->buffer().set_layout_index(layout_index);
+    if(binding_point_index != 0xFFFFFFFF)
+        product->buffer().set_binding_point_index(binding_point_index);
 
     if(on_prepare_func)
         product->set_on_prepare_func(on_prepare_func);

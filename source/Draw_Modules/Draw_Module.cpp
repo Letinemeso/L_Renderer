@@ -103,7 +103,7 @@ Graphics_Component* Draw_Module::get_graphics_component_with_buffer_index(unsign
 {
     for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
     {
-        if((*it)->buffer().attrib_index() == _index)
+        if((*it)->buffer().layout_index() == _index)
             return *it;
     }
     return nullptr;
@@ -113,7 +113,7 @@ const Graphics_Component* Draw_Module::get_graphics_component_with_buffer_index(
 {
     for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
     {
-        if((*it)->buffer().attrib_index() == _index)
+        if((*it)->buffer().layout_index() == _index)
             return *it;
     }
     return nullptr;

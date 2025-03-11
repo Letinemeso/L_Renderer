@@ -44,31 +44,31 @@ void Buffer::copy_array(const float* _data, unsigned int _count, unsigned int _o
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_buffer);
     glBufferSubData(GL_SHADER_STORAGE_BUFFER, sizeof(float) * _offset, sizeof(float) * _count, _data);
 
-    if(m_shader_layout_index == 0xFFFFFFFF || m_floats_per_vertex == 0)
+    if(m_layout_index == 0xFFFFFFFF || m_floats_per_vertex == 0)
         return;
 
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
+    glVertexAttribPointer(m_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
 
 
-void Buffer::set_shader_layout_index(unsigned int _index)
+void Buffer::set_layout_index(unsigned int _index)
 {
     L_ASSERT(_index != 0xFFFFFFFF);
 
-    if(_index == m_shader_layout_index)
+    if(_index == m_layout_index)
         return;
 
-    glDisableVertexAttribArray(m_shader_layout_index);
+    glDisableVertexAttribArray(m_layout_index);
     glEnableVertexAttribArray(_index);
 
-    m_shader_layout_index = _index;
+    m_layout_index = _index;
 
     if(m_buffer == 0 || m_buffer_size == 0 || m_floats_per_vertex == 0)
         return;
 
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
+    glVertexAttribPointer(m_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
 
 void Buffer::set_floats_per_vertex(unsigned int _floats_per_vertex)
@@ -80,11 +80,11 @@ void Buffer::set_floats_per_vertex(unsigned int _floats_per_vertex)
 
     m_floats_per_vertex = _floats_per_vertex;
 
-    if(m_buffer == 0 || m_buffer_size == 0 || m_shader_layout_index == 0xFFFFFFFF)
+    if(m_buffer == 0 || m_buffer_size == 0 || m_layout_index == 0xFFFFFFFF)
         return;
 
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
+    glVertexAttribPointer(m_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
 
 
@@ -109,7 +109,7 @@ void Buffer::modify_buffer(const Element_Modification_Func& _func, unsigned int 
     glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glVertexAttribPointer(m_shader_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
+    glVertexAttribPointer(m_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
 
 
@@ -121,22 +121,22 @@ unsigned int Buffer::size() const
 
 
 
-void Buffer::bind_for_draw() const
+void Buffer::bind_to_layout() const
 {
     L_ASSERT(!(m_buffer == 0 || m_buffer_size == 0));
 
-    if(m_shader_layout_index == 0xFFFFFFFF)
+    if(m_layout_index == 0xFFFFFFFF)
         return;
 
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
 }
 
-void Buffer::bind_for_computation() const
+void Buffer::bind_to_binding_point() const
 {
     L_ASSERT(!(m_buffer == 0 || m_buffer_size == 0));
 
-    if(m_compute_shader_index == 0xFFFFFFFF)
+    if(m_binding_point_index == 0xFFFFFFFF)
         return;
 
-    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, m_compute_shader_index, m_buffer);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, m_binding_point_index, m_buffer);
 }

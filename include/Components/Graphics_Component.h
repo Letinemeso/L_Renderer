@@ -59,9 +59,9 @@ namespace LR
         INIT_VARIABLE(LR::Graphics_Component_Stub, LV::Builder_Stub)
 
         INIT_FIELDS
-        ADD_FIELD(unsigned int, attribute_index)
         ADD_FIELD(unsigned int, floats_per_vertex)
-        ADD_FIELD(unsigned int, compute_shader_index)
+        ADD_FIELD(unsigned int, layout_index)
+        ADD_FIELD(unsigned int, binding_point_index)
         ADD_FIELD(LDS::Vector<float>, data)
         FIELDS_END
 
@@ -70,9 +70,9 @@ namespace LR
         CHILDS_END
 
     public:
-        unsigned int attribute_index = 0xFFFFFFFF;
         unsigned int floats_per_vertex = 0;
-        unsigned int compute_shader_index = 0xFFFFFFFF;
+        unsigned int layout_index = 0xFFFFFFFF;
+        unsigned int binding_point_index = 0xFFFFFFFF;
 
         LDS::Vector<float> data;
 
