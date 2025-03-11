@@ -12,6 +12,9 @@ namespace LR
 
     class Buffer final
     {
+    public:
+        constexpr static unsigned int All_Elements = 0xFFFFFFFF;
+
     private:
         unsigned int m_shader_layout_index = 0xFFFFFFFF;
         unsigned int m_floats_per_vertex = 0;
@@ -41,7 +44,7 @@ namespace LR
         void set_shader_layout_index(unsigned int _index);
         void set_floats_per_vertex(unsigned int _floats_per_vertex);
 
-        void modify_buffer(const Element_Modification_Func& _func, unsigned int _offset = 0, unsigned int _amount = 0xFFFFFFFF, unsigned int _stride = 1);
+        void modify_buffer(const Element_Modification_Func& _func, unsigned int _offset = 0, unsigned int _amount = All_Elements, unsigned int _stride = 1);
 
     public:
         unsigned int size() const;

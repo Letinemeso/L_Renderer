@@ -2,10 +2,8 @@
 
 #include <L_Debug/L_Debug.h>
 
-#include <Resources_Manager.h>
-
 #include <Components/Graphics_Component.h>
-#include <Resources/Picture.h>
+#include <Texture/Texture.h>
 
 namespace LR
 {
@@ -16,47 +14,26 @@ namespace LR
         INIT_VARIABLE(LR::Graphics_Component__Texture, LR::Graphics_Component)
 
     public:
-        struct Texture_Settings
-        {
-            int min_filter = GL_NEAREST;
-            int mag_filter = GL_NEAREST;
-            int wrap_s = GL_REPEAT;
-            int wrap_t = GL_REPEAT;
-
-            Texture_Settings() { }
-        };
-
-    private:
-        const LEti::Resources_Manager* m_resources_manager = nullptr;
-
-    private:
-        unsigned int m_texture_object = 0;
-        unsigned int m_texture_bind_index = GL_TEXTURE0;
-        const Picture* m_picture = nullptr;
+        Texture* m_texture = nullptr;
+        bool m_owns_texture = true;
 
     public:
         Graphics_Component__Texture();
-        Graphics_Component__Texture(const Graphics_Component__Texture&) = delete;
-        Graphics_Component__Texture(Graphics_Component__Texture&&) = delete;
-        void operator=(const Graphics_Component__Texture&) = delete;
-        void operator=(Graphics_Component__Texture&&) = delete;
-
         ~Graphics_Component__Texture();
 
     public:
-        inline void inject_resources_manager(const LEti::Resources_Manager* _ptr) { m_resources_manager = _ptr; }
-        inline const LEti::Resources_Manager* resources_manager() const { return m_resources_manager; }
+        inline Texture* texture() { return m_texture; }
+        inline const Texture* texture() const { return m_texture; }
 
     public:
-        void set_texture_bind_index(unsigned int _value);
-        void set_picture(const Picture* _picture, const Texture_Settings& _settings = Texture_Settings());
+        void set_texture(Texture* _texture, bool _take_ownership = true);
+        void remove_texture();                          //  nullifies texture and deletes it if has ownership
+        [[nodiscard]] Texture* extract_texture();       //  returns texture and hands over ownership
+
+    public:
         void reconfigure_texture_coords();
 
     public:
-        inline const Picture* get_picture() const { return m_picture; }
-
-    public:
-        void update(float _dt) const override;
         void prepare_to_draw() const override;
 
     };
@@ -68,32 +45,23 @@ namespace LR
         INIT_VARIABLE(LR::Graphics_Component_Stub__Texture, LR::Graphics_Component_Stub)
 
         INIT_FIELDS
-        ADD_FIELD(std::string, picture_name)
         ADD_FIELD(bool, texture_coords_in_pixels)
-        ADD_FIELD(std::string, min_filter)
-        ADD_FIELD(std::string, mag_filter)
-        ADD_FIELD(std::string, wrap_s)
-        ADD_FIELD(std::string, wrap_t)
-        ADD_FIELD(unsigned int, texture_bind_index)
         FIELDS_END
 
-    public:
-        const LEti::Resources_Manager* resources_manager = nullptr;
+        INIT_CHILDS
+        ADD_CHILD("texture_stub", texture_stub)
+        CHILDS_END
 
     public:
-        std::string picture_name;
         bool texture_coords_in_pixels = true;
-        std::string min_filter = "Nearest";
-        std::string mag_filter = "Nearest";
-        std::string wrap_s = "Repeat";
-        std::string wrap_t = "Repeat";
-        unsigned int texture_bind_index = 0;
 
-    protected:
+        Texture_Stub* texture_stub = nullptr;
+
+    public:
         INIT_BUILDER_STUB(Graphics_Component__Texture)
 
-    private:
-        Graphics_Component__Texture::Texture_Settings M_parse_settings() const;
+    public:
+        ~Graphics_Component_Stub__Texture();
 
     };
 
