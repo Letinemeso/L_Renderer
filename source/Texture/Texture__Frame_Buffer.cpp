@@ -93,13 +93,6 @@ void Texture__Frame_Buffer::render()
     glClear(m_clear_hint);
     m_draw_func();
 
-    if(bind_index() == 0)
-    {
-        GLubyte data[4];
-        glReadPixels(960, 540, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        std::cout << "red: " << (int)data[0] << " green: " << (int)data[1] << " blue: " << (int)data[2] << " alpha: " << (int)data[3] << std::endl;
-    }
-
     M_restore_opengl_state(opengl_state);
 }
 
