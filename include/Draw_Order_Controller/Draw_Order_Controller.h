@@ -12,8 +12,11 @@ namespace LR
 
     class Draw_Order_Controller
     {
-    private:
+    public:
         using Draw_Function = LST::Function<void()>;
+        using Before_Draw_Function = LST::Function<void()>;
+
+    private:
         using Registred_Modules = LDS::Map<LEti::Module*, Draw_Function>;
         using Registred_Modules_Locations = LDS::Map<LEti::Module*, Registred_Modules*>;
 
@@ -21,9 +24,25 @@ namespace LR
         {
             std::string name;
             Registred_Modules modules_set;
+            Before_Draw_Function before_draw;
         };
 
         using Draw_Layers = LDS::List<Draw_Layer_Data>;
+
+    public:
+        class Draw_Layer_Settings
+        {
+        private:
+            Draw_Layer_Data& m_data;
+
+        private:
+            friend class Draw_Order_Controller;
+            Draw_Layer_Settings(Draw_Layer_Data& _data) : m_data(_data) { }
+
+        public:
+            inline void set_before_draw_function(const Before_Draw_Function& _func) { m_data.before_draw = _func; }
+
+        };
 
     private:
         Draw_Layers m_draw_layers;
@@ -33,7 +52,7 @@ namespace LR
         Registred_Modules& M_get_modules_set_for_layer(const std::string& _layer_name);
 
     public:
-        void add_layer(const std::string& _name);
+        Draw_Layer_Settings add_layer(const std::string& _name);
 
     public:
         void register_module(const std::string& _layer_name, LEti::Module* _module, const Draw_Function& _draw_function);

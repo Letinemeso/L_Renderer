@@ -17,7 +17,7 @@ Draw_Order_Controller::Registred_Modules& Draw_Order_Controller::M_get_modules_s
 
 
 
-void Draw_Order_Controller::add_layer(const std::string& _name)
+Draw_Order_Controller::Draw_Layer_Settings Draw_Order_Controller::add_layer(const std::string& _name)
 {
     L_DEBUG_FUNC_1ARG(
         [this](const std::string& _name)
@@ -29,6 +29,9 @@ void Draw_Order_Controller::add_layer(const std::string& _name)
         }, _name);
 
     m_draw_layers.push_back({ _name, {} });
+
+    Draw_Layer_Data& layer = *m_draw_layers.end();
+    return Draw_Layer_Settings(layer);
 }
 
 
@@ -65,7 +68,12 @@ void Draw_Order_Controller::draw() const
 {
     for(Draw_Layers::Const_Iterator layer_it = m_draw_layers.begin(); !layer_it.end_reached(); ++layer_it)
     {
-        const Registred_Modules& modules_set = layer_it->modules_set;
+        const Draw_Layer_Data& layer = *layer_it;
+
+        if(layer.before_draw)
+            layer.before_draw();
+
+        const Registred_Modules& modules_set = layer.modules_set;
         for(Registred_Modules::Const_Iterator module_it = modules_set.iterator(); !module_it.end_reached(); ++module_it)
         {
             const Draw_Function& draw_function = *module_it;
