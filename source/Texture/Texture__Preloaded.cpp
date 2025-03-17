@@ -9,6 +9,8 @@ using namespace LR;
 
 void Texture__Preloaded::set_picture(const Picture *_picture)
 {
+    L_ASSERT(_picture);
+
     m_picture = _picture;
 
     m_width = m_picture->width();

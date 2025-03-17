@@ -74,12 +74,12 @@ BUILDER_STUB_INITIALIZATION_FUNC(Texture_Stub)
 
     product->set_bind_index(bind_index);
 
-    M_apply_settings(product);
+    apply_settings(product);
 }
 
 
 
-void Texture_Stub::M_apply_settings(Constructed_Type* _product) const
+void Texture_Stub::apply_settings(Constructed_Type* _product) const
 {
     Texture::Settings result;
 

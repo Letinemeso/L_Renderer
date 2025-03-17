@@ -78,8 +78,8 @@ namespace LR
     public:
         INIT_BUILDER_STUB(Texture)
 
-    private:
-        void M_apply_settings(Constructed_Type* _product) const;
+    public:
+        void apply_settings(Constructed_Type* _product) const;
 
     };
 

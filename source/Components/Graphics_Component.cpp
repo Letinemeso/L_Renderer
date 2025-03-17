@@ -26,7 +26,7 @@ void Graphics_Component::set_reconstructor(Graphics_Component_Reconstructor* _pt
 
 
 
-void Graphics_Component::update(float _dt) const
+void Graphics_Component::update(float _dt)
 {
     if(m_reconstructor)
         m_reconstructor->update(_dt);

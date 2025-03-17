@@ -47,6 +47,7 @@ namespace LR
         inline unsigned int width() const { return m_width; }
         inline unsigned int height() const { return m_height; }
         inline unsigned int channels() const { return m_channels; }
+        inline bool has_alpha() const { return m_channels == 4; }
         inline const unsigned char* data() const { return m_picture_data; }
         inline Pixel pixel(unsigned int _x, unsigned int _y) { return m_picture_data + ((m_width * m_channels * _y) + (m_channels * _x)); }
         inline Const_Pixel pixel(unsigned int _x, unsigned int _y) const { return m_picture_data + ((m_width * m_channels * _y) + (m_channels * _x)); }
