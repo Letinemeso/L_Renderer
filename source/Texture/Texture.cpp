@@ -102,18 +102,18 @@ void Texture_Stub::apply_settings(Constructed_Type* _product) const
     }
 
     if(wrap_s == "Repeat")
-        result.wrap_s = GL_CLAMP_TO_EDGE;
-    else if(wrap_s == "Clamp_To_Edge")
         result.wrap_s = GL_REPEAT;
+    else if(wrap_s == "Clamp_To_Edge")
+        result.wrap_s = GL_CLAMP_TO_EDGE;
     else
     {
         L_ASSERT(false);    //  haven't used any other type yet, so just add them here if needed
     }
 
     if(wrap_t == "Repeat")
-        result.wrap_t = GL_CLAMP_TO_EDGE;
-    else if(wrap_t == "Clamp_To_Edge")
         result.wrap_t = GL_REPEAT;
+    else if(wrap_t == "Clamp_To_Edge")
+        result.wrap_t = GL_CLAMP_TO_EDGE;
     else
     {
         L_ASSERT(false);    //  haven't used any other type yet, so just add them here if needed
