@@ -245,6 +245,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
     BUILDER_STUB_CAST_PRODUCT;
 
     product->set_visible(visible);
+    product->set_draw_on_update(draw_on_update);
 
     M_apply_draw_mode(product);
 

@@ -124,6 +124,7 @@ namespace LR
 
         INIT_FIELDS
         ADD_FIELD(bool, visible)
+        ADD_FIELD(bool, draw_on_update)
         ADD_FIELD(std::string, draw_mode)
         ADD_FIELD(std::string, draw_layer)
         ADD_FIELD(std::string, rendering_shader_id)
@@ -136,6 +137,7 @@ namespace LR
 
     public:
         bool visible = true;
+        bool draw_on_update = true;
         std::string draw_mode = "GL_TRIANGLES";
         std::string draw_layer;
         std::string rendering_shader_id;
