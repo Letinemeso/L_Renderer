@@ -83,7 +83,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Texture)
     if(texture_stub)
         product->set_texture(Texture_Stub::construct_from(texture_stub));
 
-    if(data.size() > 0 && texture_coords_in_pixels)
+    if(texture_stub && data.size() > 0 && texture_coords_in_pixels)
         product->reconfigure_texture_coords();
 }
 
