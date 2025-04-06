@@ -146,7 +146,7 @@ namespace LR
     public:
         Renderer* renderer = nullptr;
         Draw_Order_Controller* draw_order_controller = nullptr;
-        Shader_Manager* shader_manager = nullptr;
+        const Shader_Manager* shader_manager = nullptr;
 
     public:
         LV::Variable_Base::Childs_List graphics_component_stubs;
