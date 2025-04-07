@@ -8,7 +8,7 @@ using namespace LR;
 
 Window_Controller::Window_Controller()
 {
-
+    LST::Message_Translator::instance().register_message_type<Message__Window_Resized>();
 }
 
 Window_Controller::~Window_Controller()
@@ -31,7 +31,9 @@ void Window_Controller::create_window(unsigned int _width, unsigned int _height,
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glfwSetWindowSizeLimits(m_window, _width, _height, _width, _height);
+    glViewport(0, 0, _width, _height);
+
+    // glfwSetWindowSizeLimits(m_window, _width, _height, _width, _height);
 
     L_ASSERT(m_window != nullptr);
 
@@ -42,6 +44,11 @@ void Window_Controller::create_window(unsigned int _width, unsigned int _height,
     {
         LR::Window_Controller::instance().instance().register_mouse_wheel_movement((int)_y);
 	});
+
+    glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow*, int _width, int _height)
+    {
+        LR::Window_Controller::instance().instance().on_window_resized(_width, _height);
+    });
 }
 
 void Window_Controller::terminate_window()
@@ -62,6 +69,20 @@ void Window_Controller::set_cursor_pos(double _x, double _y)
 void Window_Controller::register_mouse_wheel_movement(int _value)
 {
     m_mouse_wheel_rotation += _value;
+}
+
+void Window_Controller::on_window_resized(int _new_width, int _new_height)
+{
+    m_window_size.x = _new_width;
+    m_window_size.y = _new_height;
+
+    int fb_x, fb_y;
+    glfwGetFramebufferSize(m_window, &fb_x, &fb_y);
+
+    glViewport(0, 0, fb_x, fb_y);
+
+    Message__Window_Resized msg;
+    LST::Message_Translator::instance().translate(msg);
 }
 
 

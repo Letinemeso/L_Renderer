@@ -3,12 +3,18 @@
 #include <vec2.hpp>
 
 #include <L_Debug/L_Debug.h>
+#include <Stuff/Message_Type.h>
+#include <Stuff/Message_Translator.h>
 
 
 struct GLFWwindow;
 
 namespace LR
 {
+
+    MESSAGE_TYPE_DECLARATION_START(Message__Window_Resized)
+    MESSAGE_TYPE_DECLARATION_END
+
 
     class Window_Controller final
     {
@@ -43,6 +49,7 @@ namespace LR
 
         void set_cursor_pos(double _x, double _y);
         void register_mouse_wheel_movement(int _value);
+        void on_window_resized(int _new_width, int _new_height);
 
     public:
         void update();
