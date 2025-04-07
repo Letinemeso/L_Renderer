@@ -21,7 +21,7 @@ void Shader_Window_Size_Component::update(const Draw_Module* _draw_module)
     L_ASSERT(_draw_module);
     L_ASSERT(m_window_size_vec_uniform != -1);
 
-    const glm::vec2& window_size = Window_Controller::get_window_size();
+    const glm::vec2& window_size = LR::Window_Controller::instance().get_window_size();
     glUniform2f(m_window_size_vec_uniform, window_size[0], window_size[1]);
 }
 

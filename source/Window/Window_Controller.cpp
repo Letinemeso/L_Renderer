@@ -5,16 +5,24 @@
 
 using namespace LR;
 
-GLFWwindow* Window_Controller::m_window = nullptr;
-glm::vec2 Window_Controller::m_prev_cursor_pos;
-glm::vec2 Window_Controller::m_window_size;
-bool Window_Controller::m_keys_pressed_before[GLFW_KEY_LAST + 1] = { false };
-bool Window_Controller::m_mouse_buttons_pressed_before[GLFW_MOUSE_BUTTON_LAST + 1] = { false };
-int Window_Controller::m_mouse_wheel_rotation = 0;
+
+Window_Controller::Window_Controller()
+{
+
+}
+
+Window_Controller::~Window_Controller()
+{
+    if(m_window)
+        terminate_window();
+}
+
 
 
 void Window_Controller::create_window(unsigned int _width, unsigned int _height, const char* _name)
 {
+    L_ASSERT(m_window == nullptr);
+
 	glfwInit();
 	m_window = glfwCreateWindow(_width, _height, _name, 0, 0);
 	glfwMakeContextCurrent(m_window);
@@ -23,23 +31,39 @@ void Window_Controller::create_window(unsigned int _width, unsigned int _height,
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glfwSetWindowSizeLimits(m_window, _width, _height, _width, _height);
+    glfwSetWindowSizeLimits(m_window, _width, _height, _width, _height);
 
     L_ASSERT(m_window != nullptr);
 
     m_window_size.x = _width;
     m_window_size.y = _height;
 
-	glfwSetScrollCallback(m_window, [](GLFWwindow*, double /*_x*/, double _y)
-	{
-		m_mouse_wheel_rotation += (int)_y;
+    glfwSetScrollCallback(m_window, [](GLFWwindow*, double /*_x*/, double _y)
+    {
+        LR::Window_Controller::instance().instance().register_mouse_wheel_movement((int)_y);
 	});
 }
 
 void Window_Controller::terminate_window()
 {
     glfwTerminate();
+    m_window = nullptr;
 }
+
+
+void Window_Controller::set_cursor_pos(double _x, double _y)
+{
+    glfwSetCursorPos(m_window, _x, _y);
+
+    m_prev_cursor_pos.x = _x;
+    m_prev_cursor_pos.y = _y;
+}
+
+void Window_Controller::register_mouse_wheel_movement(int _value)
+{
+    m_mouse_wheel_rotation += _value;
+}
+
 
 
 void Window_Controller::update()
@@ -68,14 +92,6 @@ void Window_Controller::swap_buffers()
 	glfwSwapBuffers(m_window);
 }
 
-
-void Window_Controller::set_cursor_pos(double _x, double _y)
-{
-	glfwSetCursorPos(m_window, _x, _y);
-
-	m_prev_cursor_pos.x = _x;
-    m_prev_cursor_pos.y = _y;
-}
 
 
 glm::vec2 Window_Controller::get_cursor_position()
