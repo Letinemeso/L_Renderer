@@ -6,8 +6,8 @@
 using namespace LR;
 
 GLFWwindow* Window_Controller::m_window = nullptr;
-Window_Controller::cursor_position Window_Controller::m_prev_cursor_pos;
-Window_Controller::window_size Window_Controller::m_window_data;
+glm::vec2 Window_Controller::m_prev_cursor_pos;
+glm::vec2 Window_Controller::m_window_size;
 bool Window_Controller::m_keys_pressed_before[GLFW_KEY_LAST + 1] = { false };
 bool Window_Controller::m_mouse_buttons_pressed_before[GLFW_MOUSE_BUTTON_LAST + 1] = { false };
 int Window_Controller::m_mouse_wheel_rotation = 0;
@@ -27,8 +27,8 @@ void Window_Controller::create_window(unsigned int _width, unsigned int _height,
 
     L_ASSERT(m_window != nullptr);
 
-	m_window_data.width = _width;
-	m_window_data.height = _height;
+    m_window_size.x = _width;
+    m_window_size.y = _height;
 
 	glfwSetScrollCallback(m_window, [](GLFWwindow*, double /*_x*/, double _y)
 	{
@@ -78,19 +78,21 @@ void Window_Controller::set_cursor_pos(double _x, double _y)
 }
 
 
-Window_Controller::cursor_position Window_Controller::get_cursor_position()
+glm::vec2 Window_Controller::get_cursor_position()
 {
-    cursor_position result;
+    double x, y;
+    glfwGetCursorPos(m_window, &x, &y);
 
-    glfwGetCursorPos(m_window, &result.x, &result.y);
-    result.y = m_window_data.height - result.y;
+    glm::vec2 result;
+    result.x = x;
+    result.y = m_window_size.y - (float)y;
 
     return result;
 }
 
-Window_Controller::cursor_position Window_Controller::get_cursor_stride()
+glm::vec2 Window_Controller::get_cursor_stride()
 {
-    cursor_position result = get_cursor_position();
+    glm::vec2 result = get_cursor_position();
 
     result.x -= m_prev_cursor_pos.x;
     result.y -= m_prev_cursor_pos.y;
@@ -99,9 +101,14 @@ Window_Controller::cursor_position Window_Controller::get_cursor_stride()
 }
 
 
-const Window_Controller::window_size& Window_Controller::get_window_data()
+const glm::vec2& Window_Controller::get_window_size()
 {
-	return m_window_data;
+    return m_window_size;
+}
+
+float Window_Controller::calculate_window_ratio()
+{
+    return m_window_size.x / m_window_size.y;
 }
 
 

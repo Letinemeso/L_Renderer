@@ -19,19 +19,18 @@ Camera_2D::Camera_2D(const Camera_2D& _other)
 
 void Camera_2D::M_update_matrix()
 {
-    float x_diff = ((float)(LR::Window_Controller::get_window_data().width) / 2.0f * m_view_scale);
-    float y_diff = ((float)(LR::Window_Controller::get_window_data().height) / 2.0f * m_view_scale);
+    glm::vec2 diff = LR::Window_Controller::get_window_size() * 0.5f * m_view_scale;
 
 	m_matrix = glm::ortho(
-		-x_diff + m_position.x, x_diff + m_position.x,
-		-y_diff + m_position.y, y_diff + m_position.y,
+        -diff.x + m_position.x, diff.x + m_position.x,
+        -diff.y + m_position.y, diff.y + m_position.y,
 		-1.0f, 1.0f
 	);
 }
 
 
 
-void Camera_2D::set_position(const glm::vec3& _position)
+void Camera_2D::set_position(const glm::vec2& _position)
 {
 	m_position = _position;
 	M_update_matrix();
@@ -48,21 +47,19 @@ void Camera_2D::set_view_scale(float _scale)
 
 
 
-glm::vec3 Camera_2D::convert_window_coords(const glm::vec3 &_window_coords) const
+glm::vec3 Camera_2D::convert_window_coords(const glm::vec2& _window_coords) const
 {
-	glm::vec3 result(0.0f, 0.0f, 0.0f);
+    glm::vec3 result;
 
-	float ratio_x = _window_coords.x / ((float)Window_Controller::get_window_data().width);
-	float ratio_y = _window_coords.y / ((float)Window_Controller::get_window_data().height);
+    float ratio_x = _window_coords.x / ((float)Window_Controller::get_window_size().x);
+    float ratio_y = _window_coords.y / ((float)Window_Controller::get_window_size().y);
 
-    float left_edge = -((float)(LR::Window_Controller::get_window_data().width) / 2.0f * m_view_scale) + m_position.x;
-    float bottom_edge = -((float)(LR::Window_Controller::get_window_data().height) / 2.0f * m_view_scale) + m_position.y;
+    glm::vec2 left_bottom_edge = (-LR::Window_Controller::get_window_size() * 0.5f * m_view_scale) + m_position;
+    glm::vec2 view = Window_Controller::get_window_size() * m_view_scale;
 
-	float view_width = ((float)Window_Controller::get_window_data().width) * m_view_scale;
-	float view_height = ((float)Window_Controller::get_window_data().height) * m_view_scale;
-
-	result.x = view_width * ratio_x + left_edge;
-	result.y = view_height * ratio_y + bottom_edge;
+    result.x = view.x * ratio_x + left_bottom_edge.x;
+    result.y = view.y * ratio_y + left_bottom_edge.y;
+    result.z = 0.0f;
 
 	return result;
 }

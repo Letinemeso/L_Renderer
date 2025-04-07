@@ -15,7 +15,7 @@ namespace LR
     class Camera_2D : public Camera_Base
 	{
 	private:
-        glm::vec3 m_position{0.0f, 0.0f, 0.0f};
+        glm::vec2 m_position{ 0.0f, 0.0f };
         float m_view_scale = 1.0f;
 
     public:
@@ -26,14 +26,14 @@ namespace LR
         void M_update_matrix();
 
 	public:
-        void set_position(const glm::vec3& _position);
+        void set_position(const glm::vec2& _position);
         void set_view_scale(float _scale);
 
 	public:
-        inline const glm::vec3& position() const { return m_position; }
+        inline const glm::vec2& position() const { return m_position; }
         inline float view_scale() const { return m_view_scale; }
 
-        glm::vec3 convert_window_coords(const glm::vec3& _window_coords) const;
+        glm::vec3 convert_window_coords(const glm::vec2& _window_coords) const;
 
 	};
 

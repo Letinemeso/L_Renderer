@@ -1,6 +1,9 @@
 #pragma once
 
+#include <vec2.hpp>
+
 #include <L_Debug/L_Debug.h>
+
 
 struct GLFWwindow;
 
@@ -9,19 +12,14 @@ namespace LR
 
     class Window_Controller final
     {
-    public:
-        struct cursor_position { double x = 0; double y = 0; };
-        struct window_size { unsigned int width = 0.0f, height = 0.0f; };
-
     private:
         static GLFWwindow* m_window;
+        static glm::vec2 m_window_size;
 
-        static cursor_position m_prev_cursor_pos;
-
-        static window_size m_window_data;
-
-        static bool m_keys_pressed_before[349];             //  magic numbers from glfw.h
+        static bool m_keys_pressed_before[349];             //  magic numbers from glfw3.h
         static bool m_mouse_buttons_pressed_before[8];
+
+        static glm::vec2 m_prev_cursor_pos;
 
         static int m_mouse_wheel_rotation;
 
@@ -41,10 +39,11 @@ namespace LR
         static void set_cursor_pos(double _x, double _y);
 
     public:
-        static cursor_position get_cursor_position();
-        static cursor_position get_cursor_stride();
+        static glm::vec2 get_cursor_position();
+        static glm::vec2 get_cursor_stride();
 
-        static const window_size& get_window_data();
+        static const glm::vec2& get_window_size();
+        static float calculate_window_ratio();
 
         static bool key_prev_pressed(unsigned int _key);
         static bool mouse_button_prev_pressed(unsigned int _btn);
