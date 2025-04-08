@@ -85,6 +85,33 @@ void Window_Controller::on_window_resized(int _new_width, int _new_height)
     LST::Message_Translator::instance().translate(msg);
 }
 
+void Window_Controller::make_fullscreen(bool _fullscreen)
+{
+    if(_fullscreen)
+    {
+        if(m_is_fullscreen)
+            return;
+
+        m_saved_window_size = m_window_size;
+        m_saved_window_position = get_window_position();
+
+        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+        glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+        on_window_resized(mode->width, mode->height);
+    }
+    else
+    {
+        if(!m_is_fullscreen)
+            return;
+
+        glfwSetWindowMonitor(m_window, nullptr, m_saved_window_position.x, m_saved_window_position.y, m_saved_window_size.x, m_saved_window_size.y, 0);
+        on_window_resized(m_saved_window_size.x, m_saved_window_size.y);
+    }
+
+    m_is_fullscreen = _fullscreen;
+}
+
 
 
 void Window_Controller::update()
@@ -103,7 +130,7 @@ void Window_Controller::update()
 
 
 
-bool Window_Controller::window_should_close()
+bool Window_Controller::window_should_close() const
 {
 	return glfwWindowShouldClose(m_window);
 }
@@ -115,7 +142,7 @@ void Window_Controller::swap_buffers()
 
 
 
-glm::vec2 Window_Controller::get_cursor_position()
+glm::vec2 Window_Controller::get_cursor_position() const
 {
     double x, y;
     glfwGetCursorPos(m_window, &x, &y);
@@ -127,7 +154,7 @@ glm::vec2 Window_Controller::get_cursor_position()
     return result;
 }
 
-glm::vec2 Window_Controller::get_cursor_stride()
+glm::vec2 Window_Controller::get_cursor_stride() const
 {
     glm::vec2 result = get_cursor_position();
 
@@ -138,70 +165,78 @@ glm::vec2 Window_Controller::get_cursor_stride()
 }
 
 
-const glm::vec2& Window_Controller::get_window_size()
+const glm::vec2& Window_Controller::get_window_size() const
 {
     return m_window_size;
 }
 
-float Window_Controller::calculate_window_ratio()
+float Window_Controller::calculate_window_ratio() const
 {
     return m_window_size.x / m_window_size.y;
 }
 
 
-bool Window_Controller::is_key_down(unsigned int _key)
+glm::vec2 Window_Controller::get_window_position() const
+{
+    int window_pos_x, window_pos_y;
+    glfwGetWindowPos(m_window, &window_pos_x, &window_pos_y);
+    return { window_pos_x, window_pos_y };
+}
+
+
+bool Window_Controller::is_key_down(unsigned int _key) const
 {
 	return glfwGetKey(m_window, _key) == true;
 }
 
-bool Window_Controller::is_mouse_button_down(unsigned int _btn)
+bool Window_Controller::is_mouse_button_down(unsigned int _btn) const
 {
 	return glfwGetMouseButton(m_window, _btn) == true;
 }
 
-bool Window_Controller::key_prev_pressed(unsigned int _key)
+bool Window_Controller::key_prev_pressed(unsigned int _key) const
 {
 	return m_keys_pressed_before[_key];
 }
 
-bool Window_Controller::mouse_button_prev_pressed(unsigned int _btn)
+bool Window_Controller::mouse_button_prev_pressed(unsigned int _btn) const
 {
 	return m_mouse_buttons_pressed_before[_btn];
 }
 
-bool Window_Controller::is_mouse_button_up(unsigned int _btn)
+bool Window_Controller::is_mouse_button_up(unsigned int _btn) const
 {
     return !Window_Controller::is_mouse_button_down(_btn);
 }
 
-bool Window_Controller::mouse_button_was_pressed(unsigned int _btn)
+bool Window_Controller::mouse_button_was_pressed(unsigned int _btn) const
 {
     return Window_Controller::is_mouse_button_down(_btn) && !Window_Controller::mouse_button_prev_pressed(_btn);
 }
 
-bool Window_Controller::mouse_button_was_released(unsigned int _btn)
+bool Window_Controller::mouse_button_was_released(unsigned int _btn) const
 {
     return !Window_Controller::is_mouse_button_down(_btn) && Window_Controller::mouse_button_prev_pressed(_btn);
 }
 
 
-bool Window_Controller::is_key_up(unsigned int _key)
+bool Window_Controller::is_key_up(unsigned int _key) const
 {
     return !Window_Controller::is_key_down(_key);
 }
 
-bool Window_Controller::key_was_pressed(unsigned int _key)
+bool Window_Controller::key_was_pressed(unsigned int _key) const
 {
     return Window_Controller::is_key_down(_key) && !Window_Controller::key_prev_pressed(_key);
 }
 
-bool Window_Controller::key_was_released(unsigned int _key)
+bool Window_Controller::key_was_released(unsigned int _key) const
 {
     return !Window_Controller::is_key_down(_key) && Window_Controller::key_prev_pressed(_key);
 }
 
 
-int Window_Controller::mouse_wheel_rotation()
+int Window_Controller::mouse_wheel_rotation() const
 {
 	return m_mouse_wheel_rotation;
 }
