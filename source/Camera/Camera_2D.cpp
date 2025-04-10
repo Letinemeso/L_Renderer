@@ -19,7 +19,8 @@ Camera_2D::Camera_2D(const Camera_2D& _other)
 
 void Camera_2D::M_update_matrix()
 {
-    glm::vec2 diff = LR::Window_Controller::instance().get_window_size() * 0.5f * m_view_scale;
+    const glm::vec2& draw_area_size = m_draw_area_size_getter ? m_draw_area_size_getter() : LR::Window_Controller::instance().get_window_size();
+    glm::vec2 diff = draw_area_size * 0.5f * m_view_scale;
 
 	m_matrix = glm::ortho(
         -diff.x + m_position.x, diff.x + m_position.x,
