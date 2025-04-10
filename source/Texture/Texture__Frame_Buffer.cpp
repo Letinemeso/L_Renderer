@@ -57,14 +57,19 @@ void Texture__Frame_Buffer::render()
     L_ASSERT(m_draw_func);
 
     LR::Binds_Controller& binds_controller = LR::Binds_Controller::instance();
-
     LR::Binds_Controller::OpenGL_State opengl_state = binds_controller.save_state();
+
+    int viewport_data[4];
+    glGetIntegerv(GL_VIEWPORT, viewport_data);
+    glViewport(0, 0, m_width, m_height);
 
     binds_controller.bind_frame_buffer(m_frame_buffer_object);
     glClear(m_clear_hint);
     m_draw_func();
 
     binds_controller.restore_state(opengl_state);
+
+    glViewport(viewport_data[0], viewport_data[1], viewport_data[2], viewport_data[3]);
 }
 
 void Texture__Frame_Buffer::prepare_to_draw()
