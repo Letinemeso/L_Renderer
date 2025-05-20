@@ -8,7 +8,7 @@
 
 #include <Module.h>
 
-#include <Components/Graphics_Component.h>
+#include <Components/Graphics_Component__Default.h>
 
 
 namespace LR
@@ -41,7 +41,7 @@ namespace LR
         Draw_Order_Controller* m_draw_order_controller = nullptr;
 
     public:
-        using Graphics_Component_List = LDS::List<Graphics_Component*>;
+        using Graphics_Component_List = LDS::List<Graphics_Component__Default*>;
 
     protected:
         std::string m_draw_layer;
@@ -90,7 +90,7 @@ namespace LR
         inline void set_draw_mode(unsigned int _value) { m_draw_mode = _value; }
 
     public:
-        void add_graphics_component(Graphics_Component* _ptr);
+        void add_graphics_component(Graphics_Component__Default* _ptr);
         void recalculate_vertices_amount();
         void bind_vertex_array() const;
 
@@ -98,8 +98,8 @@ namespace LR
         inline const Graphics_Component_List& graphics_components() const { return m_graphics_components; }
         inline unsigned int vertices_amount() const { return m_vertices_amount; }
 
-        Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index);
-        const Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index) const;
+        Graphics_Component__Default* get_graphics_component_with_buffer_index(unsigned int _index);
+        const Graphics_Component__Default* get_graphics_component_with_buffer_index(unsigned int _index) const;
 
     protected:
         void M_update_compute_shader_work_groups_sizes();

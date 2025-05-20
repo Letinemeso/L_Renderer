@@ -1,7 +1,8 @@
 #include <LR_Registration.h>
 
-#include <Components/Graphics_Component.h>
+#include <Components/Graphics_Component__Default.h>
 #include <Components/Graphics_Component__Texture.h>
+#include <Components/Graphics_Component__Proxy.h>
 #include <Draw_Modules/Draw_Module.h>
 #include <Resources/Font.h>
 #include <Resources/Picture.h>
@@ -31,9 +32,11 @@ void LR::register_types(LV::Object_Constructor& _object_constructor,
     LV::Object_Constructor* object_constructor = &_object_constructor;
     LR::Renderer* renderer = &_renderer;
 
-    _object_constructor.register_type<LR::Graphics_Component_Stub>();
+    _object_constructor.register_type<LR::Graphics_Component_Stub__Default>();
 
     _object_constructor.register_type<LR::Graphics_Component_Stub__Texture>();
+
+    _object_constructor.register_type<LR::Graphics_Component_Stub__Proxy>();
 
     _object_constructor.register_type<LR::Draw_Module_Stub>().override_initialization_func([renderer, _draw_order_controller, _shader_manager_getter](LV::Variable_Base* _product)
     {

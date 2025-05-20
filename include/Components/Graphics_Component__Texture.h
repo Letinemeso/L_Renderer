@@ -2,16 +2,16 @@
 
 #include <L_Debug/L_Debug.h>
 
-#include <Components/Graphics_Component.h>
+#include <Components/Graphics_Component__Default.h>
 #include <Texture/Texture.h>
 
 namespace LR
 {
 
-    class Graphics_Component__Texture final : public Graphics_Component
+    class Graphics_Component__Texture final : public Graphics_Component__Default
     {
     public:
-        INIT_VARIABLE(LR::Graphics_Component__Texture, LR::Graphics_Component)
+        INIT_VARIABLE(LR::Graphics_Component__Texture, LR::Graphics_Component__Default)
 
     public:
         Texture* m_texture = nullptr;
@@ -39,10 +39,10 @@ namespace LR
     };
 
 
-    class Graphics_Component_Stub__Texture : public Graphics_Component_Stub
+    class Graphics_Component_Stub__Texture : public Graphics_Component_Stub__Default
     {
     public:
-        INIT_VARIABLE(LR::Graphics_Component_Stub__Texture, LR::Graphics_Component_Stub)
+        INIT_VARIABLE(LR::Graphics_Component_Stub__Texture, LR::Graphics_Component_Stub__Default)
 
         INIT_FIELDS
         ADD_FIELD(bool, texture_coords_in_pixels)
