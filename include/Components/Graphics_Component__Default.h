@@ -38,11 +38,16 @@ namespace LR
         inline Graphics_Component_Reconstructor* reconstructor() { return m_reconstructor; }
         inline const Graphics_Component_Reconstructor* reconstructor() const { return m_reconstructor; }
 
+    protected:
+        void M_on_parent_draw_module_set() override;
+
     public:
+        unsigned int layout_index() const override;
+        unsigned int calculate_vertices_amount() const override;
+        void setup_buffer() const override;
         void update(float _dt) override;
         void prepare_to_draw() const override;
-
-        void bind_for_computation() const;
+        void bind_for_computation() const override;
 
     };
 

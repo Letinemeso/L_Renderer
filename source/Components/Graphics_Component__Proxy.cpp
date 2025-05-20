@@ -1,11 +1,31 @@
 #include <Components/Graphics_Component__Proxy.h>
 
+#include <glew.h>
+
 #include <Object.h>
 
 #include <Draw_Modules/Draw_Module.h>
 
 using namespace LR;
 
+
+unsigned int Graphics_Component__Proxy::layout_index() const
+{
+    L_ASSERT(m_linked_graphics_component);
+    return m_linked_graphics_component->layout_index();
+}
+
+unsigned int Graphics_Component__Proxy::calculate_vertices_amount() const
+{
+    L_ASSERT(m_linked_graphics_component);
+    return m_linked_graphics_component->calculate_vertices_amount();
+}
+
+void Graphics_Component__Proxy::setup_buffer() const
+{
+    L_ASSERT(m_linked_graphics_component);
+    m_linked_graphics_component->setup_buffer();
+}
 
 void Graphics_Component__Proxy::update(float /*_dt*/)
 {
@@ -17,6 +37,9 @@ void Graphics_Component__Proxy::update(float /*_dt*/)
     const LR::Draw_Module* linked_module = parent_object->get_module_of_type<LR::Draw_Module>(m_linked_draw_module_index);
     m_linked_graphics_component = linked_module->get_graphics_component_with_buffer_index(m_linked_buffer_index);
     L_ASSERT(m_linked_graphics_component);
+
+    glEnableVertexAttribArray(m_linked_buffer_index);
+    m_linked_graphics_component->setup_buffer();
 }
 
 void Graphics_Component__Proxy::prepare_to_draw() const
@@ -25,6 +48,12 @@ void Graphics_Component__Proxy::prepare_to_draw() const
 
     if(m_linked_graphics_component)
         m_linked_graphics_component->prepare_to_draw();
+}
+
+void Graphics_Component__Proxy::bind_for_computation() const
+{
+    if(m_linked_graphics_component)
+        m_linked_graphics_component->bind_for_computation();
 }
 
 

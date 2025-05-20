@@ -25,8 +25,12 @@ namespace LR
         inline void set_linked_graphics_component(const Graphics_Component* _ptr) { m_linked_graphics_component = _ptr; }
 
     public:
+        unsigned int layout_index() const override;
+        unsigned int calculate_vertices_amount() const override;
+        void setup_buffer() const override;
         void update(float _dt) override;
         void prepare_to_draw() const override;
+        void bind_for_computation() const override;
 
     };
 

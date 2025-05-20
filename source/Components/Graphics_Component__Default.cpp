@@ -21,10 +21,37 @@ void Graphics_Component__Default::set_reconstructor(Graphics_Component_Reconstru
     m_reconstructor = _ptr;
 
     if(m_reconstructor)
+    {
         m_reconstructor->inject_graphics_component(this);
+        if(m_parent_draw_module)
+            m_reconstructor->inject_draw_module(m_parent_draw_module);
+    }
 }
 
 
+
+void Graphics_Component__Default::M_on_parent_draw_module_set()
+{
+    if(m_reconstructor)
+        m_reconstructor->inject_draw_module(m_parent_draw_module);
+}
+
+
+
+unsigned int Graphics_Component__Default::layout_index() const
+{
+    return buffer().layout_index();
+}
+
+unsigned int Graphics_Component__Default::calculate_vertices_amount() const
+{
+    return buffer().size() / buffer().floats_per_vertex();
+}
+
+void Graphics_Component__Default::setup_buffer() const
+{
+    buffer().setup_vertex_attrib_pointer();
+}
 
 void Graphics_Component__Default::update(float _dt)
 {
@@ -39,7 +66,6 @@ void Graphics_Component__Default::prepare_to_draw() const
 
     Parent_Type::prepare_to_draw();
 }
-
 
 void Graphics_Component__Default::bind_for_computation() const
 {

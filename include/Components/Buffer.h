@@ -31,6 +31,7 @@ namespace LR
         inline unsigned int floats_per_vertex() const { return m_floats_per_vertex; }
         inline unsigned int layout_index() const { return m_layout_index; }
         inline unsigned int binding_point_index() const { return m_binding_point_index; }
+        inline unsigned int size() const { return m_buffer_size; }
 
     public:
         Buffer();
@@ -46,8 +47,7 @@ namespace LR
         void modify_buffer(const Element_Modification_Func& _func, unsigned int _offset = 0, unsigned int _amount = All_Elements, unsigned int _stride = 1);
 
     public:
-        unsigned int size() const;
-
+        void setup_vertex_attrib_pointer() const;
         void bind_to_layout() const;
         void bind_to_binding_point() const;
 

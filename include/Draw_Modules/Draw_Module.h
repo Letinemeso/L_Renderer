@@ -8,7 +8,7 @@
 
 #include <Module.h>
 
-#include <Components/Graphics_Component__Default.h>
+#include <Components/Graphics_Component.h>
 
 
 namespace LR
@@ -41,7 +41,7 @@ namespace LR
         Draw_Order_Controller* m_draw_order_controller = nullptr;
 
     public:
-        using Graphics_Component_List = LDS::List<Graphics_Component__Default*>;
+        using Graphics_Component_List = LDS::List<Graphics_Component*>;
 
     protected:
         std::string m_draw_layer;
@@ -50,11 +50,9 @@ namespace LR
         unsigned int m_vertex_array = 0;
 
         Graphics_Component_List m_graphics_components;
-        unsigned int m_vertices_amount = 0;
 
         unsigned int m_draw_mode = 0;
 
-        bool m_should_recalculate_vertices_before_draw = false;
         bool m_visible = true;
         bool m_draw_on_update = true;
 
@@ -90,22 +88,21 @@ namespace LR
         inline void set_draw_mode(unsigned int _value) { m_draw_mode = _value; }
 
     public:
-        void add_graphics_component(Graphics_Component__Default* _ptr);
-        void recalculate_vertices_amount();
+        void add_graphics_component(Graphics_Component* _ptr);
         void bind_vertex_array() const;
 
     public:
         inline const Graphics_Component_List& graphics_components() const { return m_graphics_components; }
-        inline unsigned int vertices_amount() const { return m_vertices_amount; }
 
-        Graphics_Component__Default* get_graphics_component_with_buffer_index(unsigned int _index);
-        const Graphics_Component__Default* get_graphics_component_with_buffer_index(unsigned int _index) const;
+        Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index);
+        const Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index) const;
 
     protected:
         void M_update_compute_shader_work_groups_sizes();
         void M_update_draw_layer_if_needed();
         unsigned int M_calculate_necessary_work_groups(unsigned int _work_group_size) const;
         void M_dispatch_compute_shader_if_any() const;
+        unsigned int M_calculate_vertices_amount() const;
         virtual void M_update_internal(float _dt);
         virtual void M_draw_internal() const;
 

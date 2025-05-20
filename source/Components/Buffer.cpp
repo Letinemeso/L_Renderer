@@ -46,11 +46,7 @@ void Buffer::copy_array(const float* _data, unsigned int _count, unsigned int _o
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_buffer);
     glBufferSubData(GL_SHADER_STORAGE_BUFFER, sizeof(float) * _offset, sizeof(float) * _count, _data);
 
-    if(m_layout_index == 0xFFFFFFFF || m_floats_per_vertex == 0)
-        return;
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glVertexAttribPointer(m_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
+    setup_vertex_attrib_pointer();
 }
 
 
@@ -66,11 +62,7 @@ void Buffer::set_layout_index(unsigned int _index)
 
     m_layout_index = _index;
 
-    if(m_buffer == 0 || m_buffer_size == 0 || m_floats_per_vertex == 0)
-        return;
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glVertexAttribPointer(m_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
+    setup_vertex_attrib_pointer();
 }
 
 void Buffer::set_floats_per_vertex(unsigned int _floats_per_vertex)
@@ -82,11 +74,7 @@ void Buffer::set_floats_per_vertex(unsigned int _floats_per_vertex)
 
     m_floats_per_vertex = _floats_per_vertex;
 
-    if(m_buffer == 0 || m_buffer_size == 0 || m_layout_index == 0xFFFFFFFF)
-        return;
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
-    glVertexAttribPointer(m_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
+    setup_vertex_attrib_pointer();
 }
 
 
@@ -110,18 +98,19 @@ void Buffer::modify_buffer(const Element_Modification_Func& _func, unsigned int 
         _func(mapped_data[i], i);
     glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
+    setup_vertex_attrib_pointer();
+}
+
+
+
+void Buffer::setup_vertex_attrib_pointer() const
+{
+    if(m_buffer == 0 || m_buffer_size == 0 || m_layout_index == 0xFFFFFFFF || m_floats_per_vertex == 0)
+        return;
+
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
     glVertexAttribPointer(m_layout_index, m_floats_per_vertex, GL_FLOAT, GL_FALSE, sizeof(float) * m_floats_per_vertex, nullptr);
 }
-
-
-
-unsigned int Buffer::size() const
-{
-    return m_buffer_size;
-}
-
-
 
 void Buffer::bind_to_layout() const
 {

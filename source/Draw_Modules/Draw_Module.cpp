@@ -59,9 +59,9 @@ void Draw_Module::reset_draw_layer()
 
 
 
-void Draw_Module::add_graphics_component(Graphics_Component__Default *_ptr)
+void Draw_Module::add_graphics_component(Graphics_Component *_ptr)
 {
-    L_DEBUG_FUNC_1ARG([this](Graphics_Component__Default *_ptr)
+    L_DEBUG_FUNC_1ARG([this](Graphics_Component *_ptr)
     {
         for(auto it = m_graphics_components.begin(); !it.end_reached(); ++it)
         {
@@ -69,33 +69,9 @@ void Draw_Module::add_graphics_component(Graphics_Component__Default *_ptr)
         }
     }, _ptr);
 
-    if(m_graphics_components.size() == 0)
-        m_vertices_amount = _ptr->buffer().size() / _ptr->buffer().floats_per_vertex();
-
-    L_ASSERT( m_vertices_amount == _ptr->buffer().size() / _ptr->buffer().floats_per_vertex() );
-
-    m_graphics_components.push_back(_ptr);
-
     _ptr->set_parent_draw_module(this);
 
-    if(_ptr->reconstructor())
-        _ptr->reconstructor()->inject_draw_module(this);
-}
-
-void Draw_Module::recalculate_vertices_amount()
-{
-    L_ASSERT(m_graphics_components.size() > 0);
-
-    Graphics_Component_List::Iterator it = m_graphics_components.begin();
-    m_vertices_amount = (*it)->buffer().size() / (*it)->buffer().floats_per_vertex();
-
-    L_DEBUG_FUNC_NOARG([this]()
-    {
-        for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
-        {
-            L_ASSERT((*it)->buffer().size() / (*it)->buffer().floats_per_vertex() == m_vertices_amount);
-        }
-    });
+    m_graphics_components.push_back(_ptr);
 }
 
 void Draw_Module::bind_vertex_array() const
@@ -105,21 +81,21 @@ void Draw_Module::bind_vertex_array() const
 
 
 
-Graphics_Component__Default* Draw_Module::get_graphics_component_with_buffer_index(unsigned int _index)
+Graphics_Component* Draw_Module::get_graphics_component_with_buffer_index(unsigned int _index)
 {
     for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
     {
-        if((*it)->buffer().layout_index() == _index)
+        if((*it)->layout_index() == _index)
             return *it;
     }
     return nullptr;
 }
 
-const Graphics_Component__Default* Draw_Module::get_graphics_component_with_buffer_index(unsigned int _index) const
+const Graphics_Component* Draw_Module::get_graphics_component_with_buffer_index(unsigned int _index) const
 {
     for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
     {
-        if((*it)->buffer().layout_index() == _index)
+        if((*it)->layout_index() == _index)
             return *it;
     }
     return nullptr;
@@ -156,7 +132,7 @@ void Draw_Module::M_update_draw_layer_if_needed()
 
 unsigned int Draw_Module::M_calculate_necessary_work_groups(unsigned int _work_group_size) const
 {
-    return (m_vertices_amount + _work_group_size - 1) / _work_group_size;
+    return (M_calculate_vertices_amount() + _work_group_size - 1) / _work_group_size;
 }
 
 void Draw_Module::M_dispatch_compute_shader_if_any() const
@@ -164,14 +140,12 @@ void Draw_Module::M_dispatch_compute_shader_if_any() const
     if(!m_compute_shader_program)
         return;
 
-    L_ASSERT(m_vertices_amount > 0);
-
     m_compute_shader_program->use();
     m_compute_shader_program->update(this);
 
     for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
     {
-        Graphics_Component__Default* component = *it;
+        Graphics_Component* component = *it;
         component->bind_for_computation();
     }
 
@@ -180,20 +154,35 @@ void Draw_Module::M_dispatch_compute_shader_if_any() const
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
+unsigned int Draw_Module::M_calculate_vertices_amount() const
+{
+    L_ASSERT(m_graphics_components.size() > 0);
+
+    Graphics_Component_List::Const_Iterator it = m_graphics_components.begin();
+    unsigned int vertices_amount = (*it)->calculate_vertices_amount();
+
+    L_DEBUG_FUNC_NOARG([&]()
+                       {
+                           for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+                           {
+                               L_ASSERT((*it)->calculate_vertices_amount() == vertices_amount);
+                           }
+                       });
+
+    return vertices_amount;
+}
+
 void Draw_Module::M_update_internal(float _dt)
 {
     bind_vertex_array();
 
     for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         (*it)->update(_dt);
-
-    if(m_should_recalculate_vertices_before_draw)
-        recalculate_vertices_amount();
 }
 
 void Draw_Module::M_draw_internal() const
 {
-    glDrawArrays(draw_mode(), 0, vertices_amount());
+    glDrawArrays(draw_mode(), 0, M_calculate_vertices_amount());
 }
 
 
@@ -257,9 +246,9 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
 
     for(LV::Variable_Base::Childs_List::Const_Iterator it = graphics_component_stubs.begin(); !it.end_reached(); ++it)
     {
-        Graphics_Component_Stub__Default* stub = LV::cast_variable<Graphics_Component_Stub__Default>(it->child_ptr);
+        Graphics_Component_Stub* stub = LV::cast_variable<Graphics_Component_Stub>(it->child_ptr);
         L_ASSERT(stub);
-        product->add_graphics_component((Graphics_Component__Default*)stub->construct());
+        product->add_graphics_component(Graphics_Component_Stub::construct_from(stub));
     }
 
     if(draw_order_controller && draw_layer.size() > 0)
