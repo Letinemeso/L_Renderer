@@ -100,6 +100,7 @@ namespace LR
     protected:
         void M_update_compute_shader_work_groups_sizes();
         void M_update_draw_layer_if_needed();
+        unsigned int M_calculate_necessary_computer_shader_incovations() const;
         unsigned int M_calculate_necessary_work_groups(unsigned int _work_group_size) const;
         void M_dispatch_compute_shader_if_any() const;
         unsigned int M_calculate_vertices_amount() const;

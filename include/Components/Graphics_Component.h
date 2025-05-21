@@ -34,7 +34,8 @@ namespace LR
 
     public:
         virtual unsigned int layout_index() const = 0;
-        virtual unsigned int calculate_vertices_amount() const = 0;
+        virtual unsigned int vertices_amount() const = 0;
+        virtual unsigned int required_compute_shader_invocations() const = 0;
         virtual void setup_buffer() const = 0;
         virtual void update(float _dt) = 0;
         virtual void prepare_to_draw() const;

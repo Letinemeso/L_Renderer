@@ -130,9 +130,34 @@ void Draw_Module::M_update_draw_layer_if_needed()
     m_should_update_draw_layer = false;
 }
 
+unsigned int Draw_Module::M_calculate_necessary_computer_shader_incovations() const
+{
+    L_ASSERT(m_graphics_components.size() > 0);
+
+    unsigned int invocations = 0;
+    for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+    {
+        invocations = (*it)->required_compute_shader_invocations();
+        if(invocations > 0)
+            break;
+    }
+
+    L_ASSERT(invocations > 0);
+    L_DEBUG_FUNC_NOARG([&]()
+    {
+        for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+        {
+            unsigned int invocations_check = (*it)->required_compute_shader_invocations();
+            L_ASSERT(invocations_check == 0 || invocations_check == invocations);
+        }
+    });
+
+    return invocations;
+}
+
 unsigned int Draw_Module::M_calculate_necessary_work_groups(unsigned int _work_group_size) const
 {
-    return (M_calculate_vertices_amount() + _work_group_size - 1) / _work_group_size;
+    return (M_calculate_necessary_computer_shader_incovations() + _work_group_size - 1) / _work_group_size;
 }
 
 void Draw_Module::M_dispatch_compute_shader_if_any() const
@@ -158,16 +183,22 @@ unsigned int Draw_Module::M_calculate_vertices_amount() const
 {
     L_ASSERT(m_graphics_components.size() > 0);
 
-    Graphics_Component_List::Const_Iterator it = m_graphics_components.begin();
-    unsigned int vertices_amount = (*it)->calculate_vertices_amount();
+    unsigned int vertices_amount = 0;
+    for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+    {
+        vertices_amount = (*it)->vertices_amount();
+        if(vertices_amount > 0)
+            break;
+    }
 
     L_DEBUG_FUNC_NOARG([&]()
-                       {
-                           for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
-                           {
-                               L_ASSERT((*it)->calculate_vertices_amount() == vertices_amount);
-                           }
-                       });
+    {
+        for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+        {
+            unsigned int vertices_amount_check = (*it)->vertices_amount();
+            L_ASSERT(vertices_amount_check == 0 || vertices_amount_check == vertices_amount);
+        }
+    });
 
     return vertices_amount;
 }

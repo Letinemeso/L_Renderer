@@ -43,9 +43,20 @@ unsigned int Graphics_Component__Default::layout_index() const
     return buffer().layout_index();
 }
 
-unsigned int Graphics_Component__Default::calculate_vertices_amount() const
+unsigned int Graphics_Component__Default::vertices_amount() const
 {
+    if(m_vertices_amount_override != 0)
+        return m_vertices_amount_override;
+
+    if(buffer().floats_per_vertex() == 0)
+        return 0;
+
     return buffer().size() / buffer().floats_per_vertex();
+}
+
+unsigned int Graphics_Component__Default::required_compute_shader_invocations() const
+{
+    return m_required_compute_shader_invocations;
 }
 
 void Graphics_Component__Default::setup_buffer() const
@@ -106,4 +117,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Default)
 
     if(reconstructor_stub)
         product->set_reconstructor((Graphics_Component_Reconstructor*)reconstructor_stub->construct());
+
+    product->set_vertices_amount_override(vertices_amount_override);
+    product->set_required_compute_shader_invocations(required_compute_shader_invocations);
 }

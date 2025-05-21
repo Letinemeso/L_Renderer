@@ -15,10 +15,16 @@ unsigned int Graphics_Component__Proxy::layout_index() const
     return m_linked_graphics_component->layout_index();
 }
 
-unsigned int Graphics_Component__Proxy::calculate_vertices_amount() const
+unsigned int Graphics_Component__Proxy::vertices_amount() const
 {
     L_ASSERT(m_linked_graphics_component);
-    return m_linked_graphics_component->calculate_vertices_amount();
+    return m_linked_graphics_component->vertices_amount();
+}
+
+unsigned int Graphics_Component__Proxy::required_compute_shader_invocations() const
+{
+    L_ASSERT(m_linked_graphics_component);
+    return m_linked_graphics_component->required_compute_shader_invocations();
 }
 
 void Graphics_Component__Proxy::setup_buffer() const
