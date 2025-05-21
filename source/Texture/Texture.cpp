@@ -26,6 +26,7 @@ Texture::Texture()
 
 Texture::~Texture()
 {
+    L_ASSERT(glIsTexture(m_texture_object));
     glDeleteTextures(1, &m_texture_object);
 }
 

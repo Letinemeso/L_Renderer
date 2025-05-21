@@ -28,6 +28,14 @@ void Window_Controller::create_window(unsigned int _width, unsigned int _height,
 	glfwMakeContextCurrent(m_window);
 	glewInit();
 
+#ifdef L_DEBUG
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback([](GLenum _source, GLenum _type, GLuint _id, GLenum _severity, GLsizei _length, const GLchar* _message, const void* _userParam)
+    {
+        std::cout << "OpenGL Error: " << _message << std::endl;
+    }, nullptr);
+#endif
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

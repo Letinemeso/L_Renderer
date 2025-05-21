@@ -57,7 +57,8 @@ void Buffer::set_layout_index(unsigned int _index)
     if(_index == m_layout_index)
         return;
 
-    glDisableVertexAttribArray(m_layout_index);
+    if(m_layout_index != 0xFFFFFFFF)
+        glDisableVertexAttribArray(m_layout_index);
     glEnableVertexAttribArray(_index);
 
     m_layout_index = _index;

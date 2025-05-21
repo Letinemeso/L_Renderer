@@ -275,16 +275,6 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
 
     product->set_renderer(renderer);
 
-    for(LV::Variable_Base::Childs_List::Const_Iterator it = graphics_component_stubs.begin(); !it.end_reached(); ++it)
-    {
-        Graphics_Component_Stub* stub = LV::cast_variable<Graphics_Component_Stub>(it->child_ptr);
-        L_ASSERT(stub);
-        product->add_graphics_component(Graphics_Component_Stub::construct_from(stub));
-    }
-
-    if(draw_order_controller && draw_layer.size() > 0)
-        product->set_draw_layer(draw_order_controller, draw_layer);
-
     L_ASSERT(shader_manager);
     Shader_Program* rendering_shader = shader_manager->get_shader_program(rendering_shader_id);
     product->set_rendering_shader_program(rendering_shader);
@@ -294,6 +284,19 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
         Shader_Program* compute_shader = shader_manager->get_shader_program(compute_shader_id);
         product->set_compute_shader_program(compute_shader);
     }
+
+    product->bind_vertex_array();
+    rendering_shader->use();
+
+    for(LV::Variable_Base::Childs_List::Const_Iterator it = graphics_component_stubs.begin(); !it.end_reached(); ++it)
+    {
+        Graphics_Component_Stub* stub = LV::cast_variable<Graphics_Component_Stub>(it->child_ptr);
+        L_ASSERT(stub);
+        product->add_graphics_component(Graphics_Component_Stub::construct_from(stub));
+    }
+
+    if(draw_order_controller && draw_layer.size() > 0)
+        product->set_draw_layer(draw_order_controller, draw_layer);
 }
 
 
