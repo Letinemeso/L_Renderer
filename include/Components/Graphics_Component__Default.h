@@ -24,7 +24,6 @@ namespace LR
     protected:
         Buffer m_buffer;
 
-        unsigned int m_vertices_amount_override = 0;
         unsigned int m_required_compute_shader_invocations = 0;
 
     public:
@@ -32,7 +31,6 @@ namespace LR
         ~Graphics_Component__Default();
 
     public:
-        inline void set_vertices_amount_override(unsigned int _value) { m_vertices_amount_override = _value; }
         inline void set_required_compute_shader_invocations(unsigned int _value) { m_required_compute_shader_invocations = _value; }
 
         void set_reconstructor(Graphics_Component_Reconstructor* _ptr);
@@ -69,7 +67,6 @@ namespace LR
         ADD_FIELD(unsigned int, floats_per_vertex)
         ADD_FIELD(unsigned int, layout_index)
         ADD_FIELD(unsigned int, binding_point_index)
-        ADD_FIELD(unsigned int, vertices_amount_override)
         ADD_FIELD(unsigned int, required_compute_shader_invocations)
         ADD_FIELD(LDS::Vector<float>, data)
         FIELDS_END
@@ -82,7 +79,6 @@ namespace LR
         unsigned int floats_per_vertex = 0;
         unsigned int layout_index = 0xFFFFFFFF;
         unsigned int binding_point_index = 0xFFFFFFFF;
-        unsigned int vertices_amount_override = 0;
         unsigned int required_compute_shader_invocations = 0;
 
         LDS::Vector<float> data;
