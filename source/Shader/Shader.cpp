@@ -46,7 +46,7 @@ Shader::~Shader()
 
 
 
-void Shader::M_debug() const
+void Shader::M_debug(const char** _sources, unsigned int _sources_amount) const
 {
 	int result = 0;
     glGetShaderiv(m_opengl_shader_handle, GL_COMPILE_STATUS, &result);
@@ -58,6 +58,30 @@ void Shader::M_debug() const
     char log[2048];
     glGetShaderInfoLog(m_opengl_shader_handle, 2048, &size, log);
     std::cout << log << std::endl;
+
+    auto print_source = [&](const char* _source, unsigned int _source_index)
+    {
+        std::cout << "Source piece #" << _source_index << ":\n0\t";
+
+        unsigned int line = 0;
+
+        unsigned int source_length = strlen(_source);
+        for(unsigned int i = 0; i < source_length; ++i)
+        {
+            std::cout << _source[i];
+            if(_source[i] != '\n')
+                continue;
+
+            ++line;
+            std::cout << line << "\t";
+        }
+
+        std::cout << std::endl << std::endl;
+    };
+
+    std::cout << "Raw source:" << std::endl;
+    for(unsigned int i = 0; i < _sources_amount; ++i)
+        print_source(_sources[i], i);
 
     L_ASSERT(false);
 }
@@ -156,7 +180,7 @@ void Shader::compile()
 
     glShaderSource(m_opengl_shader_handle, sources_index, sources, 0);
     glCompileShader(m_opengl_shader_handle);
-    L_DEBUG_FUNC_NOARG(M_debug);
+    L_DEBUG_FUNC_2ARG(M_debug, sources, sources_index);
 
     delete[] sources;
 }

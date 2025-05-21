@@ -52,7 +52,7 @@ namespace LR
         ~Shader();
 
     private:
-        void M_debug() const;
+        void M_debug(const char** _sources, unsigned int _sources_amount) const;
         bool M_component_already_added(Shader_Component* _component) const;
         unsigned int M_get_opengl_shader_type() const;
 
