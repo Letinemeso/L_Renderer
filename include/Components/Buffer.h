@@ -31,6 +31,7 @@ namespace LR
         inline unsigned int floats_per_vertex() const { return m_floats_per_vertex; }
         inline unsigned int layout_index() const { return m_layout_index; }
         inline unsigned int binding_point_index() const { return m_binding_point_index; }
+        inline unsigned int handle() const { return m_buffer; }
         inline unsigned int size() const { return m_buffer_size; }
 
     public:
