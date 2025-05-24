@@ -54,11 +54,6 @@ void Shader::M_debug(const char** _sources, unsigned int _sources_amount) const
     if (result == GL_TRUE)
         return;
 
-    int size = 0;
-    char log[2048];
-    glGetShaderInfoLog(m_opengl_shader_handle, 2048, &size, log);
-    std::cout << log << std::endl;
-
     auto print_source = [&](const char* _source, unsigned int _source_index)
     {
         std::cout << "Source piece #" << _source_index << ":\n0\t";
@@ -82,6 +77,11 @@ void Shader::M_debug(const char** _sources, unsigned int _sources_amount) const
     std::cout << "Raw source:" << std::endl;
     for(unsigned int i = 0; i < _sources_amount; ++i)
         print_source(_sources[i], i);
+
+    int size = 0;
+    char log[2048];
+    glGetShaderInfoLog(m_opengl_shader_handle, 2048, &size, log);
+    std::cout << log << std::endl;
 
     L_ASSERT(false);
 }
