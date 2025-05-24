@@ -21,10 +21,11 @@ namespace LR
         Graphics_Component* m_graphics_component = nullptr;
 
     public:
-        inline void inject_draw_module(Draw_Module* _ptr) { m_draw_module = _ptr; }
+        inline void inject_draw_module(Draw_Module* _ptr) { m_draw_module = _ptr; M_on_draw_module_injected(); }
         inline void inject_graphics_component(Graphics_Component* _ptr) { m_graphics_component = _ptr; M_on_graphics_component_injected(); }
 
     protected:
+        virtual void M_on_draw_module_injected() { }
         virtual void M_on_graphics_component_injected() { }
 
     public:
