@@ -28,7 +28,7 @@ namespace LR
 	public:
         inline void set_draw_area_size_getter(const LST::Function<const glm::vec2&()>& _func) { m_draw_area_size_getter = _func; }
 
-        void set_position(const glm::vec2& _position);
+        virtual void set_position(const glm::vec2& _position);
         void set_view_scale(float _scale);
 
 	public:
