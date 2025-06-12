@@ -23,6 +23,7 @@ void Texture__Preloaded::set_picture(const Picture *_picture)
 
 
 
+
 BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Texture_Stub__Preloaded)
 
 BUILDER_STUB_INITIALIZATION_FUNC(Texture_Stub__Preloaded)
