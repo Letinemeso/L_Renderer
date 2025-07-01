@@ -239,8 +239,6 @@ void Draw_Module::draw() const
     if(!m_visible)
         return;
 
-    transformation_data()->update_matrix();
-
     M_dispatch_compute_shader_if_any();
 
     bind_vertex_array();
