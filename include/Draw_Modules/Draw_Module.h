@@ -9,6 +9,7 @@
 #include <Module.h>
 
 #include <Components/Graphics_Component.h>
+#include <Uniform_Setters/Uniform_Setter.h>
 
 
 namespace LR
@@ -42,6 +43,7 @@ namespace LR
 
     public:
         using Graphics_Component_List = LDS::List<Graphics_Component*>;
+        using Uniform_Setter_List = LDS::List<Uniform_Setter*>;
 
     protected:
         std::string m_draw_layer;
@@ -50,6 +52,8 @@ namespace LR
         unsigned int m_vertex_array = 0;
 
         Graphics_Component_List m_graphics_components;
+        Uniform_Setter_List m_graphics_uniform_setters;
+        Uniform_Setter_List m_compute_uniform_setters;
 
         unsigned int m_draw_mode = 0;
 
@@ -62,14 +66,15 @@ namespace LR
 
     public:
         inline void set_renderer(Renderer* _ptr) { m_renderer = _ptr; }
-        inline void set_rendering_shader_program(Shader_Program* _ptr) { m_rendering_shader_program = _ptr; }
-        inline void set_compute_shader_program(Shader_Program* _ptr) { m_compute_shader_program = _ptr; M_update_compute_shader_work_groups_sizes(); }
 
         inline Renderer* renderer() const { return m_renderer; }
         inline Shader_Program* rendering_shader_program() const { return m_rendering_shader_program; }
         inline Shader_Program* compute_shader_program() const { return m_compute_shader_program; }
 
     public:
+        void set_rendering_shader_program(Shader_Program* _ptr);
+        void set_compute_shader_program(Shader_Program* _ptr);
+
         void set_draw_layer(Draw_Order_Controller* _draw_order_controller, const std::string& _layer_name);
         void reset_draw_layer();
 
@@ -89,13 +94,20 @@ namespace LR
 
     public:
         void add_graphics_component(Graphics_Component* _ptr);
+        void add_graphics_uniform_setter(Uniform_Setter* _ptr);
+        void add_compute_uniform_setter(Uniform_Setter* _ptr);
         void bind_vertex_array() const;
 
     public:
         inline const Graphics_Component_List& graphics_components() const { return m_graphics_components; }
+        inline const Uniform_Setter_List& graphics_uniform_setters_list() const { return m_graphics_uniform_setters; }
+        inline const Uniform_Setter_List& compute_uniform_setters_list() const { return m_compute_uniform_setters; }
 
         Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index);
         const Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index) const;
+
+        Uniform_Setter* get_graphics_uniform_setter_with_name(const std::string& _name) const;
+        Uniform_Setter* get_compute_uniform_setter_with_name(const std::string& _name) const;
 
     protected:
         void M_update_compute_shader_work_groups_sizes();
@@ -106,6 +118,8 @@ namespace LR
         unsigned int M_calculate_vertices_amount() const;
         virtual void M_update_internal(float _dt);
         virtual void M_draw_internal() const;
+        void M_apply_graphics_uniform_setters() const;
+        void M_apply_compute_uniform_setters() const;
 
     public:
         void update(float _dt) override;
@@ -131,6 +145,8 @@ namespace LR
 
         INIT_CHILDS_LISTS
         ADD_CHILDS_LIST("Graphics_Component_Stub__*", &graphics_component_stubs)
+        ADD_CHILDS_LIST("Graphics_Uniform_Setter_Stub__*", &graphics_uniform_setter_stubs)
+        ADD_CHILDS_LIST("Compute_Uniform_Setter_Stub__*", &compute_uniform_setter_stubs)
         CHILDS_LISTS_END
 
     public:
@@ -148,6 +164,8 @@ namespace LR
 
     public:
         LV::Variable_Base::Childs_List graphics_component_stubs;
+        LV::Variable_Base::Childs_List graphics_uniform_setter_stubs;
+        LV::Variable_Base::Childs_List compute_uniform_setter_stubs;
 
     protected:
         INIT_BUILDER_STUB(Draw_Module)

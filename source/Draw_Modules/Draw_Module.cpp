@@ -21,6 +21,10 @@ Draw_Module::~Draw_Module()
 {
     for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         delete *it;
+    for(Uniform_Setter_List::Iterator it = m_graphics_uniform_setters.begin(); !it.end_reached(); ++it)
+        delete *it;
+    for(Uniform_Setter_List::Iterator it = m_compute_uniform_setters.begin(); !it.end_reached(); ++it)
+        delete *it;
 
     glDeleteVertexArrays(1, &m_vertex_array);
 
@@ -28,6 +32,35 @@ Draw_Module::~Draw_Module()
         m_draw_order_controller->unregister_module(this);
 }
 
+
+
+void Draw_Module::set_rendering_shader_program(Shader_Program* _ptr)
+{
+    m_rendering_shader_program = _ptr;
+    if(!m_rendering_shader_program)
+        return;
+
+    for(Uniform_Setter_List::Iterator it = m_graphics_uniform_setters.begin(); !it.end_reached(); ++it)
+    {
+        Uniform_Setter* setter = *it;
+        setter->init(m_rendering_shader_program);
+    }
+}
+
+void Draw_Module::set_compute_shader_program(Shader_Program* _ptr)
+{
+    m_compute_shader_program = _ptr;
+    M_update_compute_shader_work_groups_sizes();
+
+    if(!m_compute_shader_program)
+        return;
+
+    for(Uniform_Setter_List::Iterator it = m_compute_uniform_setters.begin(); !it.end_reached(); ++it)
+    {
+        Uniform_Setter* setter = *it;
+        setter->init(m_compute_shader_program);
+    }
+}
 
 
 void Draw_Module::set_draw_layer(Draw_Order_Controller* _draw_order_controller, const std::string& _layer_name)
@@ -61,17 +94,31 @@ void Draw_Module::reset_draw_layer()
 
 void Draw_Module::add_graphics_component(Graphics_Component *_ptr)
 {
-    L_DEBUG_FUNC_1ARG([this](Graphics_Component *_ptr)
-    {
-        for(auto it = m_graphics_components.begin(); !it.end_reached(); ++it)
-        {
-            L_ASSERT(*it != _ptr);
-        }
-    }, _ptr);
+    L_ASSERT(!m_graphics_components.find(_ptr).is_ok());
 
     _ptr->set_parent_draw_module(this);
 
     m_graphics_components.push_back(_ptr);
+}
+
+void Draw_Module::add_graphics_uniform_setter(Uniform_Setter* _ptr)
+{
+    L_ASSERT(!m_graphics_uniform_setters.find(_ptr).is_ok());
+
+    m_graphics_uniform_setters.push_back(_ptr);
+
+    if(m_rendering_shader_program)
+        _ptr->init(m_rendering_shader_program);
+}
+
+void Draw_Module::add_compute_uniform_setter(Uniform_Setter* _ptr)
+{
+    L_ASSERT(!m_compute_uniform_setters.find(_ptr).is_ok());
+
+    m_compute_uniform_setters.push_back(_ptr);
+
+    if(m_compute_shader_program)
+        _ptr->init(m_compute_shader_program);
 }
 
 void Draw_Module::bind_vertex_array() const
@@ -97,6 +144,29 @@ const Graphics_Component* Draw_Module::get_graphics_component_with_buffer_index(
     {
         if((*it)->layout_index() == _index)
             return *it;
+    }
+    return nullptr;
+}
+
+
+Uniform_Setter* Draw_Module::get_graphics_uniform_setter_with_name(const std::string& _name) const
+{
+    for(Uniform_Setter_List::Const_Iterator it = m_graphics_uniform_setters.begin(); !it.end_reached(); ++it)
+    {
+        Uniform_Setter* setter = *it;
+        if(setter->uniform_name() == _name)
+            return setter;
+    }
+    return nullptr;
+}
+
+Uniform_Setter* Draw_Module::get_compute_uniform_setter_with_name(const std::string& _name) const
+{
+    for(Uniform_Setter_List::Const_Iterator it = m_compute_uniform_setters.begin(); !it.end_reached(); ++it)
+    {
+        Uniform_Setter* setter = *it;
+        if(setter->uniform_name() == _name)
+            return setter;
     }
     return nullptr;
 }
@@ -168,6 +238,8 @@ void Draw_Module::M_dispatch_compute_shader_if_any() const
     m_compute_shader_program->use();
     m_compute_shader_program->update(this);
 
+    M_apply_compute_uniform_setters();
+
     for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
     {
         Graphics_Component* component = *it;
@@ -216,6 +288,24 @@ void Draw_Module::M_draw_internal() const
     glDrawArrays(draw_mode(), 0, M_calculate_vertices_amount());
 }
 
+void Draw_Module::M_apply_graphics_uniform_setters() const
+{
+    for(Uniform_Setter_List::Const_Iterator it = m_graphics_uniform_setters.begin(); !it.end_reached(); ++it)
+    {
+        Uniform_Setter* setter = *it;
+        setter->apply();
+    }
+}
+
+void Draw_Module::M_apply_compute_uniform_setters() const
+{
+    for(Uniform_Setter_List::Const_Iterator it = m_compute_uniform_setters.begin(); !it.end_reached(); ++it)
+    {
+        Uniform_Setter* setter = *it;
+        setter->apply();
+    }
+}
+
 
 
 void Draw_Module::update(float _dt)
@@ -249,6 +339,8 @@ void Draw_Module::draw() const
     L_ASSERT(m_rendering_shader_program);
     m_renderer->set_shader_program(m_rendering_shader_program);
     m_renderer->prepare(this);
+
+    M_apply_graphics_uniform_setters();
 
     M_draw_internal();
 }
@@ -288,9 +380,23 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
 
     for(LV::Variable_Base::Childs_List::Const_Iterator it = graphics_component_stubs.begin(); !it.end_reached(); ++it)
     {
-        Graphics_Component_Stub* stub = LV::cast_variable<Graphics_Component_Stub>(it->child_ptr);
-        L_ASSERT(stub);
+        L_ASSERT(LV::cast_variable<Graphics_Component_Stub>(it->child_ptr));
+        Graphics_Component_Stub* stub = (Graphics_Component_Stub*)(it->child_ptr);
         product->add_graphics_component(Graphics_Component_Stub::construct_from(stub));
+    }
+
+    for(LV::Variable_Base::Childs_List::Const_Iterator it = graphics_uniform_setter_stubs.begin(); !it.end_reached(); ++it)
+    {
+        L_ASSERT(LV::cast_variable<Uniform_Setter_Stub>(it->child_ptr));
+        Uniform_Setter_Stub* stub = (Uniform_Setter_Stub*)(it->child_ptr);
+        product->add_graphics_uniform_setter(Uniform_Setter_Stub::construct_from(stub));
+    }
+
+    for(LV::Variable_Base::Childs_List::Const_Iterator it = compute_uniform_setter_stubs.begin(); !it.end_reached(); ++it)
+    {
+        L_ASSERT(LV::cast_variable<Uniform_Setter_Stub>(it->child_ptr));
+        Uniform_Setter_Stub* stub = (Uniform_Setter_Stub*)(it->child_ptr);
+        product->add_compute_uniform_setter(Uniform_Setter_Stub::construct_from(stub));
     }
 
     if(draw_order_controller && draw_layer.size() > 0)
