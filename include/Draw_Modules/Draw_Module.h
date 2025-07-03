@@ -114,12 +114,12 @@ namespace LR
         void M_update_draw_layer_if_needed();
         unsigned int M_calculate_necessary_computer_shader_incovations() const;
         unsigned int M_calculate_necessary_work_groups(unsigned int _work_group_size) const;
-        void M_dispatch_compute_shader_if_any() const;
+        void M_dispatch_compute_shader(Shader_Program* _shader, const Uniform_Setter_List& _setters) const;
         unsigned int M_calculate_vertices_amount() const;
         virtual void M_update_internal(float _dt);
         virtual void M_draw_internal() const;
-        void M_apply_graphics_uniform_setters() const;
-        void M_apply_compute_uniform_setters() const;
+        void M_init_uniform_setters(const Uniform_Setter_List& _setters, const Shader_Program* _shader) const;
+        void M_apply_uniform_setters(const Uniform_Setter_List& _setters) const;
 
     public:
         void update(float _dt) override;

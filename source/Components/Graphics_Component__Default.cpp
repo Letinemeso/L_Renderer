@@ -71,7 +71,6 @@ void Graphics_Component__Default::update(float _dt)
 void Graphics_Component__Default::prepare_to_draw() const
 {
     m_buffer.bind_to_layout();
-    m_buffer.bind_to_binding_point();
 
     Parent_Type::prepare_to_draw();
 }

@@ -40,11 +40,7 @@ void Draw_Module::set_rendering_shader_program(Shader_Program* _ptr)
     if(!m_rendering_shader_program)
         return;
 
-    for(Uniform_Setter_List::Iterator it = m_graphics_uniform_setters.begin(); !it.end_reached(); ++it)
-    {
-        Uniform_Setter* setter = *it;
-        setter->init(m_rendering_shader_program);
-    }
+    M_init_uniform_setters(m_graphics_uniform_setters, _ptr);
 }
 
 void Draw_Module::set_compute_shader_program(Shader_Program* _ptr)
@@ -55,11 +51,7 @@ void Draw_Module::set_compute_shader_program(Shader_Program* _ptr)
     if(!m_compute_shader_program)
         return;
 
-    for(Uniform_Setter_List::Iterator it = m_compute_uniform_setters.begin(); !it.end_reached(); ++it)
-    {
-        Uniform_Setter* setter = *it;
-        setter->init(m_compute_shader_program);
-    }
+    M_init_uniform_setters(m_compute_uniform_setters, _ptr);
 }
 
 
@@ -230,15 +222,14 @@ unsigned int Draw_Module::M_calculate_necessary_work_groups(unsigned int _work_g
     return (M_calculate_necessary_computer_shader_incovations() + _work_group_size - 1) / _work_group_size;
 }
 
-void Draw_Module::M_dispatch_compute_shader_if_any() const
+void Draw_Module::M_dispatch_compute_shader(Shader_Program* _shader, const Uniform_Setter_List& _setters) const
 {
-    if(!m_compute_shader_program)
-        return;
+    L_ASSERT(_shader);
 
-    m_compute_shader_program->use();
-    m_compute_shader_program->update(this);
+    _shader->use();
+    _shader->update(this);
 
-    M_apply_compute_uniform_setters();
+    M_apply_uniform_setters(_setters);
 
     for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
     {
@@ -288,18 +279,18 @@ void Draw_Module::M_draw_internal() const
     glDrawArrays(draw_mode(), 0, M_calculate_vertices_amount());
 }
 
-void Draw_Module::M_apply_graphics_uniform_setters() const
+void Draw_Module::M_init_uniform_setters(const Uniform_Setter_List& _setters, const Shader_Program* _shader) const
 {
-    for(Uniform_Setter_List::Const_Iterator it = m_graphics_uniform_setters.begin(); !it.end_reached(); ++it)
+    for(Uniform_Setter_List::Const_Iterator it = _setters.begin(); !it.end_reached(); ++it)
     {
         Uniform_Setter* setter = *it;
-        setter->apply();
+        setter->init(_shader);
     }
 }
 
-void Draw_Module::M_apply_compute_uniform_setters() const
+void Draw_Module::M_apply_uniform_setters(const Uniform_Setter_List& _setters) const
 {
-    for(Uniform_Setter_List::Const_Iterator it = m_compute_uniform_setters.begin(); !it.end_reached(); ++it)
+    for(Uniform_Setter_List::Const_Iterator it = _setters.begin(); !it.end_reached(); ++it)
     {
         Uniform_Setter* setter = *it;
         setter->apply();
@@ -329,7 +320,8 @@ void Draw_Module::draw() const
     if(!m_visible)
         return;
 
-    M_dispatch_compute_shader_if_any();
+    if(m_compute_shader_program)
+        M_dispatch_compute_shader(m_compute_shader_program, m_compute_uniform_setters);
 
     bind_vertex_array();
 
@@ -340,7 +332,7 @@ void Draw_Module::draw() const
     m_renderer->set_shader_program(m_rendering_shader_program);
     m_renderer->prepare(this);
 
-    M_apply_graphics_uniform_setters();
+    M_apply_uniform_setters(m_graphics_uniform_setters);
 
     M_draw_internal();
 }
@@ -426,6 +418,7 @@ void Draw_Module_Stub::M_apply_draw_mode(Draw_Module* _product) const
 
 Draw_Module_Stub::~Draw_Module_Stub()
 {
-    for(LV::Variable_Base::Childs_List::Iterator it = graphics_component_stubs.begin(); !it.end_reached(); ++it)
-        delete it->child_ptr;
+    clear_childs_list(graphics_component_stubs);
+    clear_childs_list(graphics_uniform_setter_stubs);
+    clear_childs_list(compute_uniform_setter_stubs);
 }

@@ -25,6 +25,9 @@ namespace LR
         inline void set_linked_graphics_component(const Graphics_Component* _ptr) { m_linked_graphics_component = _ptr; }
 
     public:
+        void link_module_manually(const LR::Draw_Module* _module);
+
+    public:
         unsigned int layout_index() const override;
         unsigned int vertices_amount() const override;
         unsigned int required_compute_shader_invocations() const override;

@@ -42,7 +42,7 @@ void Uniform_Setter__Float::apply() const
 
 
 
-BUILDER_STUB_NULL_CONSTRUCTION_FUNC(Uniform_Setter_Stub__Float)
+BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Uniform_Setter_Stub__Float)
 
 BUILDER_STUB_INITIALIZATION_FUNC(Uniform_Setter_Stub__Float)
 {
@@ -67,7 +67,7 @@ void Uniform_Setter__Vec2::apply() const
 
 
 
-BUILDER_STUB_NULL_CONSTRUCTION_FUNC(Uniform_Setter_Stub__Vec2)
+BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Uniform_Setter_Stub__Vec2)
 
 BUILDER_STUB_INITIALIZATION_FUNC(Uniform_Setter_Stub__Vec2)
 {
@@ -92,7 +92,7 @@ void Uniform_Setter__Vec3::apply() const
 
 
 
-BUILDER_STUB_NULL_CONSTRUCTION_FUNC(Uniform_Setter_Stub__Vec3)
+BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Uniform_Setter_Stub__Vec3)
 
 BUILDER_STUB_INITIALIZATION_FUNC(Uniform_Setter_Stub__Vec3)
 {

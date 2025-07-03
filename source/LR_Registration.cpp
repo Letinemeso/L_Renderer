@@ -16,6 +16,7 @@
 #include <Texture/Texture.h>
 #include <Texture/Texture__Preloaded.h>
 #include <Texture/Texture__Frame_Buffer.h>
+#include <Uniform_Setters/Uniform_Setter.h>
 
 using namespace LR;
 
@@ -77,4 +78,10 @@ void LR::register_types(LV::Object_Constructor& _object_constructor,
     });
 
     _object_constructor.register_type<LR::Texture_Stub__Frame_Buffer>();
+
+    _object_constructor.register_type<LR::Uniform_Setter_Stub__Float>();
+
+    _object_constructor.register_type<LR::Uniform_Setter_Stub__Vec2>();
+
+    _object_constructor.register_type<LR::Uniform_Setter_Stub__Vec3>();
 }
