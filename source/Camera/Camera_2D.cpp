@@ -50,16 +50,30 @@ void Camera_2D::set_view_scale(float _scale)
 
 glm::vec3 Camera_2D::convert_window_coords(const glm::vec2& _window_coords) const
 {
-    glm::vec3 result;
+    Window_Controller& window_controller = Window_Controller::instance();
 
-    glm::vec2 ratio = _window_coords / LR::Window_Controller::instance().get_window_size();
+    glm::vec2 screen_center = window_controller.get_window_size() * 0.5f;
+    glm::vec2 offset_from_center = _window_coords - screen_center;
+    offset_from_center *= m_view_scale;
 
-    glm::vec2 left_bottom_edge = (-LR::Window_Controller::instance().get_window_size() * 0.5f * m_view_scale) + m_position;
-    glm::vec2 view = LR::Window_Controller::instance().get_window_size() * m_view_scale;
-
-    result.x = view.x * ratio.x + left_bottom_edge.x;
-    result.y = view.y * ratio.y + left_bottom_edge.y;
-    result.z = 0.0f;
+    glm::vec3 result = { m_position + offset_from_center, 0.0f };
 
 	return result;
+}
+
+glm::vec3 Camera_2D::convert_window_coords(const glm::vec2& _window_coords, const glm::vec2& _draw_area_size) const
+{
+    Window_Controller& window_controller = Window_Controller::instance();
+
+    glm::vec2 screen_center = window_controller.get_window_size() * 0.5f;
+    glm::vec2 offset_from_center = _window_coords - screen_center;
+
+    glm::vec2 window_to_area_size_ratio = _draw_area_size / window_controller.get_window_size();
+    offset_from_center *= window_to_area_size_ratio;
+
+    offset_from_center *= m_view_scale;
+
+    glm::vec3 result = { m_position + offset_from_center, 0.0f };
+
+    return result;
 }

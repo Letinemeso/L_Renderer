@@ -36,6 +36,7 @@ namespace LR
         inline float view_scale() const { return m_view_scale; }
 
         glm::vec3 convert_window_coords(const glm::vec2& _window_coords) const;
+        glm::vec3 convert_window_coords(const glm::vec2& _window_coords, const glm::vec2& _draw_area_size) const;
 
 	};
 
