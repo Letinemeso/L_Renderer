@@ -59,7 +59,6 @@ namespace LR
     public:
         void update();
 
-        bool window_should_close() const;
         void swap_buffers();
 
     public:
@@ -85,6 +84,9 @@ namespace LR
         bool key_was_released(unsigned int _key) const;
 
         int mouse_wheel_rotation() const;
+
+        void set_window_should_close(bool _value) const;
+        bool window_should_close() const;
 
     };
 

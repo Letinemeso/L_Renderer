@@ -137,12 +137,6 @@ void Window_Controller::update()
 }
 
 
-
-bool Window_Controller::window_should_close() const
-{
-	return glfwWindowShouldClose(m_window);
-}
-
 void Window_Controller::swap_buffers()
 {
 	glfwSwapBuffers(m_window);
@@ -247,5 +241,16 @@ bool Window_Controller::key_was_released(unsigned int _key) const
 int Window_Controller::mouse_wheel_rotation() const
 {
 	return m_mouse_wheel_rotation;
+}
+
+
+void Window_Controller::set_window_should_close(bool _value) const
+{
+    glfwSetWindowShouldClose(m_window, _value);
+}
+
+bool Window_Controller::window_should_close() const
+{
+    return glfwWindowShouldClose(m_window);
 }
 
