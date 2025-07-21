@@ -58,6 +58,8 @@ namespace LR
         void register_module(const std::string& _layer_name, LEti::Module* _module, const Draw_Function& _draw_function);
         void unregister_module(LEti::Module* _module);
 
+        bool is_module_registred(LEti::Module* _module);
+
     public:
         void draw() const;
 

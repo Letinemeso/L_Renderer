@@ -63,6 +63,13 @@ void Draw_Order_Controller::unregister_module(LEti::Module* _module)
 }
 
 
+bool Draw_Order_Controller::is_module_registred(LEti::Module* _module)
+{
+    Registred_Modules_Locations::Iterator module_location_it = m_registred_modules_locations.find(_module);
+    return module_location_it.is_ok();
+}
+
+
 
 void Draw_Order_Controller::draw() const
 {

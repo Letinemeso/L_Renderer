@@ -73,7 +73,11 @@ void Draw_Module::reset_draw_layer()
     if(!m_draw_order_controller)
         return;
 
-    m_draw_order_controller->unregister_module(this);
+    if(!m_should_update_draw_layer)
+        m_draw_order_controller->unregister_module(this);
+
+    L_ASSERT(!m_draw_order_controller->is_module_registred(this));
+
     m_draw_order_controller = nullptr;
     m_draw_layer.clear();
 
