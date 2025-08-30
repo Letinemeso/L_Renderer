@@ -97,6 +97,8 @@ void LR::register_types(LV::Object_Constructor& _object_constructor,
 
     _object_constructor.register_type<LR::Uniform_Setter_Stub__Float>();
 
+    _object_constructor.register_type<LR::Uniform_Setter_Stub__UInt>();
+
     _object_constructor.register_type<LR::Uniform_Setter_Stub__Vec2>();
 
     _object_constructor.register_type<LR::Uniform_Setter_Stub__Vec3>();

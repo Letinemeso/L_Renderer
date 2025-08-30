@@ -19,7 +19,7 @@ void Shader_Position_Getter_Component::update(const LR::Draw_Module* _draw_modul
     Parent_Type::update(_draw_module);
 
     const glm::vec3& position = _draw_module->transformation_data()->position();
-    glUniform2f(m_module_position_uniform, position.x, position.y);
+    glUniform3f(m_module_position_uniform, position.x, position.y, position.z);
 }
 
 

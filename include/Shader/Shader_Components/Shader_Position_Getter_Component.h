@@ -11,7 +11,7 @@ namespace LR
     public:
         INIT_VARIABLE(LR::Shader_Position_Getter_Component, LR::Shader_Component)
 
-    private:
+    protected:
         std::string m_module_position_uniform_name;
         int m_module_position_uniform = -1;
 
