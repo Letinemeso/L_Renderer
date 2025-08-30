@@ -10,6 +10,7 @@
 #include <Shader/Shader_Components/Shader_Texture_Component.h>
 #include <Shader/Shader_Components/Shader_Transform_Component.h>
 #include <Shader/Shader_Components/Shader_Window_Size_Component.h>
+#include <Shader/Shader_Components/Shader_RNG_Component.h>
 #include <Shader/Shader.h>
 #include <Shader/Shader_Program.h>
 #include <Shader/Shader_Manager.h>
@@ -61,6 +62,8 @@ void LR::register_types(LV::Object_Constructor& _object_constructor,
     _object_constructor.register_type<LR::Shader_Transform_Component_Stub>();
 
     _object_constructor.register_type<LR::Shader_Window_Size_Component_Stub>();
+
+    _object_constructor.register_type<LR::Shader_RNG_Component_Stub>();
 
     _object_constructor.register_type<LR::Shader_Stub>();
 
