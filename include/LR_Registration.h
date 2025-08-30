@@ -17,5 +17,7 @@ namespace LR
                         const LST::Function<const LEti::Resources_Manager*()>& _resources_manager_getter,
                         LR::Renderer& _renderer,
                         LR::Draw_Order_Controller* _draw_order_controller,
-                        const LST::Function<const LR::Shader_Manager*()>& _shader_manager_getter);
+                        const LST::Function<const LR::Shader_Manager*()>& _shader_manager_getter,
+                        const LST::Function<float()>& _get_dt_func = {}
+                    );
 }

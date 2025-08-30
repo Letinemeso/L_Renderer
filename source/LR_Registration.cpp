@@ -12,6 +12,7 @@
 #include <Shader/Shader_Components/Shader_Window_Size_Component.h>
 #include <Shader/Shader_Components/Shader_RNG_Component.h>
 #include <Shader/Shader_Components/Shader_Position_Getter_Component.h>
+#include <Shader/Shader_Components/Shader_Dt_Component.h>
 #include <Shader/Shader.h>
 #include <Shader/Shader_Program.h>
 #include <Shader/Shader_Manager.h>
@@ -27,7 +28,9 @@ void LR::register_types(LV::Object_Constructor& _object_constructor,
                         const LST::Function<const LEti::Resources_Manager*()>& _resources_manager_getter,
                         LR::Renderer& _renderer,
                         LR::Draw_Order_Controller* _draw_order_controller,
-                        const LST::Function<const LR::Shader_Manager*()>& _shader_manager_getter)
+                        const LST::Function<const LR::Shader_Manager*()>& _shader_manager_getter,
+                        const LST::Function<float()>& _get_dt_func
+                        )
 {
     L_ASSERT(_resources_manager_getter);
     L_ASSERT(_shader_manager_getter);
@@ -67,6 +70,13 @@ void LR::register_types(LV::Object_Constructor& _object_constructor,
     _object_constructor.register_type<LR::Shader_RNG_Component_Stub>();
 
     _object_constructor.register_type<LR::Shader_Position_Getter_Component_Stub>();
+
+    _object_constructor.register_type<LR::Shader_Dt_Componen_Stub>().override_initialization_func([_get_dt_func](LV::Variable_Base* _product)
+    {
+        LR::Shader_Dt_Componen_Stub* product = (LR::Shader_Dt_Componen_Stub*)_product;
+
+        product->dt_getter = _get_dt_func;
+    });
 
     _object_constructor.register_type<LR::Shader_Stub>();
 
