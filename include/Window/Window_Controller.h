@@ -88,6 +88,9 @@ namespace LR
         void set_window_should_close(bool _value) const;
         bool window_should_close() const;
 
+    public:
+        static const std::string& log_level() { static std::string s_log_level_name = "L_Renderer"; return s_log_level_name; }
+
     };
 
 }
