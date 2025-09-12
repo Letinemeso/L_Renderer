@@ -12,6 +12,10 @@ struct GLFWwindow;
 namespace LR
 {
 
+    constexpr unsigned int Keys_Amount = 349;
+    constexpr unsigned int Mouse_Buttons_Amount = 9;
+
+
     MESSAGE_TYPE_DECLARATION_START(Message__Window_Resized)
     MESSAGE_TYPE_DECLARATION_END
 
@@ -22,8 +26,8 @@ namespace LR
         GLFWwindow* m_window = nullptr;
         glm::vec2 m_window_size;
 
-        bool m_keys_pressed_before[349] = { false };             //  magic numbers from glfw3.h
-        bool m_mouse_buttons_pressed_before[8] = { false };
+        bool m_keys_pressed_before[Keys_Amount] = { false };             //  magic numbers from glfw3.h
+        bool m_mouse_buttons_pressed_before[Mouse_Buttons_Amount] = { false };
 
         glm::vec2 m_prev_cursor_pos;
 

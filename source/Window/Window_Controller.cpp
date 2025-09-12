@@ -124,9 +124,9 @@ void Window_Controller::make_fullscreen(bool _fullscreen)
 
 void Window_Controller::update()
 {
-	for (unsigned int i = 0; i <= GLFW_KEY_LAST; ++i)
+    for (unsigned int i = 0; i <= Keys_Amount; ++i)
 		m_keys_pressed_before[i] = glfwGetKey(m_window, i);
-	for (unsigned int i = 0; i <= GLFW_MOUSE_BUTTON_LAST; ++i)
+    for (unsigned int i = 0; i <= Mouse_Buttons_Amount; ++i)
 		m_mouse_buttons_pressed_before[i] = glfwGetMouseButton(m_window, i);
 
 	m_mouse_wheel_rotation = 0;
