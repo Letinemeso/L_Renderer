@@ -9,6 +9,9 @@ using namespace LR;
 Window_Controller::Window_Controller()
 {
     LST::Message_Translator::instance().register_message_type<Message__Window_Resized>();
+
+    M_update_cursor_position();
+    m_prev_cursor_pos = m_cursor_pos;
 }
 
 Window_Controller::~Window_Controller()
@@ -130,7 +133,8 @@ void Window_Controller::update()
 
     m_mouse_wheel_rotation = 0;
 
-    m_prev_cursor_pos = get_cursor_position();
+    m_prev_cursor_pos = m_cursor_pos;
+    M_update_cursor_position();
 
     glfwPollEvents();
 }
@@ -143,21 +147,24 @@ void Window_Controller::swap_buffers()
 
 
 
-glm::vec2 Window_Controller::get_cursor_position() const
+void Window_Controller::M_update_cursor_position()
 {
     double x, y;
     glfwGetCursorPos(m_window, &x, &y);
+    m_cursor_pos.x = x;
+    m_cursor_pos.y = y;
+}
 
-    glm::vec2 result;
-    result.x = x;
-    result.y = m_window_size.y - (float)y;
 
-    return result;
+
+const glm::vec2& Window_Controller::get_cursor_position() const
+{
+    return m_cursor_pos;
 }
 
 glm::vec2 Window_Controller::get_cursor_stride() const
 {
-    glm::vec2 result = get_cursor_position();
+    glm::vec2 result = m_cursor_pos;
 
     result.x -= m_prev_cursor_pos.x;
     result.y -= m_prev_cursor_pos.y;

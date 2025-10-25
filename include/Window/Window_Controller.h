@@ -29,6 +29,7 @@ namespace LR
         bool m_keys_pressed_before[Keys_Amount] = { false };             //  magic numbers from glfw3.h
         bool m_mouse_buttons_pressed_before[Mouse_Buttons_Amount] = { false };
 
+        glm::vec2 m_cursor_pos = { 0.0f, 0.0f };
         glm::vec2 m_prev_cursor_pos = { 0.0f, 0.0f };
 
         int m_mouse_wheel_rotation = 0;
@@ -65,8 +66,11 @@ namespace LR
 
         void swap_buffers();
 
+    private:
+        void M_update_cursor_position();
+
     public:
-        glm::vec2 get_cursor_position() const;
+        const glm::vec2& get_cursor_position() const;
         glm::vec2 get_cursor_stride() const;
 
         const glm::vec2& get_window_size() const;
