@@ -24,12 +24,12 @@ namespace LR
     {
     private:
         GLFWwindow* m_window = nullptr;
-        glm::vec2 m_window_size;
+        glm::vec2 m_window_size = { 0.0f, 0.0f };
 
         bool m_keys_pressed_before[Keys_Amount] = { false };             //  magic numbers from glfw3.h
         bool m_mouse_buttons_pressed_before[Mouse_Buttons_Amount] = { false };
 
-        glm::vec2 m_prev_cursor_pos;
+        glm::vec2 m_prev_cursor_pos = { 0.0f, 0.0f };
 
         int m_mouse_wheel_rotation = 0;
 
@@ -55,7 +55,7 @@ namespace LR
         void create_window(unsigned int _width, unsigned int _height, const char* _name);
         void terminate_window();
 
-        void set_cursor_pos(double _x, double _y);
+        void set_cursor_pos(const glm::vec2& _pos);
         void register_mouse_wheel_movement(int _value);
         void on_window_resized(int _new_width, int _new_height);
         void make_fullscreen(bool _fullscreen);
@@ -91,6 +91,8 @@ namespace LR
 
         void set_window_should_close(bool _value) const;
         bool window_should_close() const;
+
+        void set_cursor_visibility(bool _visible) const;
 
     public:
         static const std::string& log_level() { static std::string s_log_level_name = "L_Renderer"; return s_log_level_name; }

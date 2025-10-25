@@ -66,12 +66,11 @@ void Window_Controller::terminate_window()
 }
 
 
-void Window_Controller::set_cursor_pos(double _x, double _y)
+void Window_Controller::set_cursor_pos(const glm::vec2& _pos)
 {
-    glfwSetCursorPos(m_window, _x, _y);
+    glfwSetCursorPos(m_window, _pos.x, _pos.y);
 
-    m_prev_cursor_pos.x = _x;
-    m_prev_cursor_pos.y = _y;
+    m_prev_cursor_pos = _pos;
 }
 
 void Window_Controller::register_mouse_wheel_movement(int _value)
@@ -129,11 +128,11 @@ void Window_Controller::update()
     for (unsigned int i = 0; i <= Mouse_Buttons_Amount; ++i)
 		m_mouse_buttons_pressed_before[i] = glfwGetMouseButton(m_window, i);
 
-	m_mouse_wheel_rotation = 0;
-
-	glfwPollEvents();
+    m_mouse_wheel_rotation = 0;
 
     m_prev_cursor_pos = get_cursor_position();
+
+    glfwPollEvents();
 }
 
 
@@ -252,5 +251,11 @@ void Window_Controller::set_window_should_close(bool _value) const
 bool Window_Controller::window_should_close() const
 {
     return glfwWindowShouldClose(m_window);
+}
+
+
+void Window_Controller::set_cursor_visibility(bool _visible) const
+{
+    glfwSetInputMode(m_window, GLFW_CURSOR, _visible ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_HIDDEN);
 }
 
