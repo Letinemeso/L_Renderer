@@ -12,7 +12,7 @@ struct GLFWwindow;
 namespace LR
 {
 
-    constexpr unsigned int Keys_Amount = 349;
+    constexpr unsigned int Keys_Amount = 349;           //  magic numbers from glfw3.h
     constexpr unsigned int Mouse_Buttons_Amount = 9;
 
 
@@ -26,7 +26,7 @@ namespace LR
         GLFWwindow* m_window = nullptr;
         glm::vec2 m_window_size = { 0.0f, 0.0f };
 
-        bool m_keys_pressed_before[Keys_Amount] = { false };             //  magic numbers from glfw3.h
+        bool m_keys_pressed_before[Keys_Amount] = { false };
         bool m_mouse_buttons_pressed_before[Mouse_Buttons_Amount] = { false };
 
         glm::vec2 m_cursor_pos = { 0.0f, 0.0f };
@@ -97,6 +97,7 @@ namespace LR
         bool window_should_close() const;
 
         void set_cursor_visibility(bool _visible) const;
+        bool is_cursor_visible() const;
 
     public:
         static const std::string& log_level() { static std::string s_log_level_name = "L_Renderer"; return s_log_level_name; }
