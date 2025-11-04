@@ -5,6 +5,8 @@
 #include <Variable_Base.h>
 #include <Builder_Stub.h>
 
+#include <Data_Provider.h>
+
 #include <Components/Buffer.h>
 #include <Components/Graphics_Component_Reconstructor.h>
 #include <Components/Graphics_Component.h>
@@ -73,6 +75,7 @@ namespace LR
 
         INIT_CHILDS
         ADD_CHILD("reconstructor_stub", reconstructor_stub)
+        ADD_CHILD("data_provider", data_provider)
         CHILDS_END
 
     public:
@@ -85,9 +88,13 @@ namespace LR
 
     public:
         Graphics_Component_Reconstructor_Stub* reconstructor_stub = nullptr;
+        LEti::Data_Provider* data_provider = nullptr;
 
     public:
         ~Graphics_Component_Stub__Default();
+
+    private:
+        const LDS::Vector<float>& M_select_data() const;
 
     protected:
         INIT_BUILDER_STUB(Graphics_Component__Default)

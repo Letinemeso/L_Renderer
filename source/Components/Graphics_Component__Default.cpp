@@ -87,6 +87,20 @@ void Graphics_Component__Default::bind_for_computation() const
 Graphics_Component_Stub__Default::~Graphics_Component_Stub__Default()
 {
     delete reconstructor_stub;
+    delete data_provider;
+}
+
+
+
+const LDS::Vector<float>& Graphics_Component_Stub__Default::M_select_data() const
+{
+    if(data.size() > 0)
+        return data;
+
+    if(!data_provider)
+        return data;
+
+    return data_provider->get_data();
 }
 
 
@@ -100,10 +114,12 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Default)
 
     L_ASSERT(floats_per_vertex > 0);
 
-    if(data.size() > 0)
+    const LDS::Vector<float>& selected_data = M_select_data();
+
+    if(selected_data.size() > 0)
     {
-        product->buffer().resize(data.size());
-        product->buffer().copy_array(data.raw_data(), data.size());
+        product->buffer().resize(selected_data.size());
+        product->buffer().copy_array(selected_data.raw_data(), selected_data.size());
     }
     product->buffer().set_floats_per_vertex(floats_per_vertex);
 
