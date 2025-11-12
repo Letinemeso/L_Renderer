@@ -110,6 +110,8 @@ namespace LR
         Uniform_Setter* get_compute_uniform_setter_with_name(const std::string& _name) const;
 
     protected:
+        virtual void M_on_rendering_shader_program_set() { }
+        virtual void M_on_compute_shader_program_set() { }
         void M_update_compute_shader_work_groups_sizes();
         void M_update_draw_layer_if_needed();
         unsigned int M_calculate_necessary_computer_shader_incovations() const;

@@ -41,6 +41,8 @@ void Draw_Module::set_rendering_shader_program(Shader_Program* _ptr)
         return;
 
     M_init_uniform_setters(m_graphics_uniform_setters, _ptr);
+
+    M_on_rendering_shader_program_set();
 }
 
 void Draw_Module::set_compute_shader_program(Shader_Program* _ptr)
@@ -52,6 +54,8 @@ void Draw_Module::set_compute_shader_program(Shader_Program* _ptr)
         return;
 
     M_init_uniform_setters(m_compute_uniform_setters, _ptr);
+
+    M_on_compute_shader_program_set();
 }
 
 

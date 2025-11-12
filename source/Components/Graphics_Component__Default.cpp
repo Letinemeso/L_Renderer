@@ -71,6 +71,7 @@ void Graphics_Component__Default::update(float _dt)
 void Graphics_Component__Default::prepare_to_draw() const
 {
     m_buffer.bind_to_layout();
+    m_buffer.bind_to_binding_point();
 
     Parent_Type::prepare_to_draw();
 }
@@ -112,7 +113,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Default)
     BUILDER_STUB_PARENT_INITIALIZATION;
     BUILDER_STUB_CAST_PRODUCT;
 
-    L_ASSERT(floats_per_vertex > 0);
+    L_ASSERT(! ( (layout_index != 0xFFFFFFFF) ^ (floats_per_vertex > 0) ) );
 
     const LDS::Vector<float>& selected_data = M_select_data();
 
@@ -121,10 +122,13 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Default)
         product->buffer().resize(selected_data.size());
         product->buffer().copy_array(selected_data.raw_data(), selected_data.size());
     }
-    product->buffer().set_floats_per_vertex(floats_per_vertex);
 
     if(layout_index != 0xFFFFFFFF)
+    {
         product->buffer().set_layout_index(layout_index);
+        product->buffer().set_floats_per_vertex(floats_per_vertex);
+    }
+
     if(binding_point_index != 0xFFFFFFFF)
         product->buffer().set_binding_point_index(binding_point_index);
 
