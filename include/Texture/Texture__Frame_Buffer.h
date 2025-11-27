@@ -20,7 +20,7 @@ private:
     unsigned int m_frame_buffer_object = 0;
     unsigned int m_clear_hint = 0;
 
-    unsigned int m_depth_texture_object = 0;
+    unsigned int m_depth_buffer_object = 0;
 
     glm::vec4 m_clear_color;
     bool m_should_clear_depth_bit = false;

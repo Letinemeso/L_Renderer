@@ -16,8 +16,8 @@ Texture__Frame_Buffer::~Texture__Frame_Buffer()
 {
     glDeleteFramebuffers(1, &m_frame_buffer_object);
 
-    if(m_depth_texture_object != 0)
-        glDeleteTextures(1, &m_depth_texture_object);
+    if(m_depth_buffer_object != 0)
+        glDeleteRenderbuffers(1, &m_depth_buffer_object);
 }
 
 
@@ -45,21 +45,17 @@ void Texture__Frame_Buffer::set_should_clear_depth_bit(bool _value)
 
     m_clear_hint |= GL_DEPTH_BUFFER_BIT;
 
-    if(m_depth_texture_object != 0)
-        glDeleteTextures(1, &m_depth_texture_object);
-
-    glGenTextures(1, &m_depth_texture_object);
-    glBindTexture(GL_TEXTURE_2D, m_depth_texture_object);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    if(m_depth_buffer_object != 0)
+        glDeleteRenderbuffers(1, &m_depth_buffer_object);
 
     LR::Binds_Controller::instance().bind_frame_buffer(m_frame_buffer_object);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_frame_buffer_object);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depth_texture_object, 0);
+
+    glGenRenderbuffers(1, &m_depth_buffer_object);
+    glBindRenderbuffer(GL_RENDERBUFFER, m_depth_buffer_object);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_width, m_height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depth_buffer_object);
+    glEnable(GL_DEPTH_TEST);
+
     LR::Binds_Controller::instance().bind_frame_buffer(0);
 }
 
