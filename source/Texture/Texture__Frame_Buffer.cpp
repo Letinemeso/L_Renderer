@@ -15,6 +15,9 @@ Texture__Frame_Buffer::Texture__Frame_Buffer() : Texture(), m_clear_hint(GL_COLO
 Texture__Frame_Buffer::~Texture__Frame_Buffer()
 {
     glDeleteFramebuffers(1, &m_frame_buffer_object);
+
+    if(m_depth_texture_object != 0)
+        glDeleteTextures(1, &m_depth_texture_object);
 }
 
 
@@ -37,8 +40,27 @@ void Texture__Frame_Buffer::set_should_clear_depth_bit(bool _value)
     m_should_clear_depth_bit = _value;
 
     m_clear_hint = GL_COLOR_BUFFER_BIT;
-    if(m_should_clear_depth_bit)
-        m_clear_hint |= GL_DEPTH_BUFFER_BIT;
+    if(!m_should_clear_depth_bit)
+        return;
+
+    m_clear_hint |= GL_DEPTH_BUFFER_BIT;
+
+    if(m_depth_texture_object != 0)
+        glDeleteTextures(1, &m_depth_texture_object);
+
+    glGenTextures(1, &m_depth_texture_object);
+    glBindTexture(GL_TEXTURE_2D, m_depth_texture_object);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    LR::Binds_Controller::instance().bind_frame_buffer(m_frame_buffer_object);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_frame_buffer_object);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depth_texture_object, 0);
+    LR::Binds_Controller::instance().bind_frame_buffer(0);
 }
 
 void Texture__Frame_Buffer::set_clear_color(const glm::vec4& _color)
