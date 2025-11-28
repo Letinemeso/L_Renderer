@@ -40,6 +40,9 @@ public:
     inline unsigned int opengl_frame_buffer_object() const { return m_frame_buffer_object; }
     inline const glm::vec4& clear_color() const { return m_clear_color; }
 
+private:
+    void M_update_reconfigure_buffer();
+
 public:
     void set_size(unsigned int _width, unsigned int _height);
     void set_should_clear_depth_bit(bool _value);

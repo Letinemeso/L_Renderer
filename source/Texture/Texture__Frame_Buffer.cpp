@@ -22,29 +22,8 @@ Texture__Frame_Buffer::~Texture__Frame_Buffer()
 
 
 
-void Texture__Frame_Buffer::set_size(unsigned int _width, unsigned int _height)
+void Texture__Frame_Buffer::M_update_reconfigure_buffer()
 {
-    m_width = _width;
-    m_height = _height;
-
-    LR::Binds_Controller::instance().bind_texture(bind_index(), opengl_texture_object());
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-
-    LR::Binds_Controller::instance().bind_frame_buffer(m_frame_buffer_object);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, opengl_texture_object(), 0);
-    LR::Binds_Controller::instance().bind_frame_buffer(0);
-}
-
-void Texture__Frame_Buffer::set_should_clear_depth_bit(bool _value)
-{
-    m_should_clear_depth_bit = _value;
-
-    m_clear_hint = GL_COLOR_BUFFER_BIT;
-    if(!m_should_clear_depth_bit)
-        return;
-
-    m_clear_hint |= GL_DEPTH_BUFFER_BIT;
-
     if(m_depth_buffer_object != 0)
         glDeleteRenderbuffers(1, &m_depth_buffer_object);
 
@@ -57,6 +36,46 @@ void Texture__Frame_Buffer::set_should_clear_depth_bit(bool _value)
     glEnable(GL_DEPTH_TEST);
 
     LR::Binds_Controller::instance().bind_frame_buffer(0);
+}
+
+
+
+void Texture__Frame_Buffer::set_size(unsigned int _width, unsigned int _height)
+{
+    m_width = _width;
+    m_height = _height;
+
+    LR::Binds_Controller::instance().bind_texture(bind_index(), opengl_texture_object());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+    LR::Binds_Controller::instance().bind_frame_buffer(m_frame_buffer_object);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, opengl_texture_object(), 0);
+    LR::Binds_Controller::instance().bind_frame_buffer(0);
+
+    if(m_should_clear_depth_bit)
+        M_update_reconfigure_buffer();
+}
+
+void Texture__Frame_Buffer::set_should_clear_depth_bit(bool _value)
+{
+    m_should_clear_depth_bit = _value;
+
+    m_clear_hint = GL_COLOR_BUFFER_BIT;
+    if(m_should_clear_depth_bit)
+    {
+        m_clear_hint |= GL_DEPTH_BUFFER_BIT;
+        M_update_reconfigure_buffer();
+    }
+    else if(m_depth_buffer_object != 0)
+    {
+        LR::Binds_Controller::instance().bind_frame_buffer(m_frame_buffer_object);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, 0);
+        glDisable(GL_DEPTH_TEST);
+        LR::Binds_Controller::instance().bind_frame_buffer(0);
+
+        glDeleteRenderbuffers(1, &m_depth_buffer_object);
+
+    }
 }
 
 void Texture__Frame_Buffer::set_clear_color(const glm::vec4& _color)
