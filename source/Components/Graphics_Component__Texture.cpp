@@ -43,17 +43,16 @@ Texture* Graphics_Component__Texture::extract_texture()
 
 
 
-void Graphics_Component__Texture::reconfigure_texture_coords()
+void Graphics_Component__Texture::reconfigure_texture_coords(const glm::vec2& _expected_texture_size)
 {
-    L_ASSERT(m_texture);
     L_ASSERT(m_buffer.size() > 0);
     L_ASSERT(m_buffer.floats_per_vertex() >= 2);
 
-    Buffer::Element_Modification_Func modification_func = [this](float& _element, unsigned int _index)
+    Buffer::Element_Modification_Func modification_func = [&_expected_texture_size](float& _element, unsigned int _index)
     {
         float* elements_as_array = &_element;
-        elements_as_array[0] /= m_texture->width();
-        elements_as_array[1] /= m_texture->height();
+        elements_as_array[0] /= _expected_texture_size.x;
+        elements_as_array[1] /= _expected_texture_size.y;
     };
 
     m_buffer.modify_buffer(modification_func, 0, Buffer::All_Elements, m_buffer.floats_per_vertex());
@@ -84,7 +83,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Texture)
         product->set_texture(Texture_Stub::construct_from(texture_stub));
 
     if(texture_stub && data.size() > 0 && texture_coords_in_pixels)
-        product->reconfigure_texture_coords();
+        product->reconfigure_texture_coords(expected_texture_size);
 }
 
 

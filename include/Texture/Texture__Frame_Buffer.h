@@ -8,82 +8,94 @@
 namespace LR
 {
 
-class Texture__Frame_Buffer : public LR::Texture
-{
-public:
-    INIT_VARIABLE(LR::Texture__Frame_Buffer, LR::Texture)
+    class Texture__Frame_Buffer : public LR::Texture
+    {
+    public:
+        INIT_VARIABLE(LR::Texture__Frame_Buffer, LR::Texture)
 
-public:
-    using Draw_Func = LST::Function<void()>;
+    public:
+        using Draw_Func = LST::Function<void()>;
 
-private:
-    unsigned int m_frame_buffer_object = 0;
-    unsigned int m_clear_hint = 0;
+    private:
+        unsigned int m_frame_buffer_object = 0;
+        unsigned int m_clear_hint = 0;
 
-    unsigned int m_depth_buffer_object = 0;
+        LDS::Vector<unsigned int> m_color_attachments;
+        unsigned int m_depth_texture_object = 0;
 
-    glm::vec4 m_clear_color;
-    bool m_should_clear_depth_bit = false;
+        glm::vec4 m_clear_color;
+        bool m_should_clear_depth_bit = false;
 
-    Draw_Func m_draw_func;
+        unsigned int m_width = 0;
+        unsigned int m_height = 0;
 
-    bool m_render_each_frame = true;
+        Draw_Func m_draw_func;
 
-public:
-    Texture__Frame_Buffer();
-    ~Texture__Frame_Buffer();
+        bool m_render_each_frame = true;
 
-public:
-    inline void set_draw_func(const Draw_Func& _func) { m_draw_func = _func; }
-    inline void set_render_each_frame(bool _value) { m_render_each_frame = _value; }
+    public:
+        Texture__Frame_Buffer();
+        ~Texture__Frame_Buffer();
 
-    inline unsigned int opengl_frame_buffer_object() const { return m_frame_buffer_object; }
-    inline const glm::vec4& clear_color() const { return m_clear_color; }
+    public:
+        inline void set_draw_func(const Draw_Func& _func) { m_draw_func = _func; }
+        inline void set_render_each_frame(bool _value) { m_render_each_frame = _value; }
 
-private:
-    void M_update_reconfigure_buffer();
+        inline unsigned int opengl_frame_buffer_object() const { return m_frame_buffer_object; }
+        inline const glm::vec4& clear_color() const { return m_clear_color; }
 
-public:
-    void set_size(unsigned int _width, unsigned int _height);
-    void set_should_clear_depth_bit(bool _value);
-    void set_clear_color(const glm::vec4& _color);
+        inline bool has_depth_buffer() const { return m_should_clear_depth_bit; }
+        inline unsigned int depth_buffer_texture() const { return m_depth_texture_object; }
 
-public:
-    void render();
-    void prepare_to_draw() override;
+    private:
+        void M_reconfigure_color_attachments();
+        void M_reconfigure_depth_buffer();
 
-};
+    public:
+        void set_size(unsigned int _width, unsigned int _height);
+        void set_should_clear_depth_bit(bool _value);
+        void set_clear_color(const glm::vec4& _color);
+        void enable_color_attachment(unsigned int _index);
+        void disable_color_attachment(unsigned int _index);
+
+    public:
+        void render();
+        void prepare_to_draw() override;
+
+    };
 
 
-class Texture_Stub__Frame_Buffer : public LR::Texture_Stub
-{
-public:
-    INIT_VARIABLE(LR::Texture_Stub__Frame_Buffer, LR::Texture_Stub)
+    class Texture_Stub__Frame_Buffer : public LR::Texture_Stub
+    {
+    public:
+        INIT_VARIABLE(LR::Texture_Stub__Frame_Buffer, LR::Texture_Stub)
 
-    INIT_FIELDS
-    ADD_FIELD(unsigned int, draw_area_width)
-    ADD_FIELD(unsigned int, draw_area_height)
-    ADD_FIELD(float, clear_color_red)
-    ADD_FIELD(float, clear_color_green)
-    ADD_FIELD(float, clear_color_blue)
-    ADD_FIELD(float, clear_color_alpha)
-    ADD_FIELD(bool, clear_depth_bit)
-    ADD_FIELD(bool, render_each_frame)
-    FIELDS_END
+        INIT_FIELDS
+        ADD_FIELD(unsigned int, draw_area_width)
+        ADD_FIELD(unsigned int, draw_area_height)
+        ADD_FIELD(float, clear_color_red)
+        ADD_FIELD(float, clear_color_green)
+        ADD_FIELD(float, clear_color_blue)
+        ADD_FIELD(float, clear_color_alpha)
+        ADD_FIELD(bool, clear_depth_bit)
+        ADD_FIELD(bool, render_each_frame)
+        ADD_FIELD(LDS::Vector<unsigned int>, color_attachments)
+        FIELDS_END
 
-public:
-    unsigned int draw_area_width = 0;
-    unsigned int draw_area_height = 0;
-    float clear_color_red = 0.0f;       //  too lazy to add vec4 type to type manager. maybe should fix it later
-    float clear_color_green = 0.0f;
-    float clear_color_blue = 0.0f;
-    float clear_color_alpha = 0.0f;
-    bool clear_depth_bit = false;
-    bool render_each_frame = true;
+    public:
+        unsigned int draw_area_width = 0;
+        unsigned int draw_area_height = 0;
+        float clear_color_red = 0.0f;       //  too lazy to add vec4 type to type manager. maybe should fix it later
+        float clear_color_green = 0.0f;
+        float clear_color_blue = 0.0f;
+        float clear_color_alpha = 0.0f;
+        bool clear_depth_bit = false;
+        bool render_each_frame = true;
+        LDS::Vector<unsigned int> color_attachments;
 
-public:
-    INIT_BUILDER_STUB(Texture__Frame_Buffer)
+    public:
+        INIT_BUILDER_STUB(Texture__Frame_Buffer)
 
-};
+    };
 
 }

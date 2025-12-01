@@ -2,6 +2,8 @@
 
 #include <L_Debug/L_Debug.h>
 
+#include <vec2.hpp>
+
 #include <Components/Graphics_Component__Default.h>
 #include <Texture/Texture.h>
 
@@ -31,7 +33,7 @@ namespace LR
         [[nodiscard]] Texture* extract_texture();       //  returns texture and hands over ownership
 
     public:
-        void reconfigure_texture_coords();
+        void reconfigure_texture_coords(const glm::vec2& _expected_texture_size);
 
     public:
         void prepare_to_draw() const override;
@@ -46,6 +48,7 @@ namespace LR
 
         INIT_FIELDS
         ADD_FIELD(bool, texture_coords_in_pixels)
+        ADD_FIELD(glm::vec2, expected_texture_size)
         FIELDS_END
 
         INIT_CHILDS
@@ -54,6 +57,7 @@ namespace LR
 
     public:
         bool texture_coords_in_pixels = true;
+        glm::vec2 expected_texture_size = { 0.0f, 0.0f };
 
         Texture_Stub* texture_stub = nullptr;
 
