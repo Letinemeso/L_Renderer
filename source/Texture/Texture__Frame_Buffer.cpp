@@ -45,7 +45,7 @@ void Texture__Frame_Buffer::M_reconfigure_color_attachments()
             continue;
 
         LR::Binds_Controller::instance().bind_texture(i, handle);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, m_width, m_height, 0, GL_RGBA, GL_FLOAT, nullptr);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, handle, 0);
     }
 
@@ -72,6 +72,28 @@ void Texture__Frame_Buffer::M_reconfigure_depth_buffer()
     glEnable(GL_DEPTH_TEST);
 
     LR::Binds_Controller::instance().bind_frame_buffer(0);
+}
+
+void Texture__Frame_Buffer::M_prepare_draw_buffers()
+{
+    unsigned int amount = 0;
+    unsigned int buffer_ids[64];
+    for(unsigned int i = 0; i < m_color_attachments.size(); ++i)
+    {
+        if(m_color_attachments[i] == 0)
+            continue;
+
+        buffer_ids[amount] = GL_COLOR_ATTACHMENT0 + i;
+        ++amount;
+    }
+
+    glDrawBuffers(amount, buffer_ids);
+}
+
+void Texture__Frame_Buffer::M_reset_draw_buffers()
+{
+    unsigned int Back_Buffer = GL_BACK_LEFT;
+    glDrawBuffers(1, &Back_Buffer);
 }
 
 
@@ -127,7 +149,7 @@ void Texture__Frame_Buffer::enable_color_attachment(unsigned int _index)
     glGenTextures(1, &handle);
 
     LR::Binds_Controller::instance().bind_texture(_index, handle);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, m_width, m_height, 0, GL_RGBA, GL_FLOAT, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -166,10 +188,14 @@ void Texture__Frame_Buffer::render()
     glViewport(0, 0, m_width, m_height);
 
     binds_controller.bind_frame_buffer(m_frame_buffer_object);
+
+    M_prepare_draw_buffers();
+
     glClear(m_clear_hint);
     m_draw_func();
 
     binds_controller.restore_state(opengl_state);
+    M_reset_draw_buffers();
 
     glViewport(viewport_data[0], viewport_data[1], viewport_data[2], viewport_data[3]);
 }

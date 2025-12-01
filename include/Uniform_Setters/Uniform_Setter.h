@@ -92,6 +92,43 @@ namespace LR
 
 
 
+    class Uniform_Setter__Int : public Uniform_Setter
+    {
+    public:
+        INIT_VARIABLE(LR::Uniform_Setter__Int, LR::Uniform_Setter)
+
+    private:
+        unsigned int m_value = 0.0f;
+
+    public:
+        inline void set_value(unsigned int _value) { m_value = _value; }
+        inline unsigned int value() const { return m_value; }
+
+    public:
+        void apply() const override;
+
+    };
+
+
+    class Uniform_Setter_Stub__Int : public Uniform_Setter_Stub
+    {
+    public:
+        INIT_VARIABLE(LR::Uniform_Setter_Stub__Int, LR::Uniform_Setter_Stub)
+
+        INIT_FIELDS
+        ADD_FIELD(int, value)
+        FIELDS_END
+
+    public:
+        int value = 0.0f;
+
+    public:
+        INIT_BUILDER_STUB(Uniform_Setter__Int)
+
+    };
+
+
+
     class Uniform_Setter__UInt : public Uniform_Setter
     {
     public:

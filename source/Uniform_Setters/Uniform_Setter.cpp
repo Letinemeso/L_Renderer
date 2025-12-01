@@ -57,6 +57,31 @@ BUILDER_STUB_INITIALIZATION_FUNC(Uniform_Setter_Stub__Float)
 
 
 
+void Uniform_Setter__Int::apply() const
+{
+    L_ASSERT(uniform_location() != -1);
+    glUniform1i(uniform_location(), m_value);
+}
+
+
+
+
+
+BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Uniform_Setter_Stub__Int)
+
+BUILDER_STUB_INITIALIZATION_FUNC(Uniform_Setter_Stub__Int)
+{
+    BUILDER_STUB_PARENT_INITIALIZATION;
+    BUILDER_STUB_CAST_PRODUCT;
+
+    product->set_value(value);
+}
+
+
+
+
+
+
 void Uniform_Setter__UInt::apply() const
 {
     L_ASSERT(uniform_location() != -1);

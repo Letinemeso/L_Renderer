@@ -50,6 +50,8 @@ namespace LR
     private:
         void M_reconfigure_color_attachments();
         void M_reconfigure_depth_buffer();
+        void M_prepare_draw_buffers();
+        void M_reset_draw_buffers();
 
     public:
         void set_size(unsigned int _width, unsigned int _height);
