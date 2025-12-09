@@ -29,10 +29,10 @@ namespace LR
     };
 
 
-    class Shader_Dt_Componen_Stub : public LR::Shader_Component_Stub
+    class Shader_Dt_Componen_Stub : public LR::Predefined_Shader_Component_Stub
     {
     public:
-        INIT_VARIABLE(LR::Shader_Dt_Componen_Stub, LR::Shader_Component_Stub)
+        INIT_VARIABLE(LR::Shader_Dt_Componen_Stub, LR::Predefined_Shader_Component_Stub)
 
         INIT_FIELDS
         ADD_FIELD(std::string, dt_uniform_name)
@@ -42,7 +42,7 @@ namespace LR
         LST::Function<float()> dt_getter;
 
     public:
-        std::string dt_uniform_name;
+        std::string dt_uniform_name = "dt";
 
     public:
         INIT_BUILDER_STUB(Shader_Dt_Component)

@@ -246,10 +246,13 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Stub)
 
     for(LV::Variable_Base::Childs_List::Const_Iterator it = shader_components.begin(); !it.end_reached(); ++it)
     {
-        Shader_Component_Stub* stub = (Shader_Component_Stub*)it->child_ptr;
-        L_ASSERT(LV::cast_variable<Shader_Component_Stub>(stub));
+        LV::Builder_Stub* stub = (LV::Builder_Stub*)it->child_ptr;
+        L_ASSERT(LV::cast_variable<LV::Builder_Stub>(stub));
 
-        Shader_Component* component = Shader_Component_Stub::construct_from(stub);
+        LV::Variable_Base* likely_component = stub->construct();
+        L_ASSERT(LV::cast_variable<Shader_Component>(likely_component));
+
+        Shader_Component* component = (Shader_Component*)likely_component;
         product->add_component(component);
     }
 

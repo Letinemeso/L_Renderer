@@ -2,6 +2,8 @@
 
 #include <glew.h>
 
+#include <Stuff/String_With_Parameters.h>
+
 using namespace LR;
 
 
@@ -31,6 +33,18 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Dt_Componen_Stub)
 {
     BUILDER_STUB_PARENT_INITIALIZATION;
     BUILDER_STUB_CAST_PRODUCT;
+
+    constexpr const char* Source =
+R"(
+
+uniform float {1};
+
+)";
+
+    LST::String_With_Parameters str(Source);
+    str.replace_parameter(1, dt_uniform_name);
+
+    product->set_source(str);
 
     product->set_dt_uniform_name(dt_uniform_name);
     L_ASSERT(dt_getter);

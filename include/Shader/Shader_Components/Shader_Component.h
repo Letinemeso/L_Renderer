@@ -85,4 +85,15 @@ namespace LR
 
     };
 
+
+    class Predefined_Shader_Component_Stub : public LV::Builder_Stub
+    {
+    public:
+        INIT_VARIABLE(LR::Predefined_Shader_Component_Stub, LV::Builder_Stub)
+
+    public:
+        INIT_BUILDER_STUB(Shader_Component)
+
+    };
+
 }

@@ -75,3 +75,14 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Component_Stub)
     product->set_source(source);
     product->set_main_call(main_function_name);
 }
+
+
+
+
+
+BUILDER_STUB_NULL_CONSTRUCTION_FUNC(Predefined_Shader_Component_Stub)
+
+BUILDER_STUB_INITIALIZATION_FUNC(Predefined_Shader_Component_Stub)
+{
+
+}

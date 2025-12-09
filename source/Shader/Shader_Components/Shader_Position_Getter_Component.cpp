@@ -2,6 +2,8 @@
 
 #include <glew.h>
 
+#include <Stuff/String_With_Parameters.h>
+
 using namespace LR;
 
 
@@ -32,6 +34,18 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Position_Getter_Component_Stub)
 {
     BUILDER_STUB_PARENT_INITIALIZATION;
     BUILDER_STUB_CAST_PRODUCT;
+
+    constexpr const char* Source =
+R"(
+
+uniform vec3 {1};
+
+)";
+
+    LST::String_With_Parameters str(Source);
+    str.replace_parameter(1, module_position_uniform_name);
+
+    product->set_source(str);
 
     product->set_module_position_uniform_name(module_position_uniform_name);
 }

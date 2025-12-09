@@ -2,6 +2,8 @@
 
 #include <glew.h>
 
+#include <Stuff/String_With_Parameters.h>
+
 #include <Renderer/Renderer.h>
 
 using namespace LR;
@@ -40,6 +42,18 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Rotation_Matrix_Component_Stub)
 {
     BUILDER_STUB_PARENT_INITIALIZATION;
     BUILDER_STUB_CAST_PRODUCT;
+
+    constexpr const char* Source =
+R"(
+
+uniform mat4 {1};
+
+)";
+
+    LST::String_With_Parameters str(Source);
+    str.replace_parameter(1, uniform_name);
+
+    product->set_source(str);
 
     product->set_uniform_name(uniform_name);
 }
