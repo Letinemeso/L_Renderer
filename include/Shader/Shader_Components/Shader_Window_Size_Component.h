@@ -39,7 +39,7 @@ namespace LR
         FIELDS_END
 
     public:
-        std::string window_size_vec_uniform_name;
+        std::string window_size_vec_uniform_name = "window_size";
 
     public:
         INIT_BUILDER_STUB(Shader_Window_Size_Component)

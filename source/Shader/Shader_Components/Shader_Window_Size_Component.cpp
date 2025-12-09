@@ -2,6 +2,8 @@
 
 #include <glew.h>
 
+#include <Stuff/String_With_Parameters.h>
+
 #include <Window/Window_Controller.h>
 
 using namespace LR;
@@ -35,6 +37,18 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Window_Size_Component_Stub)
 {
     BUILDER_STUB_PARENT_INITIALIZATION;
     BUILDER_STUB_CAST_PRODUCT;
+
+    constexpr const char* Source =
+R"(
+
+uniform vec2 {1};
+
+)";
+
+    LST::String_With_Parameters str(Source);
+    str.replace_parameter(1, window_size_vec_uniform_name);
+
+    product->set_source(str);
 
     product->set_window_size_vec_uniform_name(window_size_vec_uniform_name);
 }
