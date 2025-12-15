@@ -6,6 +6,9 @@
 
 #include <Module.h>
 
+#include <Camera/Camera_Base.h>
+#include <Renderer/Renderer.h>
+
 
 namespace LR
 {
@@ -27,6 +30,7 @@ namespace LR
             Registered_Modules modules_set;
             Before_Draw_Function before_draw;
             Sort_Function sort_function;
+            const LR::Camera_Base* camera = nullptr;
         };
 
         using Draw_Layers = LDS::List<Draw_Layer_Data>;
@@ -44,6 +48,7 @@ namespace LR
         public:
             inline Draw_Layer_Settings& set_before_draw_function(const Before_Draw_Function& _func) { m_data.before_draw = _func; return *this; }
             inline Draw_Layer_Settings& set_sort_function(const Sort_Function& _func) { m_data.sort_function = _func; return *this; }
+            inline Draw_Layer_Settings& set_camera(const LR::Camera_Base* _camera) { m_data.camera = _camera; return *this; }
 
         };
 
@@ -51,11 +56,18 @@ namespace LR
         Draw_Layers m_draw_layers;
         Registred_Modules_Locations m_registred_modules_locations;
 
+        LR::Renderer* m_renderer = nullptr;
+
+    public:
+        inline void inject_renderer(LR::Renderer* _ptr) { m_renderer = _ptr; }
+
     private:
-        Registered_Modules& M_get_modules_set_for_layer(const std::string& _layer_name);
+        Draw_Layer_Data& M_find_layer(const std::string& _layer_name);
+        const Draw_Layer_Data& M_find_layer(const std::string& _layer_name) const;
 
     public:
         Draw_Layer_Settings add_layer(const std::string& _name);
+        Draw_Layer_Settings configure_layer(const std::string& _name);
 
     public:
         void register_module(const std::string& _layer_name, LEti::Module* _module, const Draw_Function& _draw_function);
@@ -69,6 +81,7 @@ namespace LR
 
     public:
         void draw() const;
+        void draw_layer(const std::string& _layer_name) const;
 
     };
 
