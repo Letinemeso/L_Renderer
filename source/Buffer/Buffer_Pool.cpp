@@ -45,8 +45,6 @@ void Buffer_Pool::M_allocate_additional_buffers()
 
     for(unsigned int i = 0; i < buffers.size(); ++i)
         m_free_buffers.push_back(buffers[i]);
-
-    std::cout << buffers_amount() << std::endl;
 }
 
 
