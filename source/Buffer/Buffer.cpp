@@ -1,18 +1,20 @@
-#include <Components/Buffer.h>
+#include <Buffer/Buffer.h>
 
 #include <glew.h>
+
+#include <Buffer/Buffer_Pool.h>
 
 using namespace LR;
 
 
 Buffer::Buffer()
 {
-    glGenBuffers(1, &m_buffer);
+    m_buffer = Buffer_Pool::instance().reserve();
 }
 
 Buffer::~Buffer()
 {
-    glDeleteBuffers(1, &m_buffer);
+    Buffer_Pool::instance().free(m_buffer);
 }
 
 

@@ -7,7 +7,7 @@
 
 #include <Data_Provider.h>
 
-#include <Components/Buffer.h>
+#include <Buffer/Buffer.h>
 #include <Components/Graphics_Component_Reconstructor.h>
 #include <Components/Graphics_Component.h>
 
