@@ -7,21 +7,15 @@ using namespace LR;
 
 Buffer::Buffer()
 {
-
+    glGenBuffers(1, &m_buffer);
 }
 
 Buffer::~Buffer()
 {
-    free_memory();
-}
-
-
-
-void Buffer::free_memory()
-{
-    m_buffer_size = 0;
     glDeleteBuffers(1, &m_buffer);
 }
+
+
 
 void Buffer::resize(unsigned int _new_size)
 {
@@ -30,10 +24,8 @@ void Buffer::resize(unsigned int _new_size)
     if(_new_size == m_buffer_size)
         return;
 
-    glDeleteBuffers(1, &m_buffer);
     m_buffer_size = _new_size;
 
-    glGenBuffers(1, &m_buffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_buffer);
     glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float) * m_buffer_size, nullptr, GL_DYNAMIC_DRAW);
 }
@@ -56,10 +48,6 @@ void Buffer::set_layout_index(unsigned int _index)
 
     if(_index == m_layout_index)
         return;
-
-    if(m_layout_index != 0xFFFFFFFF)
-        glDisableVertexAttribArray(m_layout_index);
-    glEnableVertexAttribArray(_index);
 
     m_layout_index = _index;
 
@@ -120,7 +108,7 @@ void Buffer::bind_to_layout() const
     if(m_layout_index == 0xFFFFFFFF)
         return;
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
+    setup_vertex_attrib_pointer();
 }
 
 void Buffer::bind_to_binding_point() const

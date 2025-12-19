@@ -38,7 +38,6 @@ namespace LR
         Buffer();
         ~Buffer();
 
-        void free_memory();
         void resize(unsigned int _new_size);
         void copy_array(const float* _data, unsigned int _count, unsigned int _offset = 0);
 

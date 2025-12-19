@@ -13,8 +13,7 @@ using namespace LR;
 Draw_Module::Draw_Module()
     : m_draw_mode(GL_TRIANGLES)
 {
-    glGenVertexArrays(1, &m_vertex_array);
-    bind_vertex_array();
+
 }
 
 Draw_Module::~Draw_Module()
@@ -25,8 +24,6 @@ Draw_Module::~Draw_Module()
         delete *it;
     for(Uniform_Setter_List::Iterator it = m_compute_uniform_setters.begin(); !it.end_reached(); ++it)
         delete *it;
-
-    glDeleteVertexArrays(1, &m_vertex_array);
 
     if(m_draw_order_controller && !m_should_update_draw_layer)
         m_draw_order_controller->unregister_module(this);
@@ -121,9 +118,11 @@ void Draw_Module::add_compute_uniform_setter(Uniform_Setter* _ptr)
         _ptr->init(m_compute_shader_program);
 }
 
-void Draw_Module::bind_vertex_array() const
+
+void Draw_Module::apply_draw_rule() const
 {
-    LR::Binds_Controller::instance().bind_vertex_array(vertex_array());
+    L_ASSERT(m_rendering_shader_program->draw_rule());
+    m_rendering_shader_program->draw_rule()->use();
 }
 
 
@@ -276,7 +275,8 @@ unsigned int Draw_Module::M_calculate_vertices_amount() const
 
 void Draw_Module::M_update_internal(float _dt)
 {
-    bind_vertex_array();
+    L_ASSERT(m_rendering_shader_program->draw_rule());
+    m_rendering_shader_program->draw_rule()->use();
 
     for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         (*it)->update(_dt);
@@ -331,14 +331,14 @@ void Draw_Module::draw() const
     if(m_compute_shader_program)
         M_dispatch_compute_shader(m_compute_shader_program, m_compute_uniform_setters);
 
-    bind_vertex_array();
+    L_ASSERT(m_rendering_shader_program);
+    m_rendering_shader_program->draw_rule()->use();
 
     for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         (*it)->prepare_to_draw();
 
-    L_ASSERT(m_rendering_shader_program);
-    m_renderer->set_shader_program(m_rendering_shader_program);
-    m_renderer->prepare(this);
+    m_rendering_shader_program->use();
+    m_rendering_shader_program->update(this);
 
     M_apply_uniform_setters(m_graphics_uniform_setters);
 
@@ -375,7 +375,6 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
         product->set_compute_shader_program(compute_shader);
     }
 
-    product->bind_vertex_array();
     rendering_shader->use();
 
     for(LV::Variable_Base::Childs_List::Const_Iterator it = graphics_component_stubs.begin(); !it.end_reached(); ++it)

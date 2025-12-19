@@ -23,6 +23,9 @@ void Binds_Controller::restore_state(const OpenGL_State &_state)
 
 void Binds_Controller::bind_vertex_array(unsigned int _vertex_array_id)
 {
+    if(m_current_state.vertex_array == _vertex_array_id)
+        return;
+
     m_current_state.vertex_array = _vertex_array_id;
     glBindVertexArray(_vertex_array_id);
 }

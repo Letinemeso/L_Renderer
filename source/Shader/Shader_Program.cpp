@@ -31,6 +31,8 @@ void Shader_Program::operator=(Shader_Program&& _other)
 
 Shader_Program::~Shader_Program()
 {
+    delete m_draw_rule;
+
     reset();
 }
 
@@ -137,6 +139,9 @@ void Shader_Program::update(const Draw_Module* _draw_module)
 
 void Shader_Program::use() const
 {
+    if(m_draw_rule)
+        m_draw_rule->use();
+
     if(s_current_shader_program == m_program_handle)
         return;
 
@@ -151,6 +156,7 @@ void Shader_Program::use() const
 
 Shader_Program_Stub::~Shader_Program_Stub()
 {
+    delete draw_rule;
     clear_childs_list(shaders);
 }
 
@@ -173,4 +179,10 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Program_Stub)
     }
 
     product->init();
+
+    if(!draw_rule)
+        return;
+
+    product->use();
+    product->set_draw_rule( Draw_Rule_Stub::construct_from(draw_rule) );
 }

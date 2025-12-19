@@ -49,8 +49,6 @@ namespace LR
         std::string m_draw_layer;
         bool m_should_update_draw_layer = false;
 
-        unsigned int m_vertex_array = 0;
-
         Graphics_Component_List m_graphics_components;
         Uniform_Setter_List m_graphics_uniform_setters;
         Uniform_Setter_List m_compute_uniform_setters;
@@ -82,7 +80,6 @@ namespace LR
         inline const std::string& draw_layer() const { return m_draw_layer; }
 
     public:
-        inline unsigned int vertex_array() const { return m_vertex_array; }
         inline bool visible() const { return m_visible; }
         inline bool draw_on_update() const { return m_draw_on_update; }
         inline unsigned int draw_mode() const { return m_draw_mode; }
@@ -96,7 +93,8 @@ namespace LR
         void add_graphics_component(Graphics_Component* _ptr);
         void add_graphics_uniform_setter(Uniform_Setter* _ptr);
         void add_compute_uniform_setter(Uniform_Setter* _ptr);
-        void bind_vertex_array() const;
+
+        void apply_draw_rule() const;
 
     public:
         inline const Graphics_Component_List& graphics_components() const { return m_graphics_components; }
