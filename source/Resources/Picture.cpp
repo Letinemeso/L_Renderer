@@ -101,7 +101,7 @@ void Picture::replace_with_picture(unsigned int _x, unsigned int _y, const Pictu
 
 
 
-BUILDER_STUB_CONSTRUCTION_FUNC(Picture_Stub) BUILDER_STUB_CONSTRUCTION_FUNC_DEFAULT_IMPL
+BUILDER_STUB_DEFAULT_CONSTRUCTION_FUNC(Picture_Stub)
 
 BUILDER_STUB_INITIALIZATION_FUNC(Picture_Stub)
 {

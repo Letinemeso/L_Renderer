@@ -18,6 +18,7 @@
 #include <Shader/Shader_Program.h>
 #include <Shader/Shader_Manager.h>
 #include <Texture/Texture.h>
+#include <Texture/Texture__Default.h>
 #include <Texture/Texture__Preloaded.h>
 #include <Texture/Texture__Frame_Buffer.h>
 #include <Uniform_Setters/Uniform_Setter.h>
@@ -90,11 +91,18 @@ void LR::register_types(LV::Object_Constructor& _object_constructor,
 
     _object_constructor.register_type<LR::Texture_Stub>();
 
+    _object_constructor.register_type<LR::Texture_Stub__Default>().override_initialization_func([_resources_manager_getter](LV::Variable_Base* _product)
+    {
+        LR::Texture_Stub__Default* product = (LR::Texture_Stub__Default*)_product;
+
+        product->resources_manager_getter = _resources_manager_getter;
+    });
+
     _object_constructor.register_type<LR::Texture_Stub__Preloaded>().override_initialization_func([_resources_manager_getter](LV::Variable_Base* _product)
     {
         LR::Texture_Stub__Preloaded* product = (LR::Texture_Stub__Preloaded*)_product;
 
-        product->resources_manager = _resources_manager_getter();
+        product->resources_manager_getter = _resources_manager_getter;
     });
 
     _object_constructor.register_type<LR::Texture_Stub__Frame_Buffer>();
