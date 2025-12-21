@@ -58,23 +58,30 @@ void Texture__Default::set_bind_index(unsigned int _index)
 
 
 
-void Texture__Default::prepare_to_draw()
+void Texture__Default::create_from_picture(const Picture* _picture)
 {
-    LR::Binds_Controller::instance().bind_texture(m_bind_index, m_texture_object);
-}
+    L_ASSERT(_picture);
 
+    m_width = _picture->width();
+    m_height = _picture->height();
+
+    LR::Binds_Controller::instance().bind_texture(bind_index(), opengl_texture_object());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, _picture->data());
+}
 
 void Texture__Default::set_picture(const Picture *_picture)
 {
     L_ASSERT(_picture);
 
     m_picture = _picture;
+    create_from_picture(m_picture);
+}
 
-    m_width = m_picture->width();
-    m_height = m_picture->height();
 
-    LR::Binds_Controller::instance().bind_texture(bind_index(), opengl_texture_object());
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_picture->data());
+
+void Texture__Default::prepare_to_draw()
+{
+    LR::Binds_Controller::instance().bind_texture(m_bind_index, m_texture_object);
 }
 
 
@@ -95,7 +102,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Texture_Stub__Default)
     if(picture)
     {
         L_ASSERT(picture_name.size() == 0);
-        product->set_picture(picture);
+        product->create_from_picture(picture);
         return;
     }
 

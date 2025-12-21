@@ -55,6 +55,7 @@ namespace LR
         void set_bind_index(unsigned int _index);
 
     public:
+        void create_from_picture(const Picture* _picture);
         void set_picture(const Picture* _picture);
 
     public:
