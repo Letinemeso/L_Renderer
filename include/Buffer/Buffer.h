@@ -12,12 +12,13 @@ namespace LR
     {
     public:
         constexpr static unsigned int All_Elements = 0xFFFFFFFF;
+        constexpr static unsigned int Invalid_Binding_Index = 0xFFFFFFFF;
 
     private:
         unsigned int m_floats_per_vertex = 0;
 
-        unsigned int m_layout_index = 0xFFFFFFFF;
-        unsigned int m_binding_point_index = 0xFFFFFFFF;
+        unsigned int m_layout_index = Invalid_Binding_Index;
+        unsigned int m_binding_point_index = Invalid_Binding_Index;
 
         unsigned int m_buffer = 0;
         unsigned int m_buffer_size = 0;
@@ -34,6 +35,9 @@ namespace LR
         inline unsigned int handle() const { return m_buffer; }
         inline unsigned int size() const { return m_buffer_size; }
 
+        inline bool has_valid_layout_index() const { return m_layout_index != Invalid_Binding_Index; }
+        inline bool has_valid_binding_point_index() const { return m_binding_point_index != Invalid_Binding_Index; }
+
     public:
         Buffer();
         ~Buffer();
@@ -45,6 +49,8 @@ namespace LR
         void set_floats_per_vertex(unsigned int _floats_per_vertex);
 
         void modify_buffer(const Element_Modification_Func& _func, unsigned int _offset = 0, unsigned int _amount = All_Elements, unsigned int _stride = 1);
+
+        void enable_instancing(bool _enable);
 
     public:
         void setup_vertex_attrib_pointer() const;

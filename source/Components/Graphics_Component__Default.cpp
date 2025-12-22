@@ -135,5 +135,8 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Default)
     if(reconstructor_stub)
         product->set_reconstructor((Graphics_Component_Reconstructor*)reconstructor_stub->construct());
 
+    if(enable_instancing)
+        product->buffer().enable_instancing(true);
+
     product->set_required_compute_shader_invocations(required_compute_shader_invocations);
 }

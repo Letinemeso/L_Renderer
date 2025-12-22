@@ -46,7 +46,7 @@ void Buffer::copy_array(const float* _data, unsigned int _count, unsigned int _o
 
 void Buffer::set_layout_index(unsigned int _index)
 {
-    L_ASSERT(_index != 0xFFFFFFFF);
+    L_ASSERT(_index != Invalid_Binding_Index);
 
     if(_index == m_layout_index)
         return;
@@ -75,7 +75,7 @@ void Buffer::modify_buffer(const Element_Modification_Func& _func, unsigned int 
     L_ASSERT(_offset < m_buffer_size);
     L_ASSERT(_stride > 0);
 
-    if(_amount == 0xFFFFFFFF)
+    if(_amount == All_Elements)
         _amount = m_buffer_size - _offset;
 
     L_ASSERT(_amount > 0);
@@ -93,10 +93,19 @@ void Buffer::modify_buffer(const Element_Modification_Func& _func, unsigned int 
 }
 
 
+void Buffer::enable_instancing(bool _enable)
+{
+    L_ASSERT(has_valid_layout_index());
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
+    glVertexAttribDivisor(m_layout_index, _enable);
+}
+
+
 
 void Buffer::setup_vertex_attrib_pointer() const
 {
-    if(m_buffer == 0 || m_buffer_size == 0 || m_layout_index == 0xFFFFFFFF || m_floats_per_vertex == 0)
+    if(m_buffer == 0 || m_buffer_size == 0 || !has_valid_layout_index() || m_floats_per_vertex == 0)
         return;
 
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
@@ -107,7 +116,7 @@ void Buffer::bind_to_layout() const
 {
     L_ASSERT(!(m_buffer == 0 || m_buffer_size == 0));
 
-    if(m_layout_index == 0xFFFFFFFF)
+    if(!has_valid_layout_index())
         return;
 
     setup_vertex_attrib_pointer();
@@ -117,7 +126,7 @@ void Buffer::bind_to_binding_point() const
 {
     L_ASSERT(!(m_buffer == 0 || m_buffer_size == 0));
 
-    if(m_binding_point_index == 0xFFFFFFFF)
+    if(!has_valid_binding_point_index())
         return;
 
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, m_binding_point_index, m_buffer);

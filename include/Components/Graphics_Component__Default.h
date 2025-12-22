@@ -70,6 +70,7 @@ namespace LR
         ADD_FIELD(unsigned int, layout_index)
         ADD_FIELD(unsigned int, binding_point_index)
         ADD_FIELD(unsigned int, required_compute_shader_invocations)
+        ADD_FIELD(bool, enable_instancing)
         ADD_FIELD(LDS::Vector<float>, data)
         FIELDS_END
 
@@ -83,6 +84,8 @@ namespace LR
         unsigned int layout_index = 0xFFFFFFFF;
         unsigned int binding_point_index = 0xFFFFFFFF;
         unsigned int required_compute_shader_invocations = 0;
+
+        bool enable_instancing = false;
 
         LDS::Vector<float> data;
 

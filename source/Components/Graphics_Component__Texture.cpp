@@ -47,6 +47,8 @@ void Graphics_Component__Texture::reconfigure_texture_coords(const glm::vec2& _e
 {
     L_ASSERT(m_buffer.size() > 0);
     L_ASSERT(m_buffer.floats_per_vertex() >= 2);
+    L_ASSERT(_expected_texture_size.x > 0.0f);
+    L_ASSERT(_expected_texture_size.y > 0.0f);
 
     Buffer::Element_Modification_Func modification_func = [&_expected_texture_size](float& _element, unsigned int _index)
     {

@@ -5,6 +5,7 @@
 #include <Components/Graphics_Component__Proxy.h>
 #include <Draw_Modules/Draw_Module.h>
 #include <Draw_Modules/Draw_Calls/Draw_Call__Default.h>
+#include <Draw_Modules/Draw_Calls/Draw_Call__Instanced.h>
 #include <Resources/Font.h>
 #include <Resources/Picture.h>
 #include <Shader/Shader_Components/Shader_Component.h>
@@ -58,6 +59,8 @@ void LR::register_types(LV::Object_Constructor& _object_constructor,
     });
 
     _object_constructor.register_type<LR::Draw_Call_Stub__Default>();
+
+    _object_constructor.register_type<LR::Draw_Call_Stub__Instanced>();
 
     _object_constructor.register_type<LR::Letter_Data>();
 

@@ -35,6 +35,8 @@ namespace LR
         INIT_VARIABLE(LR::Shader_Dt_Componen_Stub, LR::Predefined_Shader_Component_Stub)
 
         INIT_FIELDS
+        ADD_FIELD(std::string, additional_source)
+        ADD_FIELD(std::string, main_function_name)
         ADD_FIELD(std::string, dt_uniform_name)
         FIELDS_END
 
@@ -42,6 +44,8 @@ namespace LR
         LST::Function<float()> dt_getter;
 
     public:
+        std::string additional_source;
+        std::string main_function_name;
         std::string dt_uniform_name = "dt";
 
     public:
