@@ -6,6 +6,7 @@
 #include <Binds_Controller/Binds_Controller.h>
 #include <Draw_Order_Controller/Draw_Order_Controller.h>
 #include <Shader/Shader_Manager.h>
+#include <Draw_Modules/Draw_Calls/Draw_Call__Default.h>
 
 using namespace LR;
 
@@ -171,6 +172,31 @@ Uniform_Setter* Draw_Module::get_compute_uniform_setter_with_name(const std::str
 }
 
 
+unsigned int Draw_Module::calculate_vertices_amount() const
+{
+    L_ASSERT(m_graphics_components.size() > 0);
+
+    unsigned int vertices_amount = 0;
+    for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+    {
+        vertices_amount = (*it)->vertices_amount();
+        if(vertices_amount > 0)
+            break;
+    }
+
+    L_DEBUG_FUNC_NOARG([&]()
+                       {
+                           for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
+                           {
+                               unsigned int vertices_amount_check = (*it)->vertices_amount();
+                               L_ASSERT(vertices_amount_check == 0 || vertices_amount_check == vertices_amount);
+                           }
+                       });
+
+    return vertices_amount;
+}
+
+
 
 void Draw_Module::M_update_compute_shader_work_groups_sizes()
 {
@@ -249,30 +275,6 @@ void Draw_Module::M_dispatch_compute_shader(Shader_Program* _shader, const Unifo
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
-unsigned int Draw_Module::M_calculate_vertices_amount() const
-{
-    L_ASSERT(m_graphics_components.size() > 0);
-
-    unsigned int vertices_amount = 0;
-    for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
-    {
-        vertices_amount = (*it)->vertices_amount();
-        if(vertices_amount > 0)
-            break;
-    }
-
-    L_DEBUG_FUNC_NOARG([&]()
-    {
-        for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
-        {
-            unsigned int vertices_amount_check = (*it)->vertices_amount();
-            L_ASSERT(vertices_amount_check == 0 || vertices_amount_check == vertices_amount);
-        }
-    });
-
-    return vertices_amount;
-}
-
 void Draw_Module::M_update_internal(float _dt)
 {
     L_ASSERT(m_rendering_shader_program->draw_rule());
@@ -284,7 +286,8 @@ void Draw_Module::M_update_internal(float _dt)
 
 void Draw_Module::M_draw_internal() const
 {
-    glDrawArrays(draw_mode(), 0, M_calculate_vertices_amount());
+    L_ASSERT(m_draw_call);
+    m_draw_call->draw(this);
 }
 
 void Draw_Module::M_init_uniform_setters(const Uniform_Setter_List& _setters, const Shader_Program* _shader) const
@@ -360,6 +363,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
     product->set_draw_on_update(draw_on_update);
 
     M_apply_draw_mode(product);
+    M_apply_draw_call(product);
 
     L_ASSERT(renderer);
 
@@ -419,6 +423,18 @@ void Draw_Module_Stub::M_apply_draw_mode(Draw_Module* _product) const
     {
         L_ASSERT(false);
     }
+}
+
+void Draw_Module_Stub::M_apply_draw_call(Draw_Module* _product) const
+{
+    if(draw_call)
+    {
+        _product->set_draw_call( Draw_Call_Stub::construct_from(draw_call) );
+        return;
+    }
+
+    Draw_Call_Stub__Default default_draw_call_stub;
+    _product->set_draw_call( Draw_Call_Stub__Default::construct_from(&default_draw_call_stub) );
 }
 
 

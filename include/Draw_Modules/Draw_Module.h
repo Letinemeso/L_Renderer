@@ -8,6 +8,7 @@
 
 #include <Module.h>
 
+#include <Draw_Modules/Draw_Calls/Draw_Call.h>
 #include <Components/Graphics_Component.h>
 #include <Uniform_Setters/Uniform_Setter.h>
 
@@ -54,6 +55,7 @@ namespace LR
         Uniform_Setter_List m_compute_uniform_setters;
 
         unsigned int m_draw_mode = 0;
+        Draw_Call* m_draw_call = 0;
 
         bool m_visible = true;
         bool m_draw_on_update = true;
@@ -88,6 +90,7 @@ namespace LR
         inline void set_visible(bool _value) { m_visible = _value; }
         inline void set_draw_on_update(bool _value) { m_draw_on_update = _value; }
         inline void set_draw_mode(unsigned int _value) { m_draw_mode = _value; }
+        inline void set_draw_call(Draw_Call* _ptr) { delete m_draw_call; m_draw_call = _ptr; }
 
     public:
         void add_graphics_component(Graphics_Component* _ptr);
@@ -107,6 +110,8 @@ namespace LR
         Uniform_Setter* get_graphics_uniform_setter_with_name(const std::string& _name) const;
         Uniform_Setter* get_compute_uniform_setter_with_name(const std::string& _name) const;
 
+        unsigned int calculate_vertices_amount() const;
+
     protected:
         virtual void M_on_rendering_shader_program_set() { }
         virtual void M_on_compute_shader_program_set() { }
@@ -115,7 +120,6 @@ namespace LR
         unsigned int M_calculate_necessary_computer_shader_incovations() const;
         unsigned int M_calculate_necessary_work_groups(unsigned int _work_group_size) const;
         void M_dispatch_compute_shader(Shader_Program* _shader, const Uniform_Setter_List& _setters) const;
-        unsigned int M_calculate_vertices_amount() const;
         virtual void M_update_internal(float _dt);
         virtual void M_draw_internal() const;
         void M_init_uniform_setters(const Uniform_Setter_List& _setters, const Shader_Program* _shader) const;
@@ -143,6 +147,10 @@ namespace LR
         ADD_FIELD(std::string, compute_shader_id)
         FIELDS_END
 
+        INIT_CHILDS
+        ADD_CHILD("draw_call", draw_call)
+        CHILDS_END
+
         INIT_CHILDS_LISTS
         ADD_CHILDS_LIST("Graphics_Component_Stub__*", &graphics_component_stubs)
         ADD_CHILDS_LIST("Graphics_Uniform_Setter_Stub__*", &graphics_uniform_setter_stubs)
@@ -163,6 +171,8 @@ namespace LR
         const Shader_Manager* shader_manager = nullptr;
 
     public:
+        Draw_Call_Stub* draw_call = nullptr;
+
         LV::Variable_Base::Childs_List graphics_component_stubs;
         LV::Variable_Base::Childs_List graphics_uniform_setter_stubs;
         LV::Variable_Base::Childs_List compute_uniform_setter_stubs;
@@ -172,6 +182,7 @@ namespace LR
 
     private:
         void M_apply_draw_mode(Draw_Module* _product) const;
+        void M_apply_draw_call(Draw_Module* _product) const;
 
     public:
         ~Draw_Module_Stub();
