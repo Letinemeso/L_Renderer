@@ -44,11 +44,9 @@ uniform float {1};
     LST::String_With_Parameters str(Source);
     str.replace_parameter(1, dt_uniform_name);
 
-    product->set_source((std::string)str + additional_source);
+    product->set_source(str);
 
     product->set_dt_uniform_name(dt_uniform_name);
     L_ASSERT(dt_getter);
     product->set_dt_getter(dt_getter);
-
-    product->set_main_call(main_function_name);
 }
