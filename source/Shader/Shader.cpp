@@ -217,6 +217,36 @@ Shader_Stub::~Shader_Stub()
 
 
 
+void Shader_Stub::M_check_dependencies(const Shader::Shader_Components_List& _existing_components_list, const Shader_Component* _depending_component) const
+{
+    L_ASSERT(_depending_component);
+
+    auto has_component = [&](const std::string& _name)->bool
+    {
+        for(Shader::Shader_Components_List::Const_Iterator it = _existing_components_list.begin(); !it.end_reached(); ++it)
+        {
+            Shader_Component* component = *it;
+            if(component->get_actual_type() == _name)
+                return true;
+        }
+
+        return false;
+    };
+
+    Shader_Component::Dependencies dependencies = _depending_component->get_dependencies();
+
+    for(unsigned int i = 0; i < dependencies.size(); ++i)
+    {
+        if(has_component(dependencies[i]))
+            continue;
+
+        std::cout << "Shader " << _depending_component->get_actual_type() << " missing component " << dependencies[i] << "!" << std::endl;
+        L_ASSERT(false);
+    }
+}
+
+
+
 Shader_Type Shader_Stub::M_parse_shader_type() const
 {
     if(shader_type == "Vertex")
@@ -253,6 +283,9 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Stub)
         L_ASSERT(LV::cast_variable<Shader_Component>(likely_component));
 
         Shader_Component* component = (Shader_Component*)likely_component;
+
+        M_check_dependencies(product->components(), component);
+
         product->add_component(component);
     }
 

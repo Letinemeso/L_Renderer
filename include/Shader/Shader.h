@@ -130,6 +130,9 @@ namespace LR
         ~Shader_Stub();
 
     private:
+        void M_check_dependencies(const Shader::Shader_Components_List& _existing_components_list, const Shader_Component* _depending_component) const;
+
+    private:
         Shader_Type M_parse_shader_type() const;
 
     public:

@@ -24,6 +24,8 @@ namespace LR
             unsigned int floats_per_vertex = 0;
         };
 
+        using Dependencies = LDS::Vector<std::string>;
+
     private:
         unsigned int m_assigned_opengl_program_handle = 0;
 
@@ -33,7 +35,7 @@ namespace LR
 
     public:
         Shader_Component();
-        virtual ~Shader_Component();
+        ~Shader_Component();
 
     public:
         Shader_Component(const Shader_Component& _other) = delete;
@@ -58,6 +60,7 @@ namespace LR
         inline const std::string& main_call() const { return m_main_call; }
 
     public:
+        virtual Dependencies get_dependencies() const { return {}; };
         virtual void init(unsigned int _opengl_program_handle);
 
     public:
