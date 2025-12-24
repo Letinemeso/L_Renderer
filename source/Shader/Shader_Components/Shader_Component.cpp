@@ -17,9 +17,14 @@ Shader_Component::~Shader_Component()
 
 
 
+int Shader_Component::M_extract_uniform_location_optional(const std::string& _name) const
+{
+    return glGetUniformLocation(assigned_opengl_program_handle(), _name.c_str());
+}
+
 int Shader_Component::M_extract_uniform_location(const std::string& _name) const
 {
-    int result = glGetUniformLocation(assigned_opengl_program_handle(), _name.c_str());
+    int result = M_extract_uniform_location_optional(_name.c_str());
     L_ASSERT(result != -1);
 
     return result;

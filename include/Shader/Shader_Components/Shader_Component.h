@@ -45,6 +45,7 @@ namespace LR
         inline unsigned int assigned_opengl_program_handle() const { return m_assigned_opengl_program_handle; }
 
     protected:
+        int M_extract_uniform_location_optional(const std::string& _name) const;
         int M_extract_uniform_location(const std::string& _name) const;
         Vertex_Data M_extract_input_buffer_location(const std::string& _name) const;
 
