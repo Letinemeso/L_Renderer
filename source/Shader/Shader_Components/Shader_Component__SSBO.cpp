@@ -144,7 +144,7 @@ void set_{1}(uint _index, vec3 _value)
 {
     uint index_offset = _index * 3;
     if(index_offset >= {1}.length() - 2)
-        return result;
+        return;
 
     for(uint i = 0; i < 3; ++i)
         {1}[index_offset + i] = _value[i];
@@ -156,5 +156,5 @@ void set_{1}(uint _index, vec3 _value)
     str.replace_parameter(0, std::to_string(binding_index))
         .replace_parameter(1, data_name);
 
-    product->set_source(source);
+    product->set_source(str);
 }
