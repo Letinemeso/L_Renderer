@@ -98,11 +98,11 @@ namespace LR
         INIT_VARIABLE(LR::Uniform_Setter__Int, LR::Uniform_Setter)
 
     private:
-        unsigned int m_value = 0.0f;
+        int m_value = 0;
 
     public:
-        inline void set_value(unsigned int _value) { m_value = _value; }
-        inline unsigned int value() const { return m_value; }
+        inline void set_value(int _value) { m_value = _value; }
+        inline int value() const { return m_value; }
 
     public:
         void apply() const override;
@@ -120,7 +120,7 @@ namespace LR
         FIELDS_END
 
     public:
-        int value = 0.0f;
+        int value = 0;
 
     public:
         INIT_BUILDER_STUB(Uniform_Setter__Int)
@@ -135,7 +135,7 @@ namespace LR
         INIT_VARIABLE(LR::Uniform_Setter__UInt, LR::Uniform_Setter)
 
     private:
-        unsigned int m_value = 0.0f;
+        unsigned int m_value = 0;
 
     public:
         inline void set_value(unsigned int _value) { m_value = _value; }
@@ -157,7 +157,7 @@ namespace LR
         FIELDS_END
 
     public:
-        unsigned int value = 0.0f;
+        unsigned int value = 0;
 
     public:
         INIT_BUILDER_STUB(Uniform_Setter__UInt)
