@@ -110,10 +110,10 @@ BUILDER_STUB_INITIALIZATION_FUNC(Texture_Stub__Default)
         return;
 
     L_ASSERT(resources_manager_getter);
-    const LEti::Resources_Manager* resources_manager = resources_manager_getter();
+    const LV::Variable_Loader* resources_manager = resources_manager_getter();
     L_ASSERT(resources_manager);
 
-    product->set_picture(resources_manager->get_resource<Picture>(picture_name));
+    product->set_picture(resources_manager->get_variable<Picture>(picture_name));
 }
 
 

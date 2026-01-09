@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Resources_Manager.h>
+#include <Variable_Loader.h>
 
 #include <Texture/Texture.h>
 #include <Texture/Texture__Default.h>
@@ -36,7 +36,7 @@ namespace LR
         FIELDS_END
 
     public:
-        LST::Function<const LEti::Resources_Manager*()> resources_manager_getter;
+        LST::Function<const LV::Variable_Loader*()> resources_manager_getter;
 
     public:
         std::string texture_resource_name;

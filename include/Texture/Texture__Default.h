@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Resources_Manager.h>
+#include <Variable_Loader.h>
 
 #include <Texture/Texture.h>
 #include <Resources/Picture.h>
@@ -85,7 +85,7 @@ namespace LR
         OVERRIDE_ON_VALUES_ASSIGNED
 
     public:
-        LST::Function<const LEti::Resources_Manager*()> resources_manager_getter;
+        LST::Function<const LV::Variable_Loader*()> resources_manager_getter;
 
     public:
         unsigned int bind_index = 0;

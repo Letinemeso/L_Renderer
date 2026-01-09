@@ -21,9 +21,9 @@ BUILDER_STUB_INITIALIZATION_FUNC(Texture_Stub__Preloaded)
     BUILDER_STUB_CAST_PRODUCT;
 
     L_ASSERT(resources_manager_getter);
-    const LEti::Resources_Manager* resources_manager = resources_manager_getter();
+    const LV::Variable_Loader* resources_manager = resources_manager_getter();
     L_ASSERT(resources_manager);
 
-    Texture__Default* preloaded_texture = resources_manager->get_resource<Texture__Default>(texture_resource_name);
+    Texture__Default* preloaded_texture = resources_manager->get_variable<Texture__Default>(texture_resource_name);
     product->set_texture(preloaded_texture);
 }
