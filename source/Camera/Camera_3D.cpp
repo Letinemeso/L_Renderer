@@ -17,8 +17,8 @@ Camera_3D::Camera_3D(const Camera_3D& _other)
 
 void Camera_3D::reconfigure()
 {
-    LEti::Math::shrink_vector_to_1(m_settings.direction);
-    LEti::Math::shrink_vector_to_1(m_settings.top);
+    LST::Math::shrink_vector_to_1(m_settings.direction);
+    LST::Math::shrink_vector_to_1(m_settings.top);
 
     float window_ratio = LR::Window_Controller::instance().calculate_window_ratio();
 

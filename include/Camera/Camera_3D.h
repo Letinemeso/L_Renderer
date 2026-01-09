@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Math_Stuff.h>
+#include <Stuff/Math_Stuff.h>
 
 #include <Window/Window_Controller.h>
 #include <Camera/Camera_Base.h>
