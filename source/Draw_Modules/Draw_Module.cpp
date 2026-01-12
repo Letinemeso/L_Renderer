@@ -28,6 +28,8 @@ Draw_Module::~Draw_Module()
 
     if(m_draw_order_controller && !m_should_update_draw_layer)
         m_draw_order_controller->unregister_module(this);
+
+    delete m_draw_call;
 }
 
 

@@ -55,7 +55,7 @@ namespace LR
         Uniform_Setter_List m_compute_uniform_setters;
 
         unsigned int m_draw_mode = 0;
-        Draw_Call* m_draw_call = 0;
+        Draw_Call* m_draw_call = nullptr;
 
         bool m_visible = true;
         bool m_draw_on_update = true;
