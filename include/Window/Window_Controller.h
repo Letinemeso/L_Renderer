@@ -38,6 +38,8 @@ namespace LR
         glm::vec2 m_saved_window_size;
         glm::vec2 m_saved_window_position;
 
+        bool m_is_minimized = false;
+
     private:
         Window_Controller();
 
@@ -59,6 +61,7 @@ namespace LR
         void set_cursor_pos(const glm::vec2& _pos);
         void register_mouse_wheel_movement(int _value);
         void on_window_resized(int _new_width, int _new_height);
+        void on_minimized(bool _minimized);
         void make_fullscreen(bool _fullscreen);
 
     public:
@@ -99,6 +102,8 @@ namespace LR
 
         void set_cursor_visibility(bool _visible) const;
         bool is_cursor_visible() const;
+
+        bool is_minimized() const;
 
     public:
         static const std::string& log_level() { static std::string s_log_level_name = "L_Renderer"; return s_log_level_name; }

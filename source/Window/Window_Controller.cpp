@@ -60,6 +60,16 @@ void Window_Controller::create_window(unsigned int _width, unsigned int _height,
     {
         LR::Window_Controller::instance().instance().on_window_resized(_width, _height);
     });
+
+    glfwSetWindowIconifyCallback(m_window, [](GLFWwindow*, int _iconified)
+    {
+        LR::Window_Controller::instance().on_minimized(_iconified);
+    });
+
+    glfwSetWindowFocusCallback(m_window, [](GLFWwindow*, int _iconified)
+    {
+        LR::Window_Controller::instance().on_minimized(!_iconified);
+    });
 }
 
 void Window_Controller::terminate_window()
@@ -95,6 +105,11 @@ void Window_Controller::on_window_resized(int _new_width, int _new_height)
     LST::Message_Translator::instance().translate(msg);
 }
 
+void Window_Controller::on_minimized(bool _minimized)
+{
+    m_is_minimized = _minimized;
+}
+
 void Window_Controller::make_fullscreen(bool _fullscreen)
 {
     if(_fullscreen)
@@ -109,6 +124,7 @@ void Window_Controller::make_fullscreen(bool _fullscreen)
         const GLFWvidmode* mode = glfwGetVideoMode(monitor);
         glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
         on_window_resized(mode->width, mode->height);
+        glfwSwapInterval(0);
     }
     else
     {
@@ -117,6 +133,7 @@ void Window_Controller::make_fullscreen(bool _fullscreen)
 
         glfwSetWindowMonitor(m_window, nullptr, m_saved_window_position.x, m_saved_window_position.y, m_saved_window_size.x, m_saved_window_size.y, 0);
         on_window_resized(m_saved_window_size.x, m_saved_window_size.y);
+        glfwSwapInterval(0);
     }
 
     m_is_fullscreen = _fullscreen;
@@ -193,6 +210,8 @@ const glm::vec2& Window_Controller::get_window_size() const
 
 float Window_Controller::calculate_window_ratio() const
 {
+    if(m_is_minimized)
+        return 1.0f;
     return m_window_size.x / m_window_size.y;
 }
 
@@ -282,4 +301,10 @@ void Window_Controller::set_cursor_visibility(bool _visible) const
 bool Window_Controller::is_cursor_visible() const
 {
     return glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_NORMAL;
+}
+
+
+bool Window_Controller::is_minimized() const
+{
+    return m_is_minimized;
 }
