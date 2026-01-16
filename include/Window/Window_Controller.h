@@ -64,6 +64,7 @@ namespace LR
     public:
         void update();
 
+        void clear(bool _color, bool _depth);
         void swap_buffers();
 
     private:

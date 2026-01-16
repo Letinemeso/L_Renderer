@@ -140,6 +140,19 @@ void Window_Controller::update()
 }
 
 
+void Window_Controller::clear(bool _color, bool _depth)
+{
+    unsigned int mask = 0;
+    if(_color)
+        mask |= GL_COLOR_BUFFER_BIT;
+    if(_depth)
+        mask |= GL_DEPTH_BUFFER_BIT;
+
+    L_ASSERT(mask != 0);
+
+    glClear(mask);
+}
+
 void Window_Controller::swap_buffers()
 {
 	glfwSwapBuffers(m_window);
