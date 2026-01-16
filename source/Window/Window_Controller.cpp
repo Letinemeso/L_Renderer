@@ -165,7 +165,7 @@ void Window_Controller::M_update_cursor_position()
     double x, y;
     glfwGetCursorPos(m_window, &x, &y);
     m_cursor_pos.x = x;
-    m_cursor_pos.y = y;
+    m_cursor_pos.y = m_window_size.y - y;
 }
 
 
