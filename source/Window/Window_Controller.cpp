@@ -84,6 +84,7 @@ void Window_Controller::set_cursor_pos(const glm::vec2& _pos)
     glfwSetCursorPos(m_window, _pos.x, _pos.y);
 
     m_prev_cursor_pos = _pos;
+    m_cursor_pos = _pos;
 }
 
 void Window_Controller::register_mouse_wheel_movement(int _value)
