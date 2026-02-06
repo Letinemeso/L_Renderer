@@ -28,7 +28,7 @@ namespace LR
     public:
         void reconfigure();
 
-        void set_settings(const Settings& _settings);
+        virtual void set_settings(const Settings& _settings);
 
     public:
         inline Settings& settings() { return m_settings; }
