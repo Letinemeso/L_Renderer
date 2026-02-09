@@ -60,6 +60,8 @@ namespace LR
         void add_shader(Shader* _shader);
         void init();
 
+        void set_uniform_vec3(const std::string& _name, const glm::vec3& _value);
+
     public:
         Shader* get_shader_of_type(Shader_Type _type);
         const Shader* get_shader_of_type(Shader_Type _type) const;

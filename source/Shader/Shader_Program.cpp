@@ -104,6 +104,15 @@ void Shader_Program::init()
 }
 
 
+void Shader_Program::set_uniform_vec3(const std::string& _name, const glm::vec3& _value)
+{
+    int location = glGetUniformLocation(m_program_handle, _name.c_str());
+    L_ASSERT(location != -1);
+
+    glUniform3f(location, _value[0], _value[1], _value[2]);
+}
+
+
 
 Shader* Shader_Program::get_shader_of_type(Shader_Type _type)
 {

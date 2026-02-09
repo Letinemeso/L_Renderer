@@ -52,6 +52,7 @@ namespace LR
 
         Graphics_Component_List m_graphics_components;
         Uniform_Setter_List m_graphics_uniform_setters;
+        Uniform_Setter_List m_graphics_uniform_setters_after_draw;
         Uniform_Setter_List m_compute_uniform_setters;
 
         unsigned int m_draw_mode = 0;
@@ -95,6 +96,7 @@ namespace LR
     public:
         void add_graphics_component(Graphics_Component* _ptr);
         void add_graphics_uniform_setter(Uniform_Setter* _ptr);
+        void add_graphics_uniform_setter_after_draw(Uniform_Setter* _ptr);
         void add_compute_uniform_setter(Uniform_Setter* _ptr);
 
         void apply_draw_rule() const;
@@ -154,6 +156,7 @@ namespace LR
         INIT_CHILDS_LISTS
         ADD_CHILDS_LIST("Graphics_Component_Stub__*", &graphics_component_stubs)
         ADD_CHILDS_LIST("Graphics_Uniform_Setter_Stub__*", &graphics_uniform_setter_stubs)
+        ADD_CHILDS_LIST("Graphics_Uniform_Setter_After_Draw_Stub__*", &graphics_uniform_setter_after_draw_stubs)
         ADD_CHILDS_LIST("Compute_Uniform_Setter_Stub__*", &compute_uniform_setter_stubs)
         CHILDS_LISTS_END
 
@@ -175,6 +178,7 @@ namespace LR
 
         LV::Variable_Base::Childs_List graphics_component_stubs;
         LV::Variable_Base::Childs_List graphics_uniform_setter_stubs;
+        LV::Variable_Base::Childs_List graphics_uniform_setter_after_draw_stubs;
         LV::Variable_Base::Childs_List compute_uniform_setter_stubs;
 
     protected:

@@ -23,6 +23,8 @@ Draw_Module::~Draw_Module()
         delete *it;
     for(Uniform_Setter_List::Iterator it = m_graphics_uniform_setters.begin(); !it.end_reached(); ++it)
         delete *it;
+    for(Uniform_Setter_List::Iterator it = m_graphics_uniform_setters_after_draw.begin(); !it.end_reached(); ++it)
+        delete *it;
     for(Uniform_Setter_List::Iterator it = m_compute_uniform_setters.begin(); !it.end_reached(); ++it)
         delete *it;
 
@@ -106,6 +108,16 @@ void Draw_Module::add_graphics_uniform_setter(Uniform_Setter* _ptr)
     L_ASSERT(!m_graphics_uniform_setters.find(_ptr).is_ok());
 
     m_graphics_uniform_setters.push_back(_ptr);
+
+    if(m_rendering_shader_program)
+        _ptr->init(m_rendering_shader_program);
+}
+
+void Draw_Module::add_graphics_uniform_setter_after_draw(Uniform_Setter* _ptr)
+{
+    L_ASSERT(!m_graphics_uniform_setters_after_draw.find(_ptr).is_ok());
+
+    m_graphics_uniform_setters_after_draw.push_back(_ptr);
 
     if(m_rendering_shader_program)
         _ptr->init(m_rendering_shader_program);
@@ -348,6 +360,8 @@ void Draw_Module::draw() const
     M_apply_uniform_setters(m_graphics_uniform_setters);
 
     M_draw_internal();
+
+    M_apply_uniform_setters(m_graphics_uniform_setters_after_draw);
 }
 
 
@@ -395,6 +409,13 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
         L_ASSERT(LV::cast_variable<Uniform_Setter_Stub>(it->child_ptr));
         Uniform_Setter_Stub* stub = (Uniform_Setter_Stub*)(it->child_ptr);
         product->add_graphics_uniform_setter(Uniform_Setter_Stub::construct_from(stub));
+    }
+
+    for(LV::Variable_Base::Childs_List::Const_Iterator it = graphics_uniform_setter_after_draw_stubs.begin(); !it.end_reached(); ++it)
+    {
+        L_ASSERT(LV::cast_variable<Uniform_Setter_Stub>(it->child_ptr));
+        Uniform_Setter_Stub* stub = (Uniform_Setter_Stub*)(it->child_ptr);
+        product->add_graphics_uniform_setter_after_draw(Uniform_Setter_Stub::construct_from(stub));
     }
 
     for(LV::Variable_Base::Childs_List::Const_Iterator it = compute_uniform_setter_stubs.begin(); !it.end_reached(); ++it)
@@ -445,5 +466,6 @@ Draw_Module_Stub::~Draw_Module_Stub()
 {
     clear_childs_list(graphics_component_stubs);
     clear_childs_list(graphics_uniform_setter_stubs);
+    clear_childs_list(graphics_uniform_setter_after_draw_stubs);
     clear_childs_list(compute_uniform_setter_stubs);
 }

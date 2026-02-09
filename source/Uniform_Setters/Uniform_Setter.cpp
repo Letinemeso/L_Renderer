@@ -10,7 +10,7 @@ using namespace LR;
 void Uniform_Setter::init(const LR::Shader_Program* _shader)
 {
     m_uniform_location = glGetUniformLocation(_shader->handle(), m_uniform_name.c_str());
-    L_ASSERT(m_uniform_location != -1);
+    L_ASSERT_WITH_INFO(m_uniform_location != -1, "Not found uniform with name " + m_uniform_name);
 }
 
 
