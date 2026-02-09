@@ -211,8 +211,9 @@ const glm::vec2& Window_Controller::get_window_size() const
 
 float Window_Controller::calculate_window_ratio() const
 {
-    if(m_is_minimized)
+    if(m_window_size.x < 1e-6f || m_window_size.y < 1e-6f)
         return 1.0f;
+
     return m_window_size.x / m_window_size.y;
 }
 
