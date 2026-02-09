@@ -9,6 +9,7 @@
 #include <Module.h>
 
 #include <Draw_Modules/Draw_Calls/Draw_Call.h>
+#include <Draw_Modules/Borders/Border.h>
 #include <Components/Graphics_Component.h>
 #include <Uniform_Setters/Uniform_Setter.h>
 
@@ -58,6 +59,8 @@ namespace LR
         unsigned int m_draw_mode = 0;
         Draw_Call* m_draw_call = nullptr;
 
+        Border* m_border = nullptr;
+
         bool m_visible = true;
         bool m_draw_on_update = true;
 
@@ -67,8 +70,11 @@ namespace LR
 
     public:
         inline void set_renderer(Renderer* _ptr) { m_renderer = _ptr; }
+        inline void set_border(Border* _ptr) { delete m_border; m_border = _ptr; }
 
         inline Renderer* renderer() const { return m_renderer; }
+        inline Border* border() { return m_border; }
+        inline const Border* border() const { return m_border; }
         inline Shader_Program* rendering_shader_program() const { return m_rendering_shader_program; }
         inline Shader_Program* compute_shader_program() const { return m_compute_shader_program; }
 
@@ -151,6 +157,7 @@ namespace LR
 
         INIT_CHILDS
         ADD_CHILD("draw_call", draw_call)
+        ADD_CHILD("border", border)
         CHILDS_END
 
         INIT_CHILDS_LISTS
@@ -175,6 +182,7 @@ namespace LR
 
     public:
         Draw_Call_Stub* draw_call = nullptr;
+        Border_Stub* border = nullptr;
 
         LV::Variable_Base::Childs_List graphics_component_stubs;
         LV::Variable_Base::Childs_List graphics_uniform_setter_stubs;
@@ -187,6 +195,7 @@ namespace LR
     private:
         void M_apply_draw_mode(Draw_Module* _product) const;
         void M_apply_draw_call(Draw_Module* _product) const;
+        void M_apply_border(Draw_Module* _product) const;
 
     public:
         ~Draw_Module_Stub();

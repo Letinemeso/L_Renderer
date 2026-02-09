@@ -19,6 +19,7 @@ namespace LR
         using Draw_Function = LST::Function<void()>;
         using Before_Draw_Function = LST::Function<void()>;
         using Sort_Function = LST::Function<bool(const LEti::Object*, const LEti::Object*)>;
+        using Visibility_Check_Function = LST::Function<bool(const LEti::Module*)>;
 
     private:
         using Registered_Modules = LDS::Map<LEti::Module*, Draw_Function>;
@@ -30,6 +31,7 @@ namespace LR
             Registered_Modules modules_set;
             Before_Draw_Function before_draw;
             Sort_Function sort_function;
+            Visibility_Check_Function visiblity_check_function;
             const LR::Camera_Base* camera = nullptr;
         };
 
@@ -48,6 +50,7 @@ namespace LR
         public:
             inline Draw_Layer_Settings& set_before_draw_function(const Before_Draw_Function& _func) { m_data.before_draw = _func; return *this; }
             inline Draw_Layer_Settings& set_sort_function(const Sort_Function& _func) { m_data.sort_function = _func; return *this; }
+            inline Draw_Layer_Settings& set_visibility_check_function(const Visibility_Check_Function& _func) { m_data.visiblity_check_function = _func; return *this; }
             inline Draw_Layer_Settings& set_camera(const LR::Camera_Base* _camera) { m_data.camera = _camera; return *this; }
 
         };
@@ -76,8 +79,10 @@ namespace LR
         bool is_module_registred(LEti::Module* _module);
 
     private:
-        void M_draw_default(const Registered_Modules& _modules) const;
-        void M_draw_sorted(const Registered_Modules& _modules, const Sort_Function& _func) const;
+        void M_draw_default(const Registered_Modules& _modules, const Visibility_Check_Function& _visibility_check_function) const;
+        void M_draw_sorted(const Registered_Modules& _modules, const Sort_Function& _func, const Visibility_Check_Function& _visibility_check_function) const;
+
+        void M_draw_layer(const Draw_Layer_Data& _layer) const;
 
     public:
         void draw() const;

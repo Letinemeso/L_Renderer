@@ -32,6 +32,7 @@ Draw_Module::~Draw_Module()
         m_draw_order_controller->unregister_module(this);
 
     delete m_draw_call;
+    delete m_border;
 }
 
 
@@ -296,6 +297,9 @@ void Draw_Module::M_update_internal(float _dt)
 
     for(Graphics_Component_List::Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
         (*it)->update(_dt);
+
+    if(m_border)
+        m_border->update(transformation_data()->matrix());
 }
 
 void Draw_Module::M_draw_internal() const
@@ -380,6 +384,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
 
     M_apply_draw_mode(product);
     M_apply_draw_call(product);
+    M_apply_border(product);
 
     L_ASSERT(renderer);
 
@@ -460,10 +465,23 @@ void Draw_Module_Stub::M_apply_draw_call(Draw_Module* _product) const
     _product->set_draw_call( Draw_Call_Stub__Default::construct_from(&default_draw_call_stub) );
 }
 
+void Draw_Module_Stub::M_apply_border(Draw_Module* _product) const
+{
+    if(!border)
+        return;
+
+    Border* constructed_border = Border_Stub::construct_from(border);
+    constructed_border->init(graphics_component_stubs);
+    _product->set_border(constructed_border);
+}
+
 
 
 Draw_Module_Stub::~Draw_Module_Stub()
 {
+    delete draw_call;
+    delete border;
+
     clear_childs_list(graphics_component_stubs);
     clear_childs_list(graphics_uniform_setter_stubs);
     clear_childs_list(graphics_uniform_setter_after_draw_stubs);

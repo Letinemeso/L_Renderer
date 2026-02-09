@@ -96,8 +96,8 @@ namespace LR
     public:
         ~Graphics_Component_Stub__Default();
 
-    private:
-        const LDS::Vector<float>& M_select_data() const;
+    public:
+        const LDS::Vector<float>& select_data() const;
 
     protected:
         INIT_BUILDER_STUB(Graphics_Component__Default)

@@ -93,7 +93,7 @@ Graphics_Component_Stub__Default::~Graphics_Component_Stub__Default()
 
 
 
-const LDS::Vector<float>& Graphics_Component_Stub__Default::M_select_data() const
+const LDS::Vector<float>& Graphics_Component_Stub__Default::select_data() const
 {
     if(data.size() > 0)
         return data;
@@ -115,7 +115,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Default)
 
     L_ASSERT(! ( (layout_index != 0xFFFFFFFF) ^ (floats_per_vertex > 0) ) );
 
-    const LDS::Vector<float>& selected_data = M_select_data();
+    const LDS::Vector<float>& selected_data = select_data();
 
     if(selected_data.size() > 0)
     {

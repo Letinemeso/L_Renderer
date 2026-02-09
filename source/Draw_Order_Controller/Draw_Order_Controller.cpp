@@ -96,23 +96,48 @@ bool Draw_Order_Controller::is_module_registred(LEti::Module* _module)
 
 
 
-void Draw_Order_Controller::M_draw_default(const Registered_Modules& _modules) const
+void Draw_Order_Controller::M_draw_default(const Registered_Modules& _modules, const Visibility_Check_Function& _visibility_check_function) const
 {
+    if(!_visibility_check_function)
+    {
+        for(Registered_Modules::Const_Iterator module_it = _modules.iterator(); !module_it.end_reached(); ++module_it)
+        {
+            const Draw_Function& draw_function = *module_it;
+            draw_function();
+        }
+
+        return;
+    }
+
     for(Registered_Modules::Const_Iterator module_it = _modules.iterator(); !module_it.end_reached(); ++module_it)
     {
+        if(!_visibility_check_function(module_it.key()))
+            continue;
+
         const Draw_Function& draw_function = *module_it;
         draw_function();
     }
 }
 
-void Draw_Order_Controller::M_draw_sorted(const Registered_Modules& _modules, const Sort_Function& _func) const
+void Draw_Order_Controller::M_draw_sorted(const Registered_Modules& _modules, const Sort_Function& _func, const Visibility_Check_Function& _visibility_check_function) const
 {
     L_ASSERT(_func);
 
     LDS::Vector<Registered_Modules::Const_Iterator> vec_to_sort(_modules.size());
 
-    for(Registered_Modules::Const_Iterator module_it = _modules.iterator(); !module_it.end_reached(); ++module_it)
-        vec_to_sort.push(module_it);
+    if(!_visibility_check_function)
+    {
+        for(Registered_Modules::Const_Iterator module_it = _modules.iterator(); !module_it.end_reached(); ++module_it)
+            vec_to_sort.push(module_it);
+    }
+    else
+    {
+        for(Registered_Modules::Const_Iterator module_it = _modules.iterator(); !module_it.end_reached(); ++module_it)
+        {
+            if(_visibility_check_function(module_it.key()))
+                vec_to_sort.push(module_it);
+        }
+    }
 
     LST::Sorter<Registered_Modules::Const_Iterator> sorter([&_func](const Registered_Modules::Const_Iterator& _first, const Registered_Modules::Const_Iterator& _second)
     {
@@ -122,9 +147,28 @@ void Draw_Order_Controller::M_draw_sorted(const Registered_Modules& _modules, co
 
     for(unsigned int i = 0; i < vec_to_sort.size(); ++i)
     {
-        const Draw_Function& draw = *(vec_to_sort[i]);
-        draw();
+        const Draw_Function& draw_function = *(vec_to_sort[i]);
+        draw_function();
     }
+}
+
+
+void Draw_Order_Controller::M_draw_layer(const Draw_Layer_Data& _layer) const
+{
+    const Camera_Base* previous_camera = m_renderer->camera();
+    m_renderer->set_camera(_layer.camera);
+
+    if(_layer.before_draw)
+        _layer.before_draw();
+
+    const Registered_Modules& modules_set = _layer.modules_set;
+
+    if(_layer.sort_function)
+        M_draw_sorted(modules_set, _layer.sort_function, _layer.visiblity_check_function);
+    else
+        M_draw_default(modules_set, _layer.visiblity_check_function);
+
+    m_renderer->set_camera(previous_camera);
 }
 
 
@@ -134,40 +178,12 @@ void Draw_Order_Controller::draw() const
     for(Draw_Layers::Const_Iterator it = m_draw_layers.begin(); !it.end_reached(); ++it)
     {
         const Draw_Layer_Data& layer = *it;
-
-        const Camera_Base* previous_camera = m_renderer->camera();
-        m_renderer->set_camera(layer.camera);
-
-        if(layer.before_draw)
-            layer.before_draw();
-
-        const Registered_Modules& modules_set = layer.modules_set;
-
-        if(layer.sort_function)
-            M_draw_sorted(modules_set, layer.sort_function);
-        else
-            M_draw_default(modules_set);
-
-        m_renderer->set_camera(previous_camera);
+        M_draw_layer(layer);
     }
 }
 
 void Draw_Order_Controller::draw_layer(const std::string& _layer_name) const
 {
     const Draw_Layer_Data& layer = M_find_layer(_layer_name);
-
-    const Camera_Base* previous_camera = m_renderer->camera();
-    m_renderer->set_camera(layer.camera);
-
-    if(layer.before_draw)
-        layer.before_draw();
-
-    const Registered_Modules& modules_set = layer.modules_set;
-
-    if(layer.sort_function)
-        M_draw_sorted(modules_set, layer.sort_function);
-    else
-        M_draw_default(modules_set);
-
-    m_renderer->set_camera(previous_camera);
+    M_draw_layer(layer);
 }

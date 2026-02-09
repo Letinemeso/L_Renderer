@@ -19,6 +19,7 @@ namespace LR
     public:
         bool intersects_with_point(const glm::vec3& _point) const;
         bool intersects_with_sphere(const glm::vec3& _center, float _radius) const;
+        bool intersects_with_cuboid(const glm::vec3& _center, const glm::vec3& _extents) const;
 
     };
 
