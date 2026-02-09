@@ -4,6 +4,7 @@
 
 #include <Window/Window_Controller.h>
 #include <Camera/Camera_Base.h>
+#include <Frustum/Frustum.h>
 
 
 namespace LR
@@ -15,11 +16,12 @@ namespace LR
         struct Settings
         {
             glm::vec3 position, direction, top;
-            float field_of_view = 0.0f, max_distance = 0.0f;
+            float field_of_view = 0.0f, min_distance = 0.0f, max_distance = 0.0f;
         };
 
     private:
         Settings m_settings;
+        Frustum m_frustum;
 
     public:
         Camera_3D();
@@ -33,6 +35,8 @@ namespace LR
     public:
         inline Settings& settings() { return m_settings; }
         inline const Settings& settings() const { return m_settings; }
+
+        inline const Frustum& frustum() const { return m_frustum; }
 
     };
 
