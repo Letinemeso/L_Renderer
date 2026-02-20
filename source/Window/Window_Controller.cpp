@@ -3,6 +3,8 @@
 #include <glew.h>
 #include <glfw3.h>
 
+#include <Stuff/Math_Stuff.h>
+
 using namespace LR;
 
 
@@ -211,7 +213,7 @@ const glm::vec2& Window_Controller::get_window_size() const
 
 float Window_Controller::calculate_window_ratio() const
 {
-    if(m_window_size.x < 1e-6f || m_window_size.y < 1e-6f)
+    if(m_window_size.x < LST::Math::Float_Precision_Tolerance || m_window_size.y < LST::Math::Float_Precision_Tolerance)
         return 1.0f;
 
     return m_window_size.x / m_window_size.y;
