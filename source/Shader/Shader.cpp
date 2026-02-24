@@ -18,7 +18,7 @@ Shader::Shader(Shader&& _other)
     m_assigned_opengl_program_handle = _other.m_assigned_opengl_program_handle;
     _other.m_assigned_opengl_program_handle = 0;
 
-    m_components = (LDS::List<Shader_Component*>&&)_other.m_components;
+    m_components = (Shader_Components_List&&)_other.m_components;
 }
 
 void Shader::operator=(Shader&& _other)
@@ -29,15 +29,15 @@ void Shader::operator=(Shader&& _other)
     m_assigned_opengl_program_handle = _other.m_assigned_opengl_program_handle;
     _other.m_assigned_opengl_program_handle = 0;
 
-    m_components = (LDS::List<Shader_Component*>&&)_other.m_components;
+    m_components = (Shader_Components_List&&)_other.m_components;
 }
 
 
 Shader::~Shader()
 {
-    for(LDS::List<Shader_Component*>::Iterator it = m_components.begin(); !it.end_reached(); ++it)
+    for(Shader_Components_List::Iterator it = m_components.begin(); !it.end_reached(); ++it)
     {
-        Shader_Component* component = *it;
+        Shader_Component* component = it->component;
         delete component;
     }
 
@@ -88,9 +88,9 @@ void Shader::M_debug(const char** _sources, unsigned int _sources_amount) const
 
 bool Shader::M_component_already_added(Shader_Component *_component) const
 {
-    for(LDS::List<Shader_Component*>::Const_Iterator it = m_components.begin(); !it.end_reached(); ++it)
+    for(Shader_Components_List::Const_Iterator it = m_components.begin(); !it.end_reached(); ++it)
     {
-        Shader_Component* component = *it;
+        Shader_Component* component = it->component;
         if(component == _component)
             return true;
     }
@@ -116,9 +116,9 @@ unsigned int Shader::M_get_opengl_shader_type() const
 
 void Shader::reset()
 {
-    for(LDS::List<Shader_Component*>::Iterator it = m_components.begin(); !it.end_reached(); ++it)
+    for(Shader_Components_List::Iterator it = m_components.begin(); !it.end_reached(); ++it)
     {
-        Shader_Component* component = *it;
+        Shader_Component* component = it->component;
         delete component;
     }
 
@@ -128,12 +128,12 @@ void Shader::reset()
     m_assigned_opengl_program_handle = 0;
 }
 
-void Shader::add_component(Shader_Component *_component)
+void Shader::add_component(Shader_Component *_component, const std::string& _name)
 {
     L_ASSERT(_component);
     L_ASSERT(!M_component_already_added(_component));
 
-    m_components.push_back(_component);
+    m_components.push_back({_component, _name});
 }
 
 void Shader::compile()
@@ -153,9 +153,9 @@ void Shader::compile()
     sources[sources_index] = glsl_version_str.c_str();
     ++sources_index;
 
-    for(LDS::List<Shader_Component*>::Iterator it = m_components.begin(); !it.end_reached(); ++it)
+    for(Shader_Components_List::Iterator it = m_components.begin(); !it.end_reached(); ++it)
     {
-        Shader_Component* component = *it;
+        Shader_Component* component = it->component;
         sources[sources_index] = component->source().c_str();
         ++sources_index;
     }
@@ -163,9 +163,9 @@ void Shader::compile()
     std::string main_func_str;
     main_func_str += "void main()\n{\n";
 
-    for(LDS::List<Shader_Component*>::Iterator it = m_components.begin(); !it.end_reached(); ++it)
+    for(Shader_Components_List::Iterator it = m_components.begin(); !it.end_reached(); ++it)
     {
-        Shader_Component* component = *it;
+        Shader_Component* component = it->component;
         if(component->main_call().size() == 0)
             continue;
 
@@ -189,11 +189,35 @@ void Shader::init(unsigned int _opengl_program_handle)
 {
     m_assigned_opengl_program_handle = _opengl_program_handle;
 
-    for(LDS::List<Shader_Component*>::Iterator it = m_components.begin(); !it.end_reached(); ++it)
+    for(Shader_Components_List::Iterator it = m_components.begin(); !it.end_reached(); ++it)
     {
-        Shader_Component* component = *it;
+        Shader_Component* component = it->component;
         component->init(m_assigned_opengl_program_handle);
     }
+}
+
+
+
+Shader_Component* Shader::get_shader_component(const std::string& _name)
+{
+    for(Shader_Components_List::Iterator it = m_components.begin(); !it.end_reached(); ++it)
+    {
+        if(it->name == _name)
+            return it->component;
+    }
+
+    return nullptr;
+}
+
+const Shader_Component* Shader::get_shader_component(const std::string& _name) const
+{
+    for(Shader_Components_List::Const_Iterator it = m_components.begin(); !it.end_reached(); ++it)
+    {
+        if(it->name == _name)
+            return it->component;
+    }
+
+    return nullptr;
 }
 
 
@@ -202,8 +226,8 @@ void Shader::update(const Draw_Module *_draw_module)
 {
     L_ASSERT(_draw_module);
 
-    for(LDS::List<Shader_Component*>::Iterator it = m_components.begin(); !it.end_reached(); ++it)
-        (*it)->update(_draw_module);
+    for(Shader_Components_List::Iterator it = m_components.begin(); !it.end_reached(); ++it)
+        it->component->update(_draw_module);
 }
 
 
@@ -225,7 +249,7 @@ void Shader_Stub::M_check_dependencies(const Shader::Shader_Components_List& _ex
     {
         for(Shader::Shader_Components_List::Const_Iterator it = _existing_components_list.begin(); !it.end_reached(); ++it)
         {
-            Shader_Component* component = *it;
+            Shader_Component* component = it->component;
             if(component->get_actual_type() == _name)
                 return true;
         }
@@ -286,7 +310,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Shader_Stub)
 
         M_check_dependencies(product->components(), component);
 
-        product->add_component(component);
+        product->add_component(component, it->name);
     }
 
     product->compile();

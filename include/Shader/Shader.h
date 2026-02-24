@@ -33,7 +33,13 @@ namespace LR
         unsigned int m_opengl_shader_handle = 0;
 
     public:
-        using Shader_Components_List = LDS::List<Shader_Component*>;
+        struct Shader_Component_Data
+        {
+            Shader_Component* component = nullptr;
+            std::string name;
+        };
+
+        using Shader_Components_List = LDS::List<Shader_Component_Data>;
 
     private:
         Shader_Type m_shader_type = Shader_Type::Unknown;
@@ -66,7 +72,7 @@ namespace LR
 
     public:
         void reset();
-        void add_component(Shader_Component* _component);
+        void add_component(Shader_Component* _component, const std::string& _name);
         void compile();
         void init(unsigned int _opengl_program_handle);
 
@@ -75,6 +81,9 @@ namespace LR
         Shader_Component_Type* get_shader_component_of_type();
         template<typename Shader_Component_Type>
         const Shader_Component_Type* get_shader_component_of_type() const;
+
+        Shader_Component* get_shader_component(const std::string& _name);
+        const Shader_Component* get_shader_component(const std::string& _name) const;
 
     public:
         void update(const Draw_Module* _draw_module);
@@ -86,7 +95,7 @@ namespace LR
     {
         for(Shader_Components_List::Iterator it = m_components.begin(); !it.end_reached(); ++it)
         {
-            Shader_Component_Type* component = LV::cast_variable<Shader_Component_Type>(*it);
+            Shader_Component_Type* component = LV::cast_variable<Shader_Component_Type>(it->component);
             if(component)
                 return component;
         }
@@ -98,7 +107,7 @@ namespace LR
     {
         for(Shader_Components_List::Const_Iterator it = m_components.begin(); !it.end_reached(); ++it)
         {
-            const Shader_Component_Type* component = LV::cast_variable<Shader_Component_Type>(*it);
+            const Shader_Component_Type* component = LV::cast_variable<Shader_Component_Type>(it->component);
             if(component)
                 return component;
         }
