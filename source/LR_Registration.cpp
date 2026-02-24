@@ -18,6 +18,7 @@
 #include <Shader/Shader_Components/Shader_Dt_Component.h>
 #include <Shader/Shader_Components/Shader_Rotation_Matrix_Component.h>
 #include <Shader/Shader_Components/Shader_Component__SSBO.h>
+#include <Shader/Shader_Components/Shader_Component__Uniforms.h>
 #include <Shader/Shader.h>
 #include <Shader/Shader_Program.h>
 #include <Shader/Shader_Manager.h>
@@ -94,10 +95,10 @@ void LR::register_types(LV::Object_Constructor& _object_constructor,
     });
 
     _object_constructor.register_type<LR::Shader_Component_Stub__SSBO__Generic>();
-
     _object_constructor.register_type<LR::Shader_Component_Stub__SSBO__Float>();
-
     _object_constructor.register_type<LR::Shader_Component_Stub__SSBO__Vec3>();
+
+    _object_constructor.register_type<LR::Shader_Component_Stub__Uniform__Float>();
 
     _object_constructor.register_type<LR::Shader_Stub>();
 
