@@ -8,6 +8,12 @@
 #include <Components/Graphics_Component_Reconstructor.h>
 
 
+namespace LEti
+{
+    class Object;
+}
+
+
 namespace LR
 {
 
@@ -52,6 +58,8 @@ namespace LR
 
     public:
         LST::Function<void(const Graphics_Component*)> on_prepare_func;
+
+        const LEti::Object* future_parent = nullptr;
 
     protected:
         INIT_BUILDER_STUB(Graphics_Component)

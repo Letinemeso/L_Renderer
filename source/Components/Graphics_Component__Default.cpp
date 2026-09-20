@@ -101,7 +101,7 @@ const LDS::Vector<float>& Graphics_Component_Stub__Default::select_data() const
     if(!data_provider)
         return data;
 
-    return data_provider->get_data();
+    return data_provider->get_data( future_parent );
 }
 
 
