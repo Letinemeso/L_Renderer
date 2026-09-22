@@ -406,6 +406,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
     {
         L_ASSERT(LV::cast_variable<Graphics_Component_Stub>(it->child_ptr));
         Graphics_Component_Stub* stub = (Graphics_Component_Stub*)(it->child_ptr);
+        stub->future_parent = future_parent;
         product->add_graphics_component(Graphics_Component_Stub::construct_from(stub));
     }
 
