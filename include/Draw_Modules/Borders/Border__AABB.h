@@ -6,7 +6,7 @@
 namespace LR
 {
 
-    class Border__AABB : public Border
+    class Border__AABB : public Border  //  TODO: replace internal logic with LST::Border
     {
     public:
         INIT_VARIABLE(LR::Border__AABB, LR::Border)
