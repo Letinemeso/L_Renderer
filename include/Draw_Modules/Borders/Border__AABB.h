@@ -1,22 +1,20 @@
 #pragma once
 
+#include <Stuff/Border.h>
+
 #include <Draw_Modules/Borders/Border.h>
 
 
 namespace LR
 {
 
-    class Border__AABB : public Border  //  TODO: replace internal logic with LST::Border
+    class Border__AABB : public Border
     {
     public:
         INIT_VARIABLE(LR::Border__AABB, LR::Border)
 
     private:
-        glm::vec3 m_local_center;
-        glm::vec3 m_local_extents;
-
-        glm::vec3 m_global_center;
-        glm::vec3 m_global_extents;
+        LST::Border m_border;
 
     public:
         void init(const LDS::Vector<float>& _raw_data) override;
