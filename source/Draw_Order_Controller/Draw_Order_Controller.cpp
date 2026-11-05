@@ -1,6 +1,6 @@
 #include <Draw_Order_Controller/Draw_Order_Controller.h>
 
-#include <Stuff/Sorter.h>
+#include <Stuff/Custom_Sorter.h>
 
 using namespace LR;
 
@@ -139,7 +139,7 @@ void Draw_Order_Controller::M_draw_sorted(const Registered_Modules& _modules, co
         }
     }
 
-    LST::Sorter<Registered_Modules::Const_Iterator> sorter([&_func](const Registered_Modules::Const_Iterator& _first, const Registered_Modules::Const_Iterator& _second)
+    LST::Custom_Sorter<Registered_Modules::Const_Iterator> sorter([&_func](const Registered_Modules::Const_Iterator& _first, const Registered_Modules::Const_Iterator& _second)
     {
         return _func(_first.key()->parent_object(), _second.key()->parent_object());
     });
