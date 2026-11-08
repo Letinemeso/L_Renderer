@@ -114,7 +114,7 @@ BUILDER_STUB_INITIALIZATION_FUNC(Picture_Stub)
 
     int width, height, channels;
     unsigned char* picture_data = stbi_load(image_file_path.c_str(), &width, &height, &channels, 4);
-    L_ASSERT(picture_data);
+    L_ASSERT_WITH_INFO(picture_data, "Failed to load image data from \"" + image_file_path + "\"");
 
     product->m_width = width;
     product->m_height = height;
