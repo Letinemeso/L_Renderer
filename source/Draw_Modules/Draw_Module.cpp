@@ -175,6 +175,17 @@ Uniform_Setter* Draw_Module::get_graphics_uniform_setter_with_name(const std::st
     return nullptr;
 }
 
+Uniform_Setter* Draw_Module::get_graphics_uniform_setter_after_draw_with_name(const std::string& _name) const
+{
+    for(Uniform_Setter_List::Const_Iterator it = m_graphics_uniform_setters_after_draw.begin(); !it.end_reached(); ++it)
+    {
+        Uniform_Setter* setter = *it;
+        if(setter->uniform_name() == _name)
+            return setter;
+    }
+    return nullptr;
+}
+
 Uniform_Setter* Draw_Module::get_compute_uniform_setter_with_name(const std::string& _name) const
 {
     for(Uniform_Setter_List::Const_Iterator it = m_compute_uniform_setters.begin(); !it.end_reached(); ++it)

@@ -116,6 +116,7 @@ namespace LR
         const Graphics_Component* get_graphics_component_with_buffer_index(unsigned int _index) const;
 
         Uniform_Setter* get_graphics_uniform_setter_with_name(const std::string& _name) const;
+        Uniform_Setter* get_graphics_uniform_setter_after_draw_with_name(const std::string& _name) const;
         Uniform_Setter* get_compute_uniform_setter_with_name(const std::string& _name) const;
 
         unsigned int calculate_vertices_amount() const;
