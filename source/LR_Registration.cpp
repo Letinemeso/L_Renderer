@@ -27,6 +27,7 @@
 #include <Texture/Texture__Preloaded.h>
 #include <Texture/Texture__Frame_Buffer.h>
 #include <Uniform_Setters/Uniform_Setter.h>
+#include <Uniform_Setters/Uniform_Setter__Transformation.h>
 #include <Draw_Rule/Draw_Rule.h>
 
 using namespace LR;
@@ -97,6 +98,7 @@ void LR::register_types(LV::Object_Constructor& _object_constructor,
     _object_constructor.register_type<LR::Shader_Component_Stub__SSBO__Generic>();
     _object_constructor.register_type<LR::Shader_Component_Stub__SSBO__Float>();
     _object_constructor.register_type<LR::Shader_Component_Stub__SSBO__Vec3>();
+    _object_constructor.register_type<LR::Shader_Component_Stub__SSBO__Struct>();
 
     _object_constructor.register_type<LR::Shader_Component_Stub__Uniform__Float>();
 
@@ -133,6 +135,10 @@ void LR::register_types(LV::Object_Constructor& _object_constructor,
     _object_constructor.register_type<LR::Uniform_Setter_Stub__Vec2>();
 
     _object_constructor.register_type<LR::Uniform_Setter_Stub__Vec3>();
+
+    _object_constructor.register_type<LR::Uniform_Setter_Stub__Mat4x4>();
+
+    _object_constructor.register_type<LR::Uniform_Setter_Stub__Transformation>();
 
     _object_constructor.register_type<LR::Draw_Rule_Stub>();
 }

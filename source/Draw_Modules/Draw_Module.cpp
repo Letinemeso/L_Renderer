@@ -110,6 +110,8 @@ void Draw_Module::add_graphics_uniform_setter(Uniform_Setter* _ptr)
 
     m_graphics_uniform_setters.push_back(_ptr);
 
+    _ptr->set_parent_draw_module(this);
+
     if(m_rendering_shader_program)
         _ptr->init(m_rendering_shader_program);
 }
@@ -120,6 +122,8 @@ void Draw_Module::add_graphics_uniform_setter_after_draw(Uniform_Setter* _ptr)
 
     m_graphics_uniform_setters_after_draw.push_back(_ptr);
 
+    _ptr->set_parent_draw_module(this);
+
     if(m_rendering_shader_program)
         _ptr->init(m_rendering_shader_program);
 }
@@ -129,6 +133,8 @@ void Draw_Module::add_compute_uniform_setter(Uniform_Setter* _ptr)
     L_ASSERT(!m_compute_uniform_setters.find(_ptr).is_ok());
 
     m_compute_uniform_setters.push_back(_ptr);
+
+    _ptr->set_parent_draw_module(this);
 
     if(m_compute_shader_program)
         _ptr->init(m_compute_shader_program);
@@ -325,6 +331,8 @@ void Draw_Module::M_init_uniform_setters(const Uniform_Setter_List& _setters, co
     {
         Uniform_Setter* setter = *it;
         setter->init(_shader);
+
+        setter->set_parent_draw_module(this);
     }
 }
 

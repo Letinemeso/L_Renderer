@@ -2,6 +2,7 @@
 
 #include <vec2.hpp>
 #include <vec3.hpp>
+#include <mat4x4.hpp>
 
 #include <Variable_Base.h>
 #include <Builder_Stub.h>
@@ -10,6 +11,7 @@
 namespace LR
 {
     class Shader_Program;
+    class Draw_Module;
 
 
     class Uniform_Setter : public LV::Variable_Base
@@ -17,11 +19,16 @@ namespace LR
     public:
         INIT_VARIABLE(LR::Uniform_Setter, LV::Variable_Base)
 
+    protected:
+        const Draw_Module* m_parent_draw_module = nullptr;
+
     private:
         std::string m_uniform_name;
         int m_uniform_location = -1;
 
     public:
+        inline void set_parent_draw_module(const Draw_Module* _ptr) { m_parent_draw_module = _ptr; }
+
         inline void set_uniform_name(const std::string& _value) { m_uniform_name = _value; }
 
         inline const std::string& uniform_name() const { return m_uniform_name; }
@@ -49,7 +56,11 @@ namespace LR
         std::string uniform_name;
 
     public:
-        INIT_BUILDER_STUB(Uniform_Setter)
+        INIT_NULL_BUILDER_STUB(Uniform_Setter)
+
+        INIT_BUILDER_STUB_SETTERS
+        ADD_DEFAULT_BUILDER_STUB_SETTER(uniform_name)
+        BUILDER_STUB_SETTERS_END
 
     };
 
@@ -61,11 +72,7 @@ namespace LR
         INIT_VARIABLE(LR::Uniform_Setter__Float, LR::Uniform_Setter)
 
     private:
-        float m_value = 0.0f;
-
-    public:
-        inline void set_value(float _value) { m_value = _value; }
-        inline float value() const { return m_value; }
+        PRIVATE_FIELD_G_S(float, value, 0.0f);
 
     public:
         void apply() const override;
@@ -86,7 +93,11 @@ namespace LR
         float value = 0.0f;
 
     public:
-        INIT_BUILDER_STUB(Uniform_Setter__Float)
+        INIT_DEFAULT_BUILDER_STUB(Uniform_Setter__Float)
+
+        INIT_BUILDER_STUB_SETTERS
+        ADD_DEFAULT_BUILDER_STUB_SETTER(value)
+        BUILDER_STUB_SETTERS_END
 
     };
 
@@ -98,11 +109,7 @@ namespace LR
         INIT_VARIABLE(LR::Uniform_Setter__Int, LR::Uniform_Setter)
 
     private:
-        int m_value = 0;
-
-    public:
-        inline void set_value(int _value) { m_value = _value; }
-        inline int value() const { return m_value; }
+        PRIVATE_FIELD_G_S(int, value, 0);
 
     public:
         void apply() const override;
@@ -123,7 +130,11 @@ namespace LR
         int value = 0;
 
     public:
-        INIT_BUILDER_STUB(Uniform_Setter__Int)
+        INIT_DEFAULT_BUILDER_STUB(Uniform_Setter__Int)
+
+        INIT_BUILDER_STUB_SETTERS
+        ADD_DEFAULT_BUILDER_STUB_SETTER(value)
+        BUILDER_STUB_SETTERS_END
 
     };
 
@@ -135,11 +146,7 @@ namespace LR
         INIT_VARIABLE(LR::Uniform_Setter__UInt, LR::Uniform_Setter)
 
     private:
-        unsigned int m_value = 0;
-
-    public:
-        inline void set_value(unsigned int _value) { m_value = _value; }
-        inline unsigned int value() const { return m_value; }
+        PRIVATE_FIELD_G_S(unsigned int, value, 0);
 
     public:
         void apply() const override;
@@ -160,7 +167,11 @@ namespace LR
         unsigned int value = 0;
 
     public:
-        INIT_BUILDER_STUB(Uniform_Setter__UInt)
+        INIT_DEFAULT_BUILDER_STUB(Uniform_Setter__UInt)
+
+        INIT_BUILDER_STUB_SETTERS
+        ADD_DEFAULT_BUILDER_STUB_SETTER(value)
+        BUILDER_STUB_SETTERS_END
 
     };
 
@@ -172,11 +183,7 @@ namespace LR
         INIT_VARIABLE(LR::Uniform_Setter__Vec2, LR::Uniform_Setter)
 
     private:
-        glm::vec2 m_value = { 0.0f, 0.0f };
-
-    public:
-        inline void set_value(const glm::vec2& _value) { m_value = _value; }
-        inline const glm::vec2& value() const { return m_value; }
+        PRIVATE_FIELD_GR_SR(glm::vec2, value, glm::vec2(0.0f));
 
     public:
         void apply() const override;
@@ -197,7 +204,11 @@ namespace LR
         glm::vec2 value = { 0.0f, 0.0f };
 
     public:
-        INIT_BUILDER_STUB(Uniform_Setter__Vec2)
+        INIT_DEFAULT_BUILDER_STUB(Uniform_Setter__Vec2)
+
+        INIT_BUILDER_STUB_SETTERS
+        ADD_DEFAULT_BUILDER_STUB_SETTER(value)
+        BUILDER_STUB_SETTERS_END
 
     };
 
@@ -209,11 +220,7 @@ namespace LR
         INIT_VARIABLE(LR::Uniform_Setter__Vec3, LR::Uniform_Setter)
 
     private:
-        glm::vec3 m_value = { 0.0f, 0.0f, 0.0f };
-
-    public:
-        inline void set_value(const glm::vec3& _value) { m_value = _value; }
-        inline const glm::vec3& value() const { return m_value; }
+        PRIVATE_FIELD_GR_SR(glm::vec3, value, glm::vec3(0.0f));
 
     public:
         void apply() const override;
@@ -234,7 +241,51 @@ namespace LR
         glm::vec3 value = { 0.0f, 0.0f, 0.0f };
 
     public:
-        INIT_BUILDER_STUB(Uniform_Setter__Vec3)
+        INIT_DEFAULT_BUILDER_STUB(Uniform_Setter__Vec3)
+
+        INIT_BUILDER_STUB_SETTERS
+        ADD_DEFAULT_BUILDER_STUB_SETTER(value)
+        BUILDER_STUB_SETTERS_END
+
+    };
+
+
+
+    class Uniform_Setter__Mat4x4 : public Uniform_Setter
+    {
+    public:
+        INIT_VARIABLE(LR::Uniform_Setter__Mat4x4, LR::Uniform_Setter)
+
+    private:
+        PRIVATE_FIELD_GR_SR(glm::mat4x4, value, glm::mat4x4(0.0f));
+
+    public:
+        void set_value(const LDS::Vector<float>& _value);
+
+    public:
+        void apply() const override;
+
+    };
+
+
+    class Uniform_Setter_Stub__Mat4x4 : public Uniform_Setter_Stub
+    {
+    public:
+        INIT_VARIABLE(LR::Uniform_Setter_Stub__Mat4x4, LR::Uniform_Setter_Stub)
+
+        INIT_FIELDS
+        ADD_FIELD(LDS::Vector<float>, value)
+        FIELDS_END
+
+    public:
+        LDS::Vector<float> value;
+
+    public:
+        INIT_DEFAULT_BUILDER_STUB(Uniform_Setter__Mat4x4)
+
+        INIT_BUILDER_STUB_SETTERS
+        ADD_DEFAULT_BUILDER_STUB_SETTER(value)
+        BUILDER_STUB_SETTERS_END
 
     };
 

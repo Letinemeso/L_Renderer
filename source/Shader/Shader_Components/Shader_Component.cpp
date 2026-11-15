@@ -25,7 +25,7 @@ int Shader_Component::M_extract_uniform_location_optional(const std::string& _na
 int Shader_Component::M_extract_uniform_location(const std::string& _name) const
 {
     int result = M_extract_uniform_location_optional(_name.c_str());
-    L_ASSERT(result != -1);
+    L_ASSERT_WITH_INFO(result != -1, "Unable to extract location for uniform with name \"" + _name + "\"");
 
     return result;
 }
