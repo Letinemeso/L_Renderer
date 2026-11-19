@@ -72,6 +72,8 @@ void Window_Controller::create_window(unsigned int _width, unsigned int _height,
     {
         LR::Window_Controller::instance().on_minimized(!_iconified);
     });
+
+    glfwSwapInterval(0);
 }
 
 void Window_Controller::terminate_window()
@@ -127,7 +129,6 @@ void Window_Controller::make_fullscreen(bool _fullscreen)
         const GLFWvidmode* mode = glfwGetVideoMode(monitor);
         glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
         on_window_resized(mode->width, mode->height);
-        glfwSwapInterval(0);
     }
     else
     {
@@ -136,10 +137,14 @@ void Window_Controller::make_fullscreen(bool _fullscreen)
 
         glfwSetWindowMonitor(m_window, nullptr, m_saved_window_position.x, m_saved_window_position.y, m_saved_window_size.x, m_saved_window_size.y, 0);
         on_window_resized(m_saved_window_size.x, m_saved_window_size.y);
-        glfwSwapInterval(0);
     }
 
     m_is_fullscreen = _fullscreen;
+}
+
+void Window_Controller::enable_vsync(bool _enable)
+{
+    glfwSwapInterval( _enable ? 1 : 0 );
 }
 
 

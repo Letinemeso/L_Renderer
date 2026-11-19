@@ -63,6 +63,7 @@ namespace LR
         void on_window_resized(int _new_width, int _new_height);
         void on_minimized(bool _minimized);
         void make_fullscreen(bool _fullscreen);
+        void enable_vsync(bool _enable);
 
     public:
         void update();
