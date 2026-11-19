@@ -52,11 +52,6 @@ unsigned int Graphics_Component__Default::vertices_amount() const
     return buffer().size() / buffer().floats_per_vertex();
 }
 
-unsigned int Graphics_Component__Default::required_compute_shader_invocations() const
-{
-    return m_required_compute_shader_invocations;
-}
-
 void Graphics_Component__Default::setup_buffer() const
 {
     buffer().setup_vertex_attrib_pointer();
@@ -137,6 +132,4 @@ BUILDER_STUB_INITIALIZATION_FUNC(Graphics_Component_Stub__Default)
 
     if(enable_instancing)
         product->buffer().enable_instancing(true);
-
-    product->set_required_compute_shader_invocations(required_compute_shader_invocations);
 }

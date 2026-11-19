@@ -238,7 +238,7 @@ void Draw_Module::M_update_compute_shader_work_groups_sizes()
         return;
     }
 
-    GLint* groups_sizes = (GLint*)&m_compute_shader_work_group_sizes;       //  oooh what a crutch! i love it! it MUST stay here FOREVER. DO NOT remove at all costs.
+    GLint* groups_sizes = (GLint*)&m_compute_shader_work_group_sizes;
     glGetProgramiv(m_compute_shader_program->handle(), GL_COMPUTE_WORK_GROUP_SIZE, groups_sizes);
 }
 
@@ -257,34 +257,9 @@ void Draw_Module::M_update_draw_layer_if_needed()
     m_should_update_draw_layer = false;
 }
 
-unsigned int Draw_Module::M_calculate_necessary_computer_shader_incovations() const
-{
-    L_ASSERT(m_graphics_components.size() > 0);
-
-    unsigned int invocations = 0;
-    for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
-    {
-        invocations = (*it)->required_compute_shader_invocations();
-        if(invocations > 0)
-            break;
-    }
-
-    L_ASSERT(invocations > 0);
-    L_DEBUG_FUNC_NOARG([&]()
-    {
-        for(Graphics_Component_List::Const_Iterator it = m_graphics_components.begin(); !it.end_reached(); ++it)
-        {
-            unsigned int invocations_check = (*it)->required_compute_shader_invocations();
-            L_ASSERT(invocations_check == 0 || invocations_check == invocations);
-        }
-    });
-
-    return invocations;
-}
-
 unsigned int Draw_Module::M_calculate_necessary_work_groups(unsigned int _work_group_size) const
 {
-    return (M_calculate_necessary_computer_shader_incovations() + _work_group_size - 1) / _work_group_size;
+    return (m_required_compute_shader_invocations + _work_group_size - 1) / _work_group_size;
 }
 
 void Draw_Module::M_dispatch_compute_shader(Shader_Program* _shader, const Uniform_Setter_List& _setters) const
@@ -452,6 +427,8 @@ BUILDER_STUB_INITIALIZATION_FUNC(Draw_Module_Stub)
 
     if(draw_order_controller && draw_layer.size() > 0)
         product->set_draw_layer(draw_order_controller, draw_layer);
+
+    product->set_required_compute_shader_invocations(required_compute_shader_invocations);
 }
 
 

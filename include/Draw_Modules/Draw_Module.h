@@ -48,21 +48,25 @@ namespace LR
         using Uniform_Setter_List = LDS::List<Uniform_Setter*>;
 
     protected:
-        std::string m_draw_layer;
-        bool m_should_update_draw_layer = false;
-
         Graphics_Component_List m_graphics_components;
         Uniform_Setter_List m_graphics_uniform_setters;
         Uniform_Setter_List m_graphics_uniform_setters_after_draw;
         Uniform_Setter_List m_compute_uniform_setters;
 
-        unsigned int m_draw_mode = 0;
-        Draw_Call* m_draw_call = nullptr;
+    private:
+        bool m_draw_on_update = true;
+
+        bool m_visible = true;
+
+        std::string m_draw_layer;
+        bool m_should_update_draw_layer = false;
 
         Border* m_border = nullptr;
 
-        bool m_visible = true;
-        bool m_draw_on_update = true;
+        unsigned int m_draw_mode = 0;
+        Draw_Call* m_draw_call = nullptr;
+
+        PRIVATE_FIELD_S(unsigned int, required_compute_shader_invocations, 0)
 
 	public:
         Draw_Module();
@@ -126,7 +130,6 @@ namespace LR
         virtual void M_on_compute_shader_program_set() { }
         void M_update_compute_shader_work_groups_sizes();
         void M_update_draw_layer_if_needed();
-        unsigned int M_calculate_necessary_computer_shader_incovations() const;
         unsigned int M_calculate_necessary_work_groups(unsigned int _work_group_size) const;
         void M_dispatch_compute_shader(Shader_Program* _shader, const Uniform_Setter_List& _setters) const;
         virtual void M_update_internal(float _dt);
@@ -154,6 +157,7 @@ namespace LR
         ADD_FIELD(std::string, draw_layer)
         ADD_FIELD(std::string, rendering_shader_id)
         ADD_FIELD(std::string, compute_shader_id)
+        ADD_FIELD(unsigned int, required_compute_shader_invocations)
         FIELDS_END
 
         INIT_CHILDS
@@ -175,6 +179,7 @@ namespace LR
         std::string draw_layer;
         std::string rendering_shader_id;
         std::string compute_shader_id;
+        unsigned int required_compute_shader_invocations = 0;
 
     public:
         Renderer* renderer = nullptr;

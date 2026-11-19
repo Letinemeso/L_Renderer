@@ -32,12 +32,6 @@ unsigned int Graphics_Component__Proxy::vertices_amount() const
     return m_linked_graphics_component->vertices_amount();
 }
 
-unsigned int Graphics_Component__Proxy::required_compute_shader_invocations() const
-{
-    L_ASSERT(m_linked_graphics_component);
-    return m_linked_graphics_component->required_compute_shader_invocations();
-}
-
 void Graphics_Component__Proxy::setup_buffer() const
 {
     L_ASSERT(m_linked_graphics_component);

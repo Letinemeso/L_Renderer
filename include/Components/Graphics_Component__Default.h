@@ -26,15 +26,11 @@ namespace LR
     protected:
         Buffer m_buffer;
 
-        unsigned int m_required_compute_shader_invocations = 0;
-
     public:
         Graphics_Component__Default();
         ~Graphics_Component__Default();
 
     public:
-        inline void set_required_compute_shader_invocations(unsigned int _value) { m_required_compute_shader_invocations = _value; }
-
         void set_reconstructor(Graphics_Component_Reconstructor* _ptr);
 
     public:
@@ -50,7 +46,6 @@ namespace LR
     public:
         unsigned int layout_index() const override;
         unsigned int vertices_amount() const override;
-        unsigned int required_compute_shader_invocations() const override;
         void setup_buffer() const override;
         void update(float _dt) override;
         void prepare_to_draw() const override;
@@ -69,7 +64,6 @@ namespace LR
         ADD_FIELD(unsigned int, floats_per_vertex)
         ADD_FIELD(unsigned int, layout_index)
         ADD_FIELD(unsigned int, binding_point_index)
-        ADD_FIELD(unsigned int, required_compute_shader_invocations)
         ADD_FIELD(bool, enable_instancing)
         ADD_FIELD(LDS::Vector<float>, data)
         FIELDS_END
@@ -83,7 +77,6 @@ namespace LR
         unsigned int floats_per_vertex = 0;
         unsigned int layout_index = 0xFFFFFFFF;
         unsigned int binding_point_index = 0xFFFFFFFF;
-        unsigned int required_compute_shader_invocations = 0;
 
         bool enable_instancing = false;
 
